@@ -9,7 +9,6 @@
 #ifndef byte_array_h
 #define byte_array_h
 
-#include <stdio.h>
 #include "global.h"
 
 class ByteArray

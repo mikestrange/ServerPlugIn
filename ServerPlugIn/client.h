@@ -9,7 +9,6 @@
 #ifndef client_h
 #define client_h
 
-#include <stdio.h>
 #include "packet.h"
 #include "lock.h"
 #include "server.h"

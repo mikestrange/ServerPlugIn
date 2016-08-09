@@ -12,6 +12,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <string.h>
+#include <assert.h>
+
+
+#define ERROR_ASSERT(e)      assert(e)
 
 #define SAFE_DELETE(p)      do{ if(p){ delete p; p = NULL;} }while(0)
 

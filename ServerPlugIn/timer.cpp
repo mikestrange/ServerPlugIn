@@ -60,7 +60,7 @@ bool Timer::isRunning()const
 //private
 void Timer::Reset()
 {
-    __darwin_time_t sec = (__darwin_time_t)floor(delay_time);   //间隔秒
+    int sec = (int)floor(delay_time);   //间隔秒
     long msec = (delay_time - sec)*MVAL_TIME;                   //间隔毫秒
     //trace("end time = %d.%d",sec,msec);
     powder::ntime::gettime(&last);

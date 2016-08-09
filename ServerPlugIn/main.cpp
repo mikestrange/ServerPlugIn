@@ -37,7 +37,6 @@ int main(int argc, const char * argv[])
     pid_t fork_id = fork();
     if(fork_id == 0){
         //子进程(登录服务器)
-        
     }else if(fork_id > 0){
         launch_world();
         //父进程(世界服务器)

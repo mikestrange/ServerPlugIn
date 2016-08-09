@@ -60,9 +60,9 @@ POWDER_BEGIN
             return t;
         }
         
-        struct timeval* addtime(struct timeval *t,__darwin_time_t sec,__darwin_suseconds_t usec)
+        struct timeval* addtime(struct timeval *t, int sec, long usec)
         {
-            __darwin_suseconds_t total = t->tv_usec + usec;
+            long total = t->tv_usec + usec;
             if(total >= UVAL_TIME){
                 t->tv_sec = t->tv_sec + sec + 1;
                 t->tv_usec = total - UVAL_TIME;
@@ -102,7 +102,7 @@ POWDER_BEGIN
             return t;
         }
         
-        struct timespec* addtime(struct timespec *t,__darwin_time_t sec,long nsec)
+        struct timespec* addtime(struct timespec *t, int sec, long nsec)
         {
             long total = t->tv_nsec + nsec;
             if(total >= NVAL_TIME){

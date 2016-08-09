@@ -33,7 +33,6 @@
 		20CC0DEC1D4CA274006A3F91 /* bridge_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DEA1D4CA274006A3F91 /* bridge_base.cpp */; };
 		20CC0DF51D4CA3D9006A3F91 /* lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DF31D4CA3D9006A3F91 /* lock.cpp */; };
 		20CC0DFB1D4CA470006A3F91 /* string_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DF91D4CA470006A3F91 /* string_utils.cpp */; };
-		20CC0DFE1D4CA483006A3F91 /* math_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DFC1D4CA483006A3F91 /* math_utils.cpp */; };
 		20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */; };
 /* End PBXBuildFile section */
 
@@ -113,8 +112,6 @@
 		20CC0DF41D4CA3D9006A3F91 /* lock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lock.h; sourceTree = "<group>"; };
 		20CC0DF91D4CA470006A3F91 /* string_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_utils.cpp; sourceTree = "<group>"; };
 		20CC0DFA1D4CA470006A3F91 /* string_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_utils.h; sourceTree = "<group>"; };
-		20CC0DFC1D4CA483006A3F91 /* math_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = math_utils.cpp; sourceTree = "<group>"; };
-		20CC0DFD1D4CA483006A3F91 /* math_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = math_utils.h; sourceTree = "<group>"; };
 		20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_utils.cpp; sourceTree = "<group>"; };
 		20CC0E001D4CA492006A3F91 /* time_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time_utils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -340,12 +337,10 @@
 		20CC0DD11D4CA03F006A3F91 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				20CC0DF91D4CA470006A3F91 /* string_utils.cpp */,
 				20CC0DFA1D4CA470006A3F91 /* string_utils.h */,
-				20CC0DFC1D4CA483006A3F91 /* math_utils.cpp */,
-				20CC0DFD1D4CA483006A3F91 /* math_utils.h */,
-				20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */,
+				20CC0DF91D4CA470006A3F91 /* string_utils.cpp */,
 				20CC0E001D4CA492006A3F91 /* time_utils.h */,
+				20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -458,7 +453,6 @@
 				20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */,
 				20AF6F241D5062BF00EB26D3 /* client.cpp in Sources */,
 				20CC0DBA1D4C9C5A006A3F91 /* socket.cpp in Sources */,
-				20CC0DFE1D4CA483006A3F91 /* math_utils.cpp in Sources */,
 				20AF6F1B1D504A6900EB26D3 /* byte_array.cpp in Sources */,
 				20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */,
 				20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */,

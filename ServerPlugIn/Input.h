@@ -9,7 +9,6 @@
 #ifndef Input_h
 #define Input_h
 
-#include <stdio.h>
 #include <iostream>
 #include "thread.h"
 #include "global.h"

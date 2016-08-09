@@ -14,7 +14,7 @@ INC := -I/usr/include\
 	-I/usr/local/mysql/include\
 	  
 #链接库
-LIBS := -L./lib -lmysqlclient -lmysqld
+LIBS := -L./lib -lmysqlclient -lmysqld -pthread
 
 
 %.o:%.cpp  

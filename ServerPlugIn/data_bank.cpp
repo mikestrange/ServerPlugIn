@@ -33,6 +33,7 @@ bool DataBank::connent(const char* host,
         return true;
     }
     isconnected = false;
+    #ifdef MY_SQL
     //初始化
     if(mysql_init(&myCont)==NULL)
     {
@@ -50,6 +51,9 @@ bool DataBank::connent(const char* host,
         mysql_close(&myCont);
         trace("mysql failed!");
     };
+    #else
+        trace("undefined MY_SQL");
+    #endif
     return isconnected;
 }
 
@@ -58,7 +62,9 @@ void DataBank::close()
     if(isconnected)
     {
         isconnected = false;
+        #ifdef MY_SQL
         mysql_close(&myCont);
+        #endif
         trace("mysql close ok");
     }else{
         trace("mysql close error: is no open");
@@ -77,12 +83,15 @@ bool DataBank::apply(const char* sql)
         return false;
     }
     trace("sql execute:%s",sql);
-    int res = mysql_query(&myCont, sql);
-    if(res != 0)
+    int ret = -1;
+    #ifdef MY_SQL
+    ret = mysql_query(&myCont, sql);
+    #endif
+    if(ret != 0)
     {
-        trace("mysql apply error:%d",res);
+        trace("mysql apply error:%d", ret);
     }
-    return res == 0;
+    return ret == 0;
 }
 
 bool DataBank::applyFormat(const char* fm, ...)
@@ -102,6 +111,7 @@ bool DataBank::findFormat(DataQuery& query, const char* fm,...)
 bool DataBank::find(DataQuery& query, const char* sql)
 {
     //"select * from player"
+    #ifdef MY_SQL
     if(apply(sql))
     {
         //保存查询到的数据到result
@@ -136,5 +146,6 @@ bool DataBank::find(DataQuery& query, const char* sql)
             trace("mysql find result error");
         }
     }
+    #endif
     return false;
 }

@@ -6,13 +6,12 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef time_utils_hpp
-#define time_utils_hpp
+#ifndef time_utils_h
+#define time_utils_h
 
-#include <stdio.h>
 #include <sys/time.h>
 #include <time.h>
-#include <mach/mach_time.h>
+
 #include "global.h"
 //秒
 POWDER_BEGIN
@@ -47,7 +46,7 @@ POWDER_BEGIN
         //当前时间
         struct timeval* gettime(struct timeval *t);
         
-        struct timeval* addtime(struct timeval *t,__darwin_time_t sec,__darwin_suseconds_t usec);
+        struct timeval* addtime(struct timeval *t, int sec, long usec);
         
         //获取时间差
         int subtime(struct timeval* result, struct timeval* sub, struct timeval* head);
@@ -60,7 +59,7 @@ POWDER_BEGIN
     {
         struct timespec* gettime(struct timespec *t);
         
-        struct timespec* addtime(struct timespec *t, __darwin_time_t sec, long nsec);
+        struct timespec* addtime(struct timespec *t, int sec, long nsec);
         
         int subtime(struct timespec* result, struct timespec* sub, struct timespec* head);
     }
@@ -68,11 +67,6 @@ POWDER_BEGIN
 POWDER_END
 
 
-//printf( "The file is %s.\n", __FILE__ );
-//printf( "The date is %s.\n", __DATE__ );
-//printf( "The time is %s.\n", __TIME__ );
-//printf( "This is line %d.\n", __LINE__ );
-//printf( "This function is %s.\n", __FUNCTION__ );
 class Timeout
 {
 public:
@@ -80,21 +74,19 @@ public:
     :_out(NULL)
     {
         powder::utime::gettime(&_t1);
-        //trace("#耗时Begin-----!");
     }
     
     Timeout(const char* str)
     :_out(str)
     {
         powder::utime::gettime(&_t1);
-        //trace("#耗时Begin-----!%s", str);
     }
     
     virtual ~Timeout()
     {
         struct timeval t2;
         powder::utime::gettime(&t2);
-        __darwin_suseconds_t sub = t2.tv_usec - _t1.tv_usec;
+        int sub = t2.tv_usec - _t1.tv_usec;
         if(sub <= 0){
             trace("%s : 微秒[0] 毫秒[0] 秒执行[N]次", _out);
         }else{
@@ -107,4 +99,4 @@ private:
     const char* _out;
 };
 
-#endif /* time_utils_hpp */
+#endif /* time_utils_h */

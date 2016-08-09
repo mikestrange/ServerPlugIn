@@ -9,7 +9,6 @@
 #ifndef string_utils_h
 #define string_utils_h
 
-#include <stdio.h>
 #include "global.h"
 
 namespace StringUtil

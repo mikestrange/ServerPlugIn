@@ -6,11 +6,9 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef packet_hpp
-#define packet_hpp
+#ifndef packet_h
+#define packet_h
 
-#include <stdio.h>
-#include <time.h>
 #include "byte_buffer.h"
 #include "time_utils.h"
 #include "global.h"
@@ -93,4 +91,4 @@ public:
     }
 };
 
-#endif /* packet_hpp */
+#endif /* packet_h */

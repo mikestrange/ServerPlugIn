@@ -78,8 +78,7 @@ void NetServer::poll(SCOKET_CALL perform)
             trace("--select error:%d %d--", result, errno);
             break;
         }else if(result == 0){
-            //trace("--select timeout--");
-            printf(".");
+            trace("--select timeout--");
         }else{
             for(int i = 0; i < maxfds; i++)
             {
@@ -104,6 +103,7 @@ void NetServer::poll(SCOKET_CALL perform)
                             perform(SOCKET_READ, fd, bytes, ret);
                             memset(bytes, 0, ret);
                         }else{
+                            if (errno == EINTR || errno == EAGAIN) continue;
                             //trace("错误和客户端de关闭 %d",fd);
                             remove(i, &readfds);
                             perform(SOCKET_CLOSED, fd, NULL, NULL);

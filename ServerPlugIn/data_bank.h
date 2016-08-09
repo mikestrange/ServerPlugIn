@@ -12,14 +12,16 @@
 #ifndef data_bank_h
 #define data_bank_h
 
+//定义数据库
 #define MY_SQL
-
-#ifdef MY_SQL
 
 #include <stdio.h>
 #include <vector>
 #include <map>
+
+#ifdef MY_SQL
 #include <mysql.h>
+#endif
 
 #include "global.h"
 #include "data_query.h"
@@ -65,10 +67,11 @@ public:
     }
 protected:
     bool isconnected = false;
+#ifdef MY_SQL
 private:
     MYSQL myCont;
+#endif
 };
 
-#endif
 
 #endif /* data_bank_h */
