@@ -97,7 +97,6 @@
 		20CC0DAA1D4C9B2C006A3F91 /* task_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = task_loop.cpp; sourceTree = "<group>"; };
 		20CC0DAB1D4C9B2C006A3F91 /* task_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_loop.h; sourceTree = "<group>"; };
 		20CC0DB21D4C9BFD006A3F91 /* object_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = object_pool.h; sourceTree = "<group>"; };
-		20CC0DB51D4C9C36006A3F91 /* memory_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory_pool.h; sourceTree = "<group>"; };
 		20CC0DB81D4C9C5A006A3F91 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socket.cpp; sourceTree = "<group>"; };
 		20CC0DB91D4C9C5A006A3F91 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
 		20CC0DCE1D4C9FFA006A3F91 /* PowEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowEngine.cpp; sourceTree = "<group>"; };
@@ -307,7 +306,6 @@
 			children = (
 				20CC0DB21D4C9BFD006A3F91 /* object_pool.h */,
 				20AF6F0F1D503FDC00EB26D3 /* object_pool.cpp */,
-				20CC0DB51D4C9C36006A3F91 /* memory_pool.h */,
 			);
 			name = pool;
 			sourceTree = "<group>";

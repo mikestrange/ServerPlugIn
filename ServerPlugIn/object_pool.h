@@ -73,7 +73,7 @@ public:
     }
 };
 
-
+//所有缓冲对象
 class ByteArrayPool : public ObjectPool<ByteArray>
 {
 private:
