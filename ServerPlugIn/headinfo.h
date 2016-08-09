@@ -1,13 +1,13 @@
 //
-//  packet_header.hpp
+//  headerinfo.hpp
 //  ServerPlugIn
 //
 //  Created by MikeRiy on 16/8/5.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef packet_header_h
-#define packet_header_h
+#ifndef headerinfo_hpp
+#define headerinfo_hpp
 
 #include <stdio.h>
 
@@ -61,4 +61,4 @@ public:
 };
 
 
-#endif /* packet_header_hpp */
+#endif /* headerinfo_hpp */
