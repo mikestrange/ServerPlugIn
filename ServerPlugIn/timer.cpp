@@ -36,7 +36,7 @@ void Timer::stop()
 }
 
 //delay_sec_t sec_t, long msec_t = 0
-void Timer::setDelay(timer_t delay)
+void Timer::setDelay(delay_t delay)
 {
     if(delay < 0){
         delay_time = 0;

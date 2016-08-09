@@ -11,12 +11,14 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <sys/time.h>
 
+#include <algorithm>
 #include "time_loop.h"
 #include "time_utils.h"
 
 //计时器时间
-typedef double timer_t;
+typedef double delay_t;
 
 class TimeDelegate
 {
@@ -27,7 +29,7 @@ public:
 class Timer
 {
 private:
-    timer_t delay_time;
+    delay_t delay_time;
     bool is_time;
     //代理设置
     TimeDelegate* delegate;
@@ -42,7 +44,7 @@ public:
     
     virtual void setDelegate(TimeDelegate* delegate, int type = 0);
     
-    virtual void setDelay(timer_t delay);
+    virtual void setDelay(delay_t delay);
     
     virtual bool start();
     

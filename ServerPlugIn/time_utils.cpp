@@ -15,7 +15,7 @@ static const clock_t START_TIME = clock();
 //精确纳秒
 //static double orwl_timebase = 0.0;
 //static uint64_t orwl_timestart = 0;
-static __darwin_suseconds_t orwl_space = 1000;
+static int orwl_space = 1000;
 
 
 POWDER_BEGIN

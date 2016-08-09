@@ -17,7 +17,6 @@
 #include "task_scheduler.h"
 #include "object_pool.h"
 #include "timer.h"
-#include "Log.h"
 #include "packet.h"
 
 //src
