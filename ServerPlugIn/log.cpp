@@ -6,7 +6,7 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#include "Log.h"
+#include "log.h"
 
 static const int LOG_SIZE = 512;
 static const int TIME_SIZE = 64;

@@ -10,7 +10,6 @@
 #define Log_h
 
 #include <stdlib.h>
-#include <string>
 #include "global.h"
 
 typedef enum
