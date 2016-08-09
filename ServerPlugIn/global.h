@@ -13,7 +13,9 @@
 #include <stdlib.h>
 #include <string>
 #include <string.h>
+#include <functional>
 #include <assert.h>
+#include <stdarg.h>
 
 
 #define ERROR_ASSERT(e)      assert(e)

@@ -11,7 +11,8 @@
 #include "time_utils.h"
 
 NetServer::NetServer()
-:serId(0)
+:port(0)
+,serId(0)
 {
     
 }
@@ -37,6 +38,7 @@ bool NetServer::open(int port, int maxfds)
     {
         NetBase::maxfds(maxfds);
         serId = serverId;
+        this->port = port;
         trace("open server ok port = %d serid = %d max = %d", port, serId, MAX_SERVER);
         return true;
     }
@@ -115,10 +117,10 @@ void NetServer::poll(SCOKET_CALL perform)
     };
     //清理其他的关闭(会通知未移除的客户端)
     clean(&readfds, perform);
-    //serId>0表示服务器发生了错误
-    perform(SOCKET_SERVER_CLOSED, serId, NULL, NULL);
     //服务器套接字设置为0
-    serId = 0;
+    closed();
+    //通知
+    perform(SOCKET_SELF_CLOSED, NULL, NULL, NULL);
 }
 
 //关闭服务器

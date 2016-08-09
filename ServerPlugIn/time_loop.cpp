@@ -19,7 +19,7 @@ static void push_thread(Timer* time)
         time->PushTask();
     };
     //异步推送
-    powder::AsynPush(Task::create(func, time));
+    powder::PushMain(Task::create(func, time));
 }
 
 TimeLoop* TimeLoop::getInstance()

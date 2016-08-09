@@ -13,7 +13,7 @@
 #define data_bank_h
 
 //定义数据库
-#define MY_SQL
+//#define MY_SQL
 
 #include <stdio.h>
 #include <vector>

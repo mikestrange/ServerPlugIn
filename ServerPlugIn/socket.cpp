@@ -79,13 +79,9 @@ void NetSocket::poll(SCOKET_CALL func)
             }
         }
     }
-    if(sockfd == 0){
-        trace("##socket stop by self");
-    }else{
-        trace("##socket is close error");
-        func(SOCKET_CLOSED, sockfd, NULL, NULL);
-    }
     closed();
+    //通知
+    func(SOCKET_SELF_CLOSED, NULL, NULL, NULL);
 }
 
 void NetSocket::closed()

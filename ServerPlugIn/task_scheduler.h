@@ -21,10 +21,12 @@
 
 POWDER_BEGIN
 
+int PushMain(Task* task);
+
 //异步推动一个任务
 int AsynPush(Task* task, int tid = 0);
 
-//摧毁一个线程(一定摧毁)
+//摧毁一个线程 主现场不能删除
 int DelThread(int tid);
 
 POWDER_END

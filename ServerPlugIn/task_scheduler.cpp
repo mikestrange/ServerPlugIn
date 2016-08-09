@@ -12,6 +12,7 @@ static bool is_init = false;
 static TaskLoop* taskLoops[MAX_TASK_THREAD];
 static Locked locker;
 
+//初始化
 static void init_loops()
 {
     if(!is_init)
@@ -46,11 +47,22 @@ static void thread_handle(int type, Thread* thread)
 
 POWDER_BEGIN
 
+
+int PushMain(Task* task)
+{
+    return AsynPush(task, 0);
+}
+
 int AsynPush(Task* task, int tid)
 {
+    if(tid < 0 || tid >= MAX_TASK_THREAD)
+    {
+        return -1;
+    }
+    //
     AUTO_LOCK(&locker);
     init_loops();
-    //assets(tid > MAX_TASK_THREAD);
+    //
     TaskLoop* loop = taskLoops[tid];
     if(loop == NULL)
     {
@@ -73,13 +85,16 @@ int AsynPush(Task* task, int tid)
 
 int DelThread(int tid)
 {
-    AUTO_LOCK(&locker);
-    TaskLoop* loop = taskLoops[tid];
-    if(loop)
+    if(tid > 0 && tid < MAX_TASK_THREAD)
     {
-        taskLoops[tid] = NULL;
-        loop->stop();
-        return 0;
+        AUTO_LOCK(&locker);
+        TaskLoop* loop = taskLoops[tid];
+        if(loop)
+        {
+            taskLoops[tid] = NULL;
+            loop->stop();
+            return 0;
+        }
     }
     return -1;
 }

@@ -31,8 +31,6 @@ void launch(int type, void* args)
 int main(int argc, const char * argv[])
 {
     trace("init");
-    //powder::AsynPush(Task::create(&launch));
-    
     //启动一个进程
     pid_t fork_id = fork();
     if(fork_id == 0){

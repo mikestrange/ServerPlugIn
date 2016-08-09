@@ -21,6 +21,7 @@
 class NetServer : public NetBase
 {
 private:
+    int port;
     int serId;
     struct sockaddr_in server_address;
 private://sets
@@ -31,7 +32,7 @@ public:
     virtual bool open(int port,int maxfds = 5);
     //轮询端口
     virtual void poll(SCOKET_CALL perform);
-    //
+    //端口是否开放
     virtual bool isRunning()const;
     //关闭端口
     virtual void closed();

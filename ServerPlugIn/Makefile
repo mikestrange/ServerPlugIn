@@ -8,10 +8,13 @@ SRCS := $(wildcard *.cpp)
 
 OBJS := $(patsubst %cpp,%o,$(SRCS))  
 
+# 宏定义  
+DEFS = -DMY_SQL
+CFLAGS += $(DEFS) 
 #路径
 INC := -I/usr/include\
 	-I/usr/local/include\
-	-I/usr/local/mysql/include\
+	-I/usr/local/mysql/include
 	  
 #链接库
 LIBS := -L./lib -lmysqlclient -lmysqld -pthread

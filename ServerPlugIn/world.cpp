@@ -73,11 +73,11 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
         }
         byte->copy(bytes, length);
         //read handler
-        powder::AsynPush(Task::create(fd, &server_read, byte));
+        powder::PushMain(Task::create(fd, &server_read, byte));
     }else if(type == SOCKET_ACCEPT){
         if(clients.AddClient(fd))
         {
-            powder::AsynPush(Task::create(fd, &server_accept));
+            powder::PushMain(Task::create(fd, &server_accept));
         }else{
             trace("Has been added or added more than the upper limit");
             server.closed(fd);
@@ -85,11 +85,11 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
     }else if(type == SOCKET_CLOSED){
         Client* client = clients.RemoveClient(fd);
         if(client){
-            powder::AsynPush(Task::create(fd, &server_close, client));
+            powder::PushMain(Task::create(fd, &server_close, client));
         }else{
             trace("error: Not captured to the client: %d",fd);
         }
-    }else if(type == SOCKET_SERVER_CLOSED){
+    }else if(type == SOCKET_SELF_CLOSED){
         trace("服务器关闭");
     }
 }

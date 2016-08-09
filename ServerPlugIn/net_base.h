@@ -37,7 +37,7 @@ typedef enum _SOCKET_EVENT{
     SOCKET_ACCEPT = 1,
     SOCKET_READ,
     SOCKET_CLOSED,
-    SOCKET_SERVER_CLOSED,   //服务端被迫关闭
+    SOCKET_SELF_CLOSED,   //服务端被迫关闭
     SOCKET_CONNECT,//socket
 }SOCKET_EVENT;
 
@@ -193,8 +193,6 @@ public:
         }
         trace("##server toString end");
     }
-    
-
 };
 
 #endif /* net_base_hpp */
