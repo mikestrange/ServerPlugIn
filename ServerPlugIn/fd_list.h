@@ -11,7 +11,6 @@
 
 #include "net.h"
 
-//class netbase
 class FdList
 {
 private:
@@ -97,13 +96,15 @@ protected:
         return false;
     }
     
-    virtual bool shut(int fd, fd_set* fdset)
+    //关闭某个客户端
+    virtual bool shut(int fd, fd_set* fdset, SCOKET_CALL perform)
     {
         for(int i = 1; i < _maxfds; i++)
         {
-            if(fd_list[i] == fd)
+            if(fd_list[i] == fd && CloseSocket(i, fdset) > 0)
             {
-                return CloseSocket(i, fdset) > 0;
+                perform(SOCKET_CLOSED, fd, NULL, NULL);
+                return true;
             }
         }
         return false;

@@ -37,11 +37,11 @@ public:
     virtual bool isRunning()const;
     //关闭端口
     virtual void closed();
-    //移除一个连接(外部调用)
-    virtual void closed(int fd);
+    //推送关闭
+    virtual void PushClose(int fd);
     
 private:
-    void clean_closeds();
+    void clean_closeds(SCOKET_CALL perform);
 };
 
 

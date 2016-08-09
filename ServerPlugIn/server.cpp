@@ -68,7 +68,7 @@ void NetServer::poll(SCOKET_CALL perform)
     {
         FD_ZERO(&readfds);
         //关闭添加的
-        clean_closeds();
+        clean_closeds(perform);
         //最大的套接字(重新设置)
         int max_fd = reset(&readfds);
         if(max_fd < serId) max_fd = serId;
@@ -138,21 +138,23 @@ void NetServer::closed()
     }
 }
 
-//并未真正删除
-void NetServer::closed(int fd)
+void NetServer::PushClose(int fd)
 {
-    AUTO_LOCK(&del_lock);
-    dels.push_back(fd);
+    if(isRunning())
+    {
+        AUTO_LOCK(&del_lock);
+        dels.push_back(fd);
+    }
 }
 
 //关闭需要被关闭的连接
-void NetServer::clean_closeds()
+void NetServer::clean_closeds(SCOKET_CALL perform)
 {
     AUTO_LOCK(&del_lock);
     std::vector<int>::iterator iter;
     for(iter = dels.begin();iter != dels.end(); ++iter)
     {
-        shut(*iter, &readfds);
+        shut(*iter, &readfds, perform);
     }
     dels.clear();
 }

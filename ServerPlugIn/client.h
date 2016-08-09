@@ -13,6 +13,10 @@
 #include "lock.h"
 #include "server.h"
 #include "world.h"
+#include "clients.h"
+
+
+class Clients;
 
 class Client : public Packet, virtual public BufferInterface
 {
@@ -30,6 +34,9 @@ public:
     void Disconnect();
     void SendPacket(const void* bytes, size_t length);
     
+private:
+    friend class Clients;
+    void UnConnect();
 public:
     //actions
 };

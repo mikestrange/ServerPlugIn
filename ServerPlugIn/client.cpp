@@ -42,7 +42,17 @@ void Client::Disconnect()
         trace("Disconnect :%d", fd);
         int _fd = fd;
         fd = 0;
-        server.closed(_fd);
+        server.PushClose(_fd);
+    }
+}
+
+void Client::UnConnect()
+{
+    AUTO_LOCK(&fd_lock);
+    if(fd > 0)
+    {
+        trace("UnConnect :%d", fd);
+        fd = 0;
     }
 }
 

@@ -80,11 +80,12 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
             powder::PushMain(Task::create(fd, &server_accept));
         }else{
             trace("Has been added or added more than the upper limit");
-            server.closed(fd);
+            server.PushClose(fd);
         }
     }else if(type == SOCKET_CLOSED){
         Client* client = clients.RemoveClient(fd);
-        if(client){
+        if(client)
+        {
             powder::PushMain(Task::create(fd, &server_close, client));
         }else{
             trace("error: Not captured to the client: %d",fd);

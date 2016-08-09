@@ -38,7 +38,7 @@ Client* Clients::RemoveClient(int fd)
     {
         auto client = iter->second;
         clientTable.erase(iter);
-        client->Disconnect();
+        client->UnConnect();
         return client;
     }
     return NULL;
@@ -51,7 +51,7 @@ void Clients::Clear()
     for(iter = clientTable.begin();iter != clientTable.end(); ++iter)
     {
         auto client = iter->second;
-        client->Disconnect();
+        client->UnConnect();
         SAFE_DELETE(client);
     }
     clientTable.clear();

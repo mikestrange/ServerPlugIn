@@ -37,7 +37,7 @@ typedef enum _SOCKET_EVENT
 {
     SOCKET_ACCEPT = 1,
     SOCKET_READ,
-    SOCKET_CLOSED,        //server close fd
+    SOCKET_CLOSED,        //被动关闭(客户端)
     SOCKET_SELF_CLOSED,   //self close
 }SOCKET_EVENT;
 
