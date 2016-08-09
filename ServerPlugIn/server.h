@@ -10,15 +10,13 @@
 #define server_h
 
 #include <vector>
-#include <map>
 
-#include "net_base.h"
-
+#include "fd_list.h"
 
 //最大处理
 #define DEF_LISTEN_COUNT 5
 
-class NetServer : public NetBase
+class NetServer : public FdList
 {
 private:
     int port;
@@ -26,6 +24,9 @@ private:
     struct sockaddr_in server_address;
 private://sets
     fd_set readfds;
+private:
+    Locked del_lock;
+    std::vector<int> dels;
 public:
     NetServer();
     //打开服务器端口
@@ -38,6 +39,9 @@ public:
     virtual void closed();
     //移除一个连接(外部调用)
     virtual void closed(int fd);
+    
+private:
+    void clean_closeds();
 };
 
 

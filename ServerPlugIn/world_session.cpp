@@ -93,5 +93,6 @@ void WorldSession::UserLogin(Client* client)
         trace("login OK: uid = %d", info.uid);
     }else{
         trace("login error: is no this uid = %d", info.uid);
+        client->Disconnect();
     }
 }

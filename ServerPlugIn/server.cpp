@@ -36,7 +36,7 @@ bool NetServer::open(int port, int maxfds)
     if(::bind(serverId, (struct sockaddr *)&server_address, sizeof(server_address)) == 0 &&
        listen(serverId, DEF_LISTEN_COUNT) == 0)
     {
-        NetBase::maxfds(maxfds);
+        FdList::maxfds(maxfds);
         serId = serverId;
         this->port = port;
         trace("open server ok port = %d serid = %d max = %d", port, serId, MAX_SERVER);
@@ -62,11 +62,13 @@ void NetServer::poll(SCOKET_CALL perform)
     char bytes[MAX_BUFFER];
     //3秒超时
     struct timeval timeout = {3, 0};
-    int maxfds = NetBase::maxfds();
+    int maxfds = FdList::maxfds();
     //轮询
     while(isRunning())
     {
         FD_ZERO(&readfds);
+        //关闭添加的
+        clean_closeds();
         //最大的套接字(重新设置)
         int max_fd = reset(&readfds);
         if(max_fd < serId) max_fd = serId;
@@ -136,11 +138,33 @@ void NetServer::closed()
     }
 }
 
+//并未真正删除
 void NetServer::closed(int fd)
 {
-    if(fd == serId){
-        trace("error: do not call this to close server");
-    }else{
-        shut(fd, &readfds);
-    }
+    AUTO_LOCK(&del_lock);
+    dels.push_back(fd);
 }
+
+//关闭需要被关闭的连接
+void NetServer::clean_closeds()
+{
+    AUTO_LOCK(&del_lock);
+    std::vector<int>::iterator iter;
+    for(iter = dels.begin();iter != dels.end(); ++iter)
+    {
+        shut(*iter, &readfds);
+    }
+    dels.clear();
+}
+
+
+
+
+
+
+
+
+
+
+
+

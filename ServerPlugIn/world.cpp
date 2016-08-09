@@ -91,6 +91,7 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
         }
     }else if(type == SOCKET_SELF_CLOSED){
         trace("服务器关闭");
+        exit(0);
     }
 }
 

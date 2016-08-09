@@ -68,7 +68,7 @@ void NetSocket::poll(SCOKET_CALL func)
             func(SOCKET_READ, sockfd, bytes, ret);
             memset(bytes, 0, ret);
         }else if(ret == 0){
-            //trace("##socket is close");
+            trace("##socket is close");
             break;
         }else{
             if (errno == EINTR || errno == EAGAIN){

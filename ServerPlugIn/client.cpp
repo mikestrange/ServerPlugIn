@@ -40,8 +40,9 @@ void Client::Disconnect()
     if(fd > 0)
     {
         trace("Disconnect :%d", fd);
-        server.closed(fd);
+        int _fd = fd;
         fd = 0;
+        server.closed(_fd);
     }
 }
 

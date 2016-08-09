@@ -9,7 +9,7 @@
 #ifndef socket_h
 #define socket_h
 
-#include "server.h"
+#include "net.h"
 
 class NetSocket
 {
