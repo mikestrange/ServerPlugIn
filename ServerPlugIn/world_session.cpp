@@ -71,12 +71,14 @@ void WorldSession::UserLogin(Client* client)
     if(!StringUtil::scope(info.password, 6, 24))
     {
         trace("login error: password length is error(6, 24)");
+        client->Disconnect();
         return;
     }
     
     if(!StringUtil::scope(info.macbind, 6, 128))
     {
         trace("login error: macbind length is error(6, 128)");
+        client->Disconnect();
         return;
     }
     

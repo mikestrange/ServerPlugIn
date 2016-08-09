@@ -176,36 +176,36 @@ void vim(const char* bytes[], int argLen)
         LoginInfo info2;
         HeadInfo header;
         
-        buffer.WriteBegin();
-        header.cmd = SERVER_USER_REG;
-        buffer.WriteObject(header);
-        info.uid = 0;
-        info.appid = 102;
-        info.name = "无名";
-        info.password = "123456";
-        info.macbind = "ABCDEFGH";
-        
-        buffer.WriteObject(info);
-        buffer.WriteEnd();
-        
-        buffer.WriteBegin();
-        header.cmd = SERVER_USER_REG;
-        buffer.WriteObject(header);
-        info.uid = 0;
-        info.appid = 102;
-        info.name = "剑神SSS";
-        info.password = "123456";
-        info.macbind = "ABCDEFGH";
-        
-        buffer.WriteObject(info);
-        buffer.WriteEnd();
+//        buffer.WriteBegin();
+//        header.cmd = SERVER_USER_REG;
+//        buffer.WriteObject(header);
+//        info.uid = 0;
+//        info.appid = 102;
+//        info.name = "无名";
+//        info.password = "123456";
+//        info.macbind = "ABCDEFGH";
+//        
+//        buffer.WriteObject(info);
+//        buffer.WriteEnd();
+//        
+//        buffer.WriteBegin();
+//        header.cmd = SERVER_USER_REG;
+//        buffer.WriteObject(header);
+//        info.uid = 0;
+//        info.appid = 102;
+//        info.name = "剑神SSS";
+//        info.password = "123456";
+//        info.macbind = "ABCDEFGH";
+//        
+//        buffer.WriteObject(info);
+//        buffer.WriteEnd();
         
         buffer.WriteBegin();
         header.cmd = SERVER_USER_LOGIN;
         buffer.WriteObject(header);
         info2.uid = 10000;
         info2.password = "123456";
-        info2.macbind = "ABCDEFGH";
+        info2.macbind = "ABCDEFGH-";
         
         buffer.WriteObject(info2);
         buffer.WriteEnd();
