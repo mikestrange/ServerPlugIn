@@ -8,18 +8,31 @@ SRCS := $(wildcard *.cpp)
 
 OBJS := $(patsubst %cpp,%o,$(SRCS))  
 
-# 宏定义  
-DEFS = -DMY_SQL
-CFLAGS += $(DEFS) 
+# 宏定义 
+DEFS := -DDEBUG
 #路径
-INC := -I/usr/include\
-	-I/usr/local/include\
-	-I/usr/local/mysql/include
-	  
+INC :=
 #链接库
-#LIBS := -pthread
-LIBS += -L./lib -lmysqlclient -lmysqld
+LIBS :=
 
+#控制
+#LINUX = ak
+
+ifdef LINUX
+DEFS += -D_MY_SQL
+INC += -I/usr/include -I/usr/local/include
+LIBS += -pthread
+$(info 'this is linux makefile')
+else
+DEFS += -DMY_SQL
+INC += -I/usr/include -I/usr/local/include -I/usr/local/mysql/include
+LIBS += -L./lib -lmysqlclient -lmysqld
+$(info 'this is mac makefile')
+endif
+
+
+#最后添加
+CFLAGS += $(DEFS) 
 
 %.o:%.cpp  
 	$(CC) $(CFLAGS) $(INC) -c $<  

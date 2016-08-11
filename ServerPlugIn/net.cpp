@@ -109,6 +109,7 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
                 if(fd <= 0) continue;
                 if(fd_list.REMOVE_FD(i, &readfds))
                 {
+                    trace("server close to fd: %d",fd);
                     //主动关闭也推送
                     perform(SOCKET_CLOSED, fd, NULL, NULL);
                 }else{
