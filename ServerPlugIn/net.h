@@ -147,6 +147,8 @@ public:
     virtual void Disconnect();
     
     virtual bool isConnect()const;
+    
+    virtual void Send(const void* bytes, size_t length);
 };
 
 #endif /* net_hpp */

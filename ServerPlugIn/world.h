@@ -28,6 +28,7 @@
 #include "time_utils.h"
 
 const int port = 8001;
+extern NetServer server;
 
 void vim(int argLen, InputArray& input);
 

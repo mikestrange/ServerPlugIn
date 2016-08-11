@@ -232,6 +232,14 @@ void NetSocket::Disconnect()
     }
 }
 
+void NetSocket::Send(const void *bytes, size_t length)
+{
+    if(isConnect())
+    {
+        NET_SEND(sockfd, bytes, length);
+    }
+}
+
 bool NetSocket::isConnect()const
 {
     return sockfd > 0;

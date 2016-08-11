@@ -12,6 +12,7 @@
 #include "logininfo.h"
 #include "reginfo.h"
 
+NetServer server;
 static Clients clients;
 static WorldSession command;
 
@@ -75,7 +76,7 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
             powder::PushMain(Task::create(fd, &server_accept));
         }else{
             trace("Has been added or added more than the upper limit");
-            
+            server.Shut(fd);
         }
     }else if(type == SOCKET_CLOSED){
         Client* client = clients.RemoveClient(fd);
@@ -100,7 +101,6 @@ static void thread_server(int type, Thread* thread)
     }else if(type == THREAD_BEGIN){
         trace("server line is running");
     }else{
-        NetServer server;
         server.Open(port);
         int code = server.PollAttemper(&server_handler);
         trace("server close: %d", code);
@@ -205,7 +205,7 @@ void vim(int argLen, InputArray& input)
         buffer.WriteEnd();
         if(sock.Connect("127.0.0.1", port))
         {
-            //UIZ::SEND(sockfd, &buffer[0], buffer.wpos());
+            sock.Send(&buffer[0], buffer.wpos());
         }
     }
 }

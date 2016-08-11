@@ -40,7 +40,7 @@ void Client::Disconnect()
     if(fd > 0)
     {
         trace("Disconnect :%d", fd);
-        int _fd = fd;
+        server.Shut(fd);
         fd = 0;
     }
 }
@@ -59,7 +59,7 @@ void Client::SendPacket(const void *bytes, size_t length)
 {
     AUTO_LOCK(&fd_lock);
     if(fd > 0){
-        //NET_SEND(fd, bytes, length);
+        NET_SEND(fd, bytes, length);
     }else{
         trace("this client is close");
     }
