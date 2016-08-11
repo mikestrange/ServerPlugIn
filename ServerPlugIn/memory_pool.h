@@ -6,9 +6,13 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef memory_pool_hpp
-#define memory_pool_hpp
+#ifndef memory_pool_h
+#define memory_pool_h
 
 #include <stdio.h>
 
-#endif /* memory_pool_hpp */
+class MemoryPool{
+    
+};
+
+#endif /* memory_pool_h */

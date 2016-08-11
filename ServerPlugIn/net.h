@@ -25,6 +25,7 @@
 
 #include "global.h"
 #include "time_utils.h"
+#include "memory_pool.h"
 
 class FdList;
 class NetServer;

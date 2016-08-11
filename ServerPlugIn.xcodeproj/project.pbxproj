@@ -32,6 +32,7 @@
 		20CC0DF51D4CA3D9006A3F91 /* lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DF31D4CA3D9006A3F91 /* lock.cpp */; };
 		20CC0DFB1D4CA470006A3F91 /* string_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DF91D4CA470006A3F91 /* string_utils.cpp */; };
 		20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */; };
+		20EF4DF61D5C7CB1008B494F /* memory_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20EF4DF41D5C7CB1008B494F /* memory_pool.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -107,6 +108,8 @@
 		20CC0DFA1D4CA470006A3F91 /* string_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_utils.h; sourceTree = "<group>"; };
 		20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_utils.cpp; sourceTree = "<group>"; };
 		20CC0E001D4CA492006A3F91 /* time_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time_utils.h; sourceTree = "<group>"; };
+		20EF4DF41D5C7CB1008B494F /* memory_pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = memory_pool.cpp; sourceTree = "<group>"; };
+		20EF4DF51D5C7CB1008B494F /* memory_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory_pool.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +299,8 @@
 			children = (
 				20CC0DB21D4C9BFD006A3F91 /* object_pool.h */,
 				20AF6F0F1D503FDC00EB26D3 /* object_pool.cpp */,
+				20EF4DF51D5C7CB1008B494F /* memory_pool.h */,
+				20EF4DF41D5C7CB1008B494F /* memory_pool.cpp */,
 			);
 			name = pool;
 			sourceTree = "<group>";
@@ -438,6 +443,7 @@
 				20C17BA11D51F383003E3C4F /* world_session.cpp in Sources */,
 				2055C3501D519F3B001B7DE3 /* Input.cpp in Sources */,
 				20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */,
+				20EF4DF61D5C7CB1008B494F /* memory_pool.cpp in Sources */,
 				20AF6F241D5062BF00EB26D3 /* client.cpp in Sources */,
 				20AF6F1B1D504A6900EB26D3 /* byte_array.cpp in Sources */,
 				20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */,
