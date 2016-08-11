@@ -105,35 +105,40 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
         }else{
             for(int i = 0; i < fd_list.maxfds(); i++)
             {
-                int fd = fd_list.ISON_FD(i, &readfds);
-                if(fd > 0)
+                int fd = fd_list.GET_FD(i);
+                if(fd <= 0) continue;
+                if(fd_list.REMOVE_FD(i, &readfds))
                 {
-                    if(fd == serverId)
+                    //主动关闭也推送
+                    perform(SOCKET_CLOSED, fd, NULL, NULL);
+                }else{
+                    if(FD_ISSET(fd, &readfds))
                     {
-                        int client_fd = accept(serverId, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
-                        if(client_fd > 0 && fd_list.NEW_FD(client_fd, &readfds, client_addr))
+                        if(fd == serverId)
                         {
-                            trace("accept client: %d", client_fd);
-                            perform(SOCKET_ACCEPT, client_fd, NULL, NULL);
+                            int client_fd = accept(serverId, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
+                            if(client_fd > 0 && fd_list.NEW_FD(client_fd, &readfds, client_addr))
+                            {
+                                trace("accept client: %d", client_fd);
+                                perform(SOCKET_ACCEPT, client_fd, NULL, NULL);
+                            }else{
+                                trace("--accept error : %d--", client_fd);
+                                NET_CLOSE(client_fd);
+                            }
                         }else{
-                            trace("--accept error : %d--", client_fd);
-                            NET_CLOSE(client_fd);
-                        }
-                    }else{
-                        int ret = NET_RECV(fd, bytes, MAX_BUFFER);
-                        if(ret > 0){
-                            trace("read fd = %d len = %d", fd, ret);
-                            perform(SOCKET_READ, fd, bytes, ret);
-                            memset(bytes, 0, ret);
-                        }else{
-                            if (errno == EINTR || errno == EAGAIN) continue;
-                            trace("错误和客户端de关闭 %d",fd);
-                            fd_list.REMOVE_FD(i, &readfds);
-                            perform(SOCKET_CLOSED, fd, NULL, NULL);
+                            int ret = NET_RECV(fd, bytes, MAX_BUFFER);
+                            if(ret > 0){
+                                trace("read fd = %d len = %d", fd, ret);
+                                perform(SOCKET_READ, fd, bytes, ret);
+                                memset(bytes, 0, ret);
+                            }else{
+                                if (errno == EINTR || errno == EAGAIN) continue;
+                                trace("error or client close: %d",fd);
+                                fd_list.CLOSED_FD(i, &readfds);
+                                perform(SOCKET_CLOSED, fd, NULL, NULL);
+                            }
                         }
                     }
-                }else{
-                    fd_list.REMOVE_FD(i, &readfds);
                 }
             }
         }
@@ -156,13 +161,23 @@ void NetServer::Shut()
 {
     if(isOpen())
     {
-        NET_CLOSE(serverId);
+        int fd = serverId;
+        serverId = 0;
+        NET_CLOSE(fd);
     }
 }
 
 void NetServer::Shut(int fd)
 {
-    fd_list.PUSH_CLOSE(fd);
+    if(isOpen())
+    {
+        fd_list.PUSH_CLOSE(fd);
+    }
+}
+
+void NetServer::toString()
+{
+    fd_list.toString();
 }
 
 //class netsocket
@@ -246,7 +261,6 @@ bool NetSocket::isConnect()const
 }
 
 //class fd list
-
 FdList::FdList()
 {
     INIT_FDS();
@@ -265,13 +279,16 @@ int FdList::maxfds()
     return MAX_CONNECTS;
 }
 
-bool FdList::NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_address)
+bool FdList::NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_addr)
 {
     for(int i = 0; i < maxfds(); i++)
     {
-        if(fd_list[i].isOn)
+        //未生成的
+        if(fd_list[i].fd <= 0)
         {
-            fd_list[i] = {fd, 1, client_address};
+            fd_list[i].fd = fd;
+            fd_list[i].isOn = 1;
+            fd_list[i].addr = client_addr;
             FD_SET(fd, fdset);
             return true;
         }
@@ -279,16 +296,24 @@ bool FdList::NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_address)
     return false;
 }
 
+//关闭已经关闭了的
 bool FdList::REMOVE_FD(int p, fd_set* fdset)
 {
-    if(fd_list[p].isOn||fd_list[p].fd <= 0) return false;
-    //关闭socket
+    if(fd_list[p].isOn == 0 && fd_list[p].fd > 0)
+    {
+        CLOSED_FD(p, fdset);
+        return true;
+    }
+    return false;
+}
+
+void FdList::CLOSED_FD(int p, fd_set* fdset)
+{
     int fd = fd_list[p].fd;
     fd_list[p].isOn = 0;
     fd_list[p].fd = -1;
     FD_CLR(fd, fdset);
     NET_CLOSE(fd);
-    return true;
 }
 
 int FdList::RESET_FDS(fd_set* fdset)
@@ -306,20 +331,15 @@ int FdList::RESET_FDS(fd_set* fdset)
     return max_fd;
 }
 
-int FdList::ISON_FD(int p, fd_set* fdset)
+int FdList::GET_FD(int p)
 {
-    int fd = fd_list[p].fd;
-    if(fd_list[p].isOn && fd > 0 && FD_ISSET(fd, fdset))
-    {
-        return fd;
-    }
-    return -1;
+    return fd_list[p].fd;
 }
 
 //关闭而已
 void FdList::PUSH_CLOSE(int fd)
 {
-    for(int i = 0; i < maxfds(); i++)
+    for(int i = 1; i < maxfds(); i++)
     {
         if(fd > 0 && fd == fd_list[i].fd)
         {

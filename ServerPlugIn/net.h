@@ -81,10 +81,11 @@ public:
     
     virtual bool REMOVE_FD(int p, fd_set* fdset);
     
+    virtual void CLOSED_FD(int p, fd_set* fdset);
+    
     virtual int RESET_FDS(fd_set* fdset);
     
-    virtual int ISON_FD(int p, fd_set* fdset);
-    
+    virtual int GET_FD(int p);
 public:
     //外界调用(推送关闭)
     virtual void PUSH_CLOSE(int fd);
@@ -121,6 +122,8 @@ public:
     virtual void Shut();
     
     virtual void Shut(int fd);
+    
+    virtual void toString();
 };
 
 

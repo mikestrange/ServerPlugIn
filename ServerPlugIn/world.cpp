@@ -46,7 +46,7 @@ static void server_read(int fd, void* args)
                 client->flush();
             }
         }catch(Error& evt){
-            //server.RemoveConnection(fd);
+            server.Shut(fd);
         }
     }else{
         trace("this client is close");
@@ -146,6 +146,63 @@ void launch_world()
 }
 
 
+static void test(int type, Thread* thread)
+{
+    if(type == THREAD_OVER)
+    {
+        SAFE_DELETE(thread);
+    }else if(type == THREAD_BEGIN){
+        
+    }else{
+        while(1){
+            NetSocket sock;
+            ByteBuffer buffer;
+            RegInfo info;
+            LoginInfo info2;
+            HeadInfo header;
+            
+            //        buffer.WriteBegin();
+            //        header.cmd = SERVER_USER_REG;
+            //        buffer.WriteObject(header);
+            //        info.uid = 0;
+            //        info.appid = 102;
+            //        info.name = "无名";
+            //        info.password = "123456";
+            //        info.macbind = "ABCDEFGH";
+            //
+            //        buffer.WriteObject(info);
+            //        buffer.WriteEnd();
+            //
+            //        buffer.WriteBegin();
+            //        header.cmd = SERVER_USER_REG;
+            //        buffer.WriteObject(header);
+            //        info.uid = 0;
+            //        info.appid = 102;
+            //        info.name = "剑神SSS";
+            //        info.password = "123456";
+            //        info.macbind = "ABCDEFGH";
+            //
+            //        buffer.WriteObject(info);
+            //        buffer.WriteEnd();
+            
+            buffer.WriteBegin();
+            header.cmd = SERVER_USER_LOGIN;
+            buffer.WriteObject(header);
+            info2.uid = 10000;
+            info2.password = "123456";
+            info2.macbind = "ABCDEFGH-";
+            
+            buffer.WriteObject(info2);
+            buffer.WriteEnd();
+            if(sock.Connect("127.0.0.1", port))
+            {
+                sock.Send(&buffer[0], buffer.wpos());
+            }
+            sleep(1);
+        }
+    }
+}
+
 //输入vim
 void vim(int argLen, InputArray& input)
 {
@@ -153,60 +210,17 @@ void vim(int argLen, InputArray& input)
     std::string str1;
     input>>str1;
     const char* byte1 = str1.c_str();
-    trace("arg1 = %s",byte1);
     if(strcmp(byte1, "exit") == 0)
     {
         exit(0);
-    }else if(strcmp(byte1, "start") == 0){
-        Thread::launch(&thread_server,"服务器线程");
+    }else if(strcmp(byte1, "start") == 0 || strcmp(byte1, "run") == 0){
+        Thread::launch(&thread_server, "服务器线程");
     }else if(strcmp(byte1, "stop") == 0){
-        
+        server.Shut();
     }else if(strcmp(byte1, "print") == 0){
-        
+        server.toString();
     }else if(strcmp(byte1, "open") == 0){
-        NetSocket sock;
-        ByteBuffer buffer;
-        RegInfo info;
-        LoginInfo info2;
-        HeadInfo header;
-        
-//        buffer.WriteBegin();
-//        header.cmd = SERVER_USER_REG;
-//        buffer.WriteObject(header);
-//        info.uid = 0;
-//        info.appid = 102;
-//        info.name = "无名";
-//        info.password = "123456";
-//        info.macbind = "ABCDEFGH";
-//        
-//        buffer.WriteObject(info);
-//        buffer.WriteEnd();
-//        
-//        buffer.WriteBegin();
-//        header.cmd = SERVER_USER_REG;
-//        buffer.WriteObject(header);
-//        info.uid = 0;
-//        info.appid = 102;
-//        info.name = "剑神SSS";
-//        info.password = "123456";
-//        info.macbind = "ABCDEFGH";
-//        
-//        buffer.WriteObject(info);
-//        buffer.WriteEnd();
-        
-        buffer.WriteBegin();
-        header.cmd = SERVER_USER_LOGIN;
-        buffer.WriteObject(header);
-        info2.uid = 10000;
-        info2.password = "123456";
-        info2.macbind = "ABCDEFGH-";
-        
-        buffer.WriteObject(info2);
-        buffer.WriteEnd();
-        if(sock.Connect("127.0.0.1", port))
-        {
-            sock.Send(&buffer[0], buffer.wpos());
-        }
+        Thread::launch(&test, "Socket线程");
     }
 }
 
