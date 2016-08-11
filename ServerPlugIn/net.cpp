@@ -8,8 +8,6 @@
 
 #include "net.h"
 
-//返回
-#include "fd_list.h"
 
 static std::map<int, int> serMap;
 static Locked serLock;
@@ -32,17 +30,6 @@ static bool CLOSE_PORT(int port)
     }
     return false;
 }
-
-//static bool IS_PORT(int port)
-//{
-//    AUTO_LOCK(&serLock);
-//    std::map<int,int>::iterator iter = serMap.find(port);
-//    if(iter != serMap.end())
-//    {
-//        return true;
-//    }
-//    return false;
-//}
 
 namespace UIZ
 {
@@ -77,8 +64,9 @@ namespace UIZ
 }
 
 
-namespace UIZ {
-    int RUN_SERVER(int port, SCOKET_CALL perform)
+namespace UIZ
+{
+    int RUN_SERVER(int port, FdList& fd_list, SCOKET_CALL perform)
     {
         //connect server
         int serverId = socket(AF_INET, SOCK_STREAM, 0);
@@ -97,7 +85,8 @@ namespace UIZ {
         }
         ADD_PORT(port, serverId);
         //list
-        FdList fd_list;
+        //FdList fd_list;
+        fd_list.CLEAN_FDS();
         //set
         fd_set readfds;
         //客户端
@@ -168,6 +157,8 @@ namespace UIZ {
                 }
             }
         };
+        //---
+        fd_list.CLEAN_FDS();
         //关闭
         STOP_SERVER(port);
         //通知

@@ -23,14 +23,16 @@
 
 #include <map>
 
+#include "fd_list.h"
 #include "global.h"
 #include "lock.h"
 #include "time_utils.h"
 
+
+class FdList;
+
 //最大listen处理
 #define DEF_LISTEN_COUNT 5
-//服务器最大连接数目
-#define MAX_CONNECTS 1024
 //最大读取缓冲
 #define MAX_BUFFER 1024
 
@@ -59,7 +61,7 @@ namespace UIZ
 //服务器
 namespace UIZ
 {
-    int RUN_SERVER(int port, SCOKET_CALL perform);
+    int RUN_SERVER(int port, FdList& fd_list, SCOKET_CALL perform);
     
     int STOP_SERVER(int port);
 }

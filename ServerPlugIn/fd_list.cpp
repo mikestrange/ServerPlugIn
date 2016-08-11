@@ -35,13 +35,13 @@ bool FdList::NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_address)
 
 bool FdList::REMOVE_FD(int p, fd_set* fdset)
 {
-    if(fd_list[p].isOn||fd_list[p].fd < 0) return false;
+    if(fd_list[p].isOn||fd_list[p].fd <= 0) return false;
     //关闭socket
     int fd = fd_list[p].fd;
     fd_list[p].isOn = 0;
     fd_list[p].fd = -1;
     FD_CLR(fd, fdset);
-net:close(fd);
+    UIZ::CLOSE(fd);
     return true;
 }
 
@@ -71,7 +71,7 @@ int FdList::ISON_FD(int p, fd_set* fdset)
 }
 
 //关闭而已
-void FdList::SET_CLOSE(int fd)
+void FdList::PUSH_CLOSE(int fd)
 {
     for(int i = 0; i < maxfds(); i++)
     {
@@ -80,6 +80,15 @@ void FdList::SET_CLOSE(int fd)
             fd_list[i].isOn = 0;
             break;
         }
+    }
+}
+
+void FdList::CLEAN_FDS()
+{
+    for(int i = 0; i < MAX_CONNECTS; i++)
+    {
+        fd_list[i].isOn = 0;
+        fd_list[i].fd = -1;
     }
 }
 

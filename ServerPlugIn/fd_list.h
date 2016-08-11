@@ -11,26 +11,27 @@
 
 #include "net.h"
 
+//服务器最大连接数目
+#define MAX_CONNECTS 1024
+
 typedef struct comefd
 {
     int fd;
-    int isOn;
+    int isOn;//状态，不代表存在
     struct sockaddr_in addr;
 }comefd;
-
 
 class FdList
 {
 private:
     comefd fd_list[MAX_CONNECTS];
-    
 public:
     FdList();
-    
 private:
     void INIT_FDS();
-    
 public:
+    virtual void CLEAN_FDS();
+    
     virtual int maxfds();
     
     virtual bool NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_address);
@@ -41,8 +42,9 @@ public:
     
     virtual int ISON_FD(int p, fd_set* fdset);
     
-    //关闭而已
-    virtual void SET_CLOSE(int fd);
+public:
+    //外界调用(推送关闭)
+    virtual void PUSH_CLOSE(int fd);
     
     virtual void toString();
 };

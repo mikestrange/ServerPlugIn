@@ -100,7 +100,8 @@ static void thread_server(int type, Thread* thread)
     }else if(type == THREAD_BEGIN){
         trace("server line is running");
     }else{
-        int code = UIZ::RUN_SERVER(port, &server_handler);
+        FdList fdlist;
+        int code = UIZ::RUN_SERVER(port, fdlist, &server_handler);
         trace("server close: %d", code);
     }
 }
