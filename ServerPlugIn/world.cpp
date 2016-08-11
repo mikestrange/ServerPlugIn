@@ -75,18 +75,24 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
         {
             powder::PushMain(Task::create(fd, &server_accept));
         }else{
-            trace("Has been added or added more than the upper limit");
+            trace("未删除的客户端: %d",fd);
             server.Shut(fd);
         }
     }else if(type == SOCKET_CLOSED){
         Client* client = clients.RemoveClient(fd);
         if(client)
         {
-            powder::PushMain(Task::create(fd, &server_close, client));
+            //异步删除指针
+            powder::PushMain(Task::create(0, &server_close, client));
         }else{
-            trace("error: Not captured to the client: %d",fd);
+            trace("不存在的客户端: %d",fd);
         }
     }else if(type == SOCKET_SELF_CLOSED){
+        //异步删除指针
+        clients.Clear(block(Client* client)
+        {
+            powder::PushMain(Task::create(0, &server_close, client));
+        });
         trace("服务器关闭");
         exit(0);
     }

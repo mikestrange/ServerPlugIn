@@ -17,6 +17,8 @@
 
 class Client;
 
+typedef void(*CLIENT_CALL)(Client* client);
+
 class Clients
 {
 private:
@@ -30,7 +32,7 @@ public:
     
     Client* RemoveClient(int fd);
     
-    void Clear();
+    void Clear(CLIENT_CALL func);
 };
 
 #endif /* clients_hpp */

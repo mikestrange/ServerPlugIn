@@ -44,7 +44,7 @@ Client* Clients::RemoveClient(int fd)
     return NULL;
 }
 
-void Clients::Clear()
+void Clients::Clear(CLIENT_CALL func)
 {
     AUTO_LOCK(&lock);
     std::map<int, Client*>::iterator iter;
@@ -52,7 +52,7 @@ void Clients::Clear()
     {
         auto client = iter->second;
         client->UnConnect();
-        SAFE_DELETE(client);
+        func(client);
     }
     clientTable.clear();
 }
