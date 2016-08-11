@@ -12,8 +12,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <sys/time.h>
-
 #include <algorithm>
+
 #include "time_loop.h"
 #include "time_utils.h"
 

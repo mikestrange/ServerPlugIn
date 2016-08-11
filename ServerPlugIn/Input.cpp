@@ -13,6 +13,52 @@
 
 static INPUT_CALL method;
 static bool is_init = false;
+static InputArray putin;
+
+InputArray::InputArray()
+{
+    
+}
+
+InputArray::~InputArray()
+{
+    
+}
+
+int InputArray::setInput(const char *buf)
+{
+    clear();
+    //
+    int sub_len = 0;
+    int prev_pos = 0;
+    int length = (int)strlen(buf);
+    int argLen;
+    for(int i = 0; i < length; i++)
+    {
+        if(memcmp(&buf[i], ",", 1) == 0)
+        {
+            char byte[sub_len + 1];
+            memcpy(byte, &buf[prev_pos], sub_len);
+            byte[sub_len] = '\0';
+            WriteChars(byte, sub_len + 1);
+            argLen++;
+            prev_pos = i + 1;
+            sub_len = 0;
+        }else{
+            sub_len++;
+        }
+        //末尾
+        if(i == length - 1 && sub_len > 0)
+        {
+            char byte[sub_len + 1];
+            memcpy(byte, &buf[prev_pos], sub_len);
+            byte[sub_len] = '\0';
+            WriteChars(byte, sub_len + 1);
+            argLen++;
+        }
+    }
+    return argLen;
+}
 
 static void thread_complete(int type, Thread* thread)
 {
@@ -24,43 +70,11 @@ static void thread_complete(int type, Thread* thread)
         trace("input line is running");
     }else{
         std::string str;
-        //最多10个参数
-        const char *bytes[32] = {};
         while(std::cin>>str)
         {
-            int sub_len = 0;
-            int prev_pos = 0;
-            int length = (int)str.length();
-            int argLen = 0;
-            for(int i = 0; i < length; i++)
-            {
-                if(memcmp(&str[i], ",", 1) == 0)
-                {
-                    std::string byte = str.substr(prev_pos, sub_len);
-                    char* dos = (char*)malloc(sub_len);
-                    memcpy(dos, byte.c_str(), sub_len);
-                    bytes[argLen++] = dos;
-                    //
-                    prev_pos = i + 1;
-                    sub_len = 0;
-                }else{
-                    sub_len++;
-                }
-                if(i == length - 1 && sub_len > 0)
-                {
-                    std::string byte = str.substr(prev_pos, sub_len);
-                    char* dos = (char*)malloc(sub_len);
-                    memcpy(dos, byte.c_str(), sub_len);
-                    bytes[argLen++] = dos;
-                }
-            }
+            int argLen = putin.setInput(str.c_str());
             trace("##input = %s", str.c_str());
-            if(method) method(bytes, argLen);
-            for(int i = 0; i < argLen; i++)
-            {
-                bytes[i] = {0};
-                delete bytes[i];
-            }
+            if(method) method(argLen, putin);
             str.clear();
         };
     }
@@ -72,6 +86,6 @@ void setInputMethod(INPUT_CALL func)
     if(!is_init)
     {
         is_init = true;
-        Thread::launch(&thread_complete,"Input");
+        Thread::launch(&thread_complete, "Input");
     }
 }

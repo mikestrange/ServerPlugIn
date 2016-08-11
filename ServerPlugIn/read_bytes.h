@@ -97,6 +97,7 @@ public:
     {
         str.clear();
         int32 len = read<int32>();
+        trace("str len %d",len);
         //
         for(int i = 0; i < len; i++)
         {

@@ -24,16 +24,15 @@
 		20B95E6B1D4E0D5300777589 /* time_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B95E691D4E0D5300777589 /* time_loop.cpp */; };
 		20B95E721D4E3FF600777589 /* task_scheduler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B95E701D4E3FF600777589 /* task_scheduler.cpp */; };
 		20C17BA11D51F383003E3C4F /* world_session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20C17B9F1D51F383003E3C4F /* world_session.cpp */; };
-		20CC0DA61D4C9B11006A3F91 /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DA41D4C9B11006A3F91 /* server.cpp */; };
 		20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DA71D4C9B1E006A3F91 /* thread.cpp */; };
 		20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DAA1D4C9B2C006A3F91 /* task_loop.cpp */; };
-		20CC0DBA1D4C9C5A006A3F91 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DB81D4C9C5A006A3F91 /* socket.cpp */; };
 		20CC0DD01D4C9FFA006A3F91 /* PowEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DCE1D4C9FFA006A3F91 /* PowEngine.cpp */; };
 		20CC0DE21D4CA19C006A3F91 /* log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DE01D4CA19C006A3F91 /* log.cpp */; };
 		20CC0DEC1D4CA274006A3F91 /* bridge_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DEA1D4CA274006A3F91 /* bridge_base.cpp */; };
 		20CC0DF51D4CA3D9006A3F91 /* lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DF31D4CA3D9006A3F91 /* lock.cpp */; };
 		20CC0DFB1D4CA470006A3F91 /* string_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DF91D4CA470006A3F91 /* string_utils.cpp */; };
 		20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */; };
+		20EF4DF11D5C5EBA008B494F /* fd_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20EF4DF01D5C5EBA008B494F /* fd_list.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -91,15 +90,11 @@
 		20C17B9D1D51F272003E3C4F /* IReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IReader.h; sourceTree = "<group>"; };
 		20C17B9F1D51F383003E3C4F /* world_session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = world_session.cpp; sourceTree = "<group>"; };
 		20C17BA01D51F383003E3C4F /* world_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = world_session.h; sourceTree = "<group>"; };
-		20CC0DA41D4C9B11006A3F91 /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
-		20CC0DA51D4C9B11006A3F91 /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
 		20CC0DA71D4C9B1E006A3F91 /* thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread.cpp; sourceTree = "<group>"; };
 		20CC0DA81D4C9B1E006A3F91 /* thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread.h; sourceTree = "<group>"; };
 		20CC0DAA1D4C9B2C006A3F91 /* task_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = task_loop.cpp; sourceTree = "<group>"; };
 		20CC0DAB1D4C9B2C006A3F91 /* task_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_loop.h; sourceTree = "<group>"; };
 		20CC0DB21D4C9BFD006A3F91 /* object_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = object_pool.h; sourceTree = "<group>"; };
-		20CC0DB81D4C9C5A006A3F91 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socket.cpp; sourceTree = "<group>"; };
-		20CC0DB91D4C9C5A006A3F91 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
 		20CC0DCE1D4C9FFA006A3F91 /* PowEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowEngine.cpp; sourceTree = "<group>"; };
 		20CC0DCF1D4C9FFA006A3F91 /* PowEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowEngine.h; sourceTree = "<group>"; };
 		20CC0DE01D4CA19C006A3F91 /* log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = log.cpp; sourceTree = "<group>"; };
@@ -114,6 +109,7 @@
 		20CC0DFA1D4CA470006A3F91 /* string_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_utils.h; sourceTree = "<group>"; };
 		20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_utils.cpp; sourceTree = "<group>"; };
 		20CC0E001D4CA492006A3F91 /* time_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time_utils.h; sourceTree = "<group>"; };
+		20EF4DF01D5C5EBA008B494F /* fd_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fd_list.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,11 +290,8 @@
 			children = (
 				208A9CD11D59DEB5008214D0 /* net.h */,
 				208A9CD01D59DEB5008214D0 /* net.cpp */,
-				20CC0DA51D4C9B11006A3F91 /* server.h */,
-				20CC0DA41D4C9B11006A3F91 /* server.cpp */,
-				20CC0DB91D4C9C5A006A3F91 /* socket.h */,
-				20CC0DB81D4C9C5A006A3F91 /* socket.cpp */,
 				2025C75A1D542F0600A78EA6 /* fd_list.h */,
+				20EF4DF01D5C5EBA008B494F /* fd_list.cpp */,
 			);
 			name = net;
 			sourceTree = "<group>";
@@ -433,7 +426,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				20B95E721D4E3FF600777589 /* task_scheduler.cpp in Sources */,
-				20CC0DA61D4C9B11006A3F91 /* server.cpp in Sources */,
 				20B95E681D4E0D4B00777589 /* timer.cpp in Sources */,
 				20351A6C1D533CFD004F8B0D /* data_bank.cpp in Sources */,
 				20CC0DFB1D4CA470006A3F91 /* string_utils.cpp in Sources */,
@@ -442,6 +434,7 @@
 				20B95E6B1D4E0D5300777589 /* time_loop.cpp in Sources */,
 				20CC0DF51D4CA3D9006A3F91 /* lock.cpp in Sources */,
 				208A9CD21D59DEB5008214D0 /* net.cpp in Sources */,
+				20EF4DF11D5C5EBA008B494F /* fd_list.cpp in Sources */,
 				20CC0DD01D4C9FFA006A3F91 /* PowEngine.cpp in Sources */,
 				20CC0DEC1D4CA274006A3F91 /* bridge_base.cpp in Sources */,
 				208CE4DC1D465216007465A0 /* main.cpp in Sources */,
@@ -452,7 +445,6 @@
 				2055C3501D519F3B001B7DE3 /* Input.cpp in Sources */,
 				20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */,
 				20AF6F241D5062BF00EB26D3 /* client.cpp in Sources */,
-				20CC0DBA1D4C9C5A006A3F91 /* socket.cpp in Sources */,
 				20AF6F1B1D504A6900EB26D3 /* byte_array.cpp in Sources */,
 				20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */,
 				20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */,
@@ -545,6 +537,7 @@
 		208CE4E01D465216007465A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = MY_SQL;
 				HEADER_SEARCH_PATHS = (
 					/usr/include,
 					/usr/local/include,
@@ -566,6 +559,7 @@
 		208CE4E11D465216007465A0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = MY_SQL;
 				HEADER_SEARCH_PATHS = (
 					/usr/include,
 					/usr/local/include,

@@ -11,7 +11,6 @@
 
 #include "packet.h"
 #include "lock.h"
-#include "server.h"
 #include "world.h"
 #include "clients.h"
 

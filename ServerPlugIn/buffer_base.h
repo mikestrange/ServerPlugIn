@@ -57,7 +57,7 @@ protected:
     }
     
     //appends
-protected:
+public:
     BufferInterface& append(const std::string& str)
     {
         return append((uint8 const*)str.c_str(), str.size() + 1);
@@ -115,7 +115,7 @@ protected:
     }
     
     //reads
-protected:
+public:
     template <typename T> T read()
     {
         T r = read<T>(_rpos);

@@ -10,10 +10,24 @@
 #define Input_h
 
 #include <iostream>
+
+#include "byte_buffer.h"
 #include "thread.h"
 #include "global.h"
 
-typedef void(*INPUT_CALL)(const char* bytes[],int argLen);
+class InputArray;
+
+typedef void(*INPUT_CALL)(int argLen, InputArray &input);
+
+
+class InputArray : public ByteBuffer
+{
+public:
+    InputArray();
+    virtual ~InputArray();
+    
+    int setInput(const char* buf);
+};
 
 void setInputMethod(INPUT_CALL func);
 

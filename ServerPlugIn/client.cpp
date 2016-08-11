@@ -42,7 +42,6 @@ void Client::Disconnect()
         trace("Disconnect :%d", fd);
         int _fd = fd;
         fd = 0;
-        server.PushClose(_fd);
     }
 }
 
@@ -60,7 +59,7 @@ void Client::SendPacket(const void *bytes, size_t length)
 {
     AUTO_LOCK(&fd_lock);
     if(fd > 0){
-        net::send_fd(fd, bytes, length);
+        UIZ::SEND(fd, bytes, length);
     }else{
         trace("this client is close");
     }

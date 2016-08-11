@@ -6,148 +6,45 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef net_base_h
-#define net_base_h
+#ifndef fd_list_h
+#define fd_list_h
 
 #include "net.h"
+
+typedef struct comefd
+{
+    int fd;
+    int isOn;
+    struct sockaddr_in addr;
+}comefd;
+
 
 class FdList
 {
 private:
-    int _maxfds;
-private:
-    int fd_list[MAX_SERVER];
+    comefd fd_list[MAX_CONNECTS];
     
 public:
-    FdList()
-    :_maxfds(0)
-    {
-        init_fds();
-    }
-    
-protected:
-    virtual void maxfds(int max)
-    {
-        _maxfds = max;
-        if(_maxfds < 0) _maxfds = 1; //不能少于1
-        if(_maxfds > MAX_SERVER) _maxfds = MAX_SERVER;
-    }
-    
-    virtual int maxfds()
-    {
-        return _maxfds;
-    }
-    
-protected:
-    virtual void init_fds()
-    {
-        for(int i = 0; i < MAX_SERVER; i++)
-        {
-            fd_list[i] = 0;
-        }
-    }
-    
-    //添加一个套接字
-    virtual bool add(int fd)
-    {
-        for(int i = 0; i < _maxfds; i++)
-        {
-            if(fd_list[i] == 0)
-            {
-                fd_list[i] = fd;
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    //置空一个套接字 fd>0表示成功
-    virtual int remove(int floor, fd_set* fdset)
-    {
-        return CloseSocket(floor, fdset);
-    }
-    
-    virtual int reset(fd_set* fdset)
-    {
-        int max_fd = 0;
-        for(int i = 0; i < _maxfds; i++)
-        {
-            int fd = fd_list[i];
-            if(fd != 0)
-            {
-                FD_SET(fd, fdset);
-                if(max_fd < fd) max_fd = fd;
-            }
-        }
-        return max_fd;
-    }
-    
-    virtual int isset(int floor, fd_set* fdset)
-    {
-        int fd = fd_list[floor];
-        if(fd != 0)
-        {
-            if(FD_ISSET(fd, fdset))
-            {
-                return fd;
-            }
-            return 0;
-        }
-        return false;
-    }
-    
-    //关闭某个客户端
-    virtual bool shut(int fd, fd_set* fdset, SCOKET_CALL perform)
-    {
-        for(int i = 1; i < _maxfds; i++)
-        {
-            if(fd_list[i] == fd && CloseSocket(i, fdset) > 0)
-            {
-                perform(SOCKET_CLOSED, fd, NULL, NULL);
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    virtual void clean(fd_set* fdset, SCOKET_CALL func)
-    {
-        for(int i = 0; i < _maxfds; i++)
-        {
-            int fd = remove(i, fdset);
-            if(fd > 0 && i > 0)
-            {
-                func(SOCKET_CLOSED, fd, NULL, NULL);
-            }
-        }
-    }
+    FdList();
     
 private:
-    virtual int CloseSocket(int floor, fd_set* fdset)
-    {
-        int fd = fd_list[floor];
-        if(fd != 0)
-        {
-            fd_list[floor] = 0;
-            FD_CLR(fd, fdset);
-            net::close_fd(fd);
-        }
-        return fd;
-    }
+    void INIT_FDS();
     
 public:
-    virtual void toString()
-    {
-        trace("##server toString begin:");
-        for(int i = 0; i < _maxfds; i++)
-        {
-            if(fd_list[i] != 0)
-            {
-                trace("on line fd = %d", fd_list[i]);
-            }
-        }
-        trace("##server toString end");
-    }
+    virtual int maxfds();
+    
+    virtual bool NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_address);
+    
+    virtual bool REMOVE_FD(int p, fd_set* fdset);
+    
+    virtual int RESET_FDS(fd_set* fdset);
+    
+    virtual int ISON_FD(int p, fd_set* fdset);
+    
+    //关闭而已
+    virtual void SET_CLOSE(int fd);
+    
+    virtual void toString();
 };
 
 #endif /* net_base_hpp */

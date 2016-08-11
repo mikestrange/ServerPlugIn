@@ -48,6 +48,10 @@ public:
         return mark;
     }
     
+    ByteBuffer& self()
+    {
+        return *this;
+    }
 };
 
 #endif /* byte_buffer_h */

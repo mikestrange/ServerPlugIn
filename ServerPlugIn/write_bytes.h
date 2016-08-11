@@ -108,6 +108,15 @@ public:
         return *this;
     }
     
+    void WriteChars(const char* bytes, size_t len)
+    {
+        append<int32>((int32)len);
+        if(len > 0)
+        {
+            append(bytes, len);
+        }
+    }
+    
     //w pos
     virtual size_t wpos()const
     {

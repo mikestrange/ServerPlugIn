@@ -21,11 +21,16 @@
 #include <fcntl.h>
 #include <err.h>
 
-#include "lock.h"
-#include "global.h"
+#include <map>
 
+#include "global.h"
+#include "lock.h"
+#include "time_utils.h"
+
+//最大listen处理
+#define DEF_LISTEN_COUNT 5
 //服务器最大连接数目
-#define MAX_SERVER 1024
+#define MAX_CONNECTS 1024
 //最大读取缓冲
 #define MAX_BUFFER 1024
 
@@ -41,13 +46,30 @@ typedef enum _SOCKET_EVENT
     SOCKET_SELF_CLOSED,   //self close
 }SOCKET_EVENT;
 
-namespace net
+//公用
+namespace UIZ
 {
-    bool close_fd(int fd);
+    bool CLOSE(int fd);
     
-    int recv_fd(int fd, void* bytes, size_t len);
+    int RECV(int fd, void* bytes, size_t len);
     
-    bool send_fd(int fd, const void* bytes, size_t len);
+    bool SEND(int fd, const void* bytes, size_t len);
+}
+
+//服务器
+namespace UIZ
+{
+    int RUN_SERVER(int port, SCOKET_CALL perform);
+    
+    int STOP_SERVER(int port);
+}
+
+//客户端
+namespace UIZ
+{
+    int SOCKET_CONNECT(const char* host, int port);
+    
+    int POLL_SOCKET(int sockfd, SCOKET_CALL perform);
 }
 
 #endif /* net_hpp */

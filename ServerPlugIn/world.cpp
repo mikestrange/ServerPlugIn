@@ -12,13 +12,8 @@
 #include "logininfo.h"
 #include "reginfo.h"
 
-static NetSocket sock;
 static Clients clients;
 static WorldSession command;
-//
-NetServer server;
-
-
 
 
 static void server_accept(int fd, void* args)
@@ -80,7 +75,7 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
             powder::PushMain(Task::create(fd, &server_accept));
         }else{
             trace("Has been added or added more than the upper limit");
-            server.PushClose(fd);
+            
         }
     }else if(type == SOCKET_CLOSED){
         Client* client = clients.RemoveClient(fd);
@@ -105,10 +100,8 @@ static void thread_server(int type, Thread* thread)
     }else if(type == THREAD_BEGIN){
         trace("server line is running");
     }else{
-        if(server.open(port))
-        {
-            server.poll(&server_handler);
-        }
+        int code = UIZ::RUN_SERVER(port, &server_handler);
+        trace("server close: %d", code);
     }
 }
 
@@ -150,27 +143,24 @@ void launch_world()
 //    query.match("name", "人才");
 }
 
+
 //输入vim
-void vim(const char* bytes[], int argLen)
+void vim(int argLen, InputArray& input)
 {
-    for(int k = 0; k < argLen; k++)
-    {
-        trace("input arg%d = %s", k, bytes[k]);
-    }
-    const char* byte1 = bytes[0];
+    if(argLen == 0) return;
+    std::string str1;
+    input>>str1;
+    const char* byte1 = str1.c_str();
+    trace("arg1 = %s",byte1);
     if(strcmp(byte1, "exit") == 0)
     {
         exit(0);
     }else if(strcmp(byte1, "start") == 0){
-        if(!server.isRunning()){
-            Thread::launch(&thread_server,"服务器线程");
-        }else{
-            trace("is start");
-        }
+        Thread::launch(&thread_server,"服务器线程");
     }else if(strcmp(byte1, "stop") == 0){
-        server.closed();
+        UIZ::STOP_SERVER(port);
     }else if(strcmp(byte1, "print") == 0){
-        server.toString();
+        
     }else if(strcmp(byte1, "open") == 0){
         //NetSocket sock;
         ByteBuffer buffer;
@@ -212,14 +202,12 @@ void vim(const char* bytes[], int argLen)
         buffer.WriteObject(info2);
         buffer.WriteEnd();
         
-        if(sock.connect("127.0.0.1", port))
-        {
-            sock.SendPacket(&buffer[0], buffer.wpos());
-        }
+//        if(sock.connect("127.0.0.1", port))
+//        {
+//            sock.SendPacket(&buffer[0], buffer.wpos());
+//        }
     }
 }
-
-
 
 
 
