@@ -100,8 +100,9 @@ static void thread_server(int type, Thread* thread)
     }else if(type == THREAD_BEGIN){
         trace("server line is running");
     }else{
-        FdList fdlist;
-        int code = UIZ::RUN_SERVER(port, fdlist, &server_handler);
+        NetServer server;
+        server.Open(port);
+        int code = server.PollAttemper(&server_handler);
         trace("server close: %d", code);
     }
 }
@@ -159,11 +160,11 @@ void vim(int argLen, InputArray& input)
     }else if(strcmp(byte1, "start") == 0){
         Thread::launch(&thread_server,"服务器线程");
     }else if(strcmp(byte1, "stop") == 0){
-        UIZ::STOP_SERVER(port);
+        
     }else if(strcmp(byte1, "print") == 0){
         
     }else if(strcmp(byte1, "open") == 0){
-        //NetSocket sock;
+        NetSocket sock;
         ByteBuffer buffer;
         RegInfo info;
         LoginInfo info2;
@@ -202,11 +203,10 @@ void vim(int argLen, InputArray& input)
         
         buffer.WriteObject(info2);
         buffer.WriteEnd();
-        
-//        if(sock.connect("127.0.0.1", port))
-//        {
-//            sock.SendPacket(&buffer[0], buffer.wpos());
-//        }
+        if(sock.Connect("127.0.0.1", port))
+        {
+            //UIZ::SEND(sockfd, &buffer[0], buffer.wpos());
+        }
     }
 }
 

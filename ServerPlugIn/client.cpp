@@ -59,7 +59,7 @@ void Client::SendPacket(const void *bytes, size_t length)
 {
     AUTO_LOCK(&fd_lock);
     if(fd > 0){
-        UIZ::SEND(fd, bytes, length);
+        //NET_SEND(fd, bytes, length);
     }else{
         trace("this client is close");
     }
