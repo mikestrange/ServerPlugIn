@@ -9,9 +9,9 @@
 #include "task_loop.h"
 
 TaskLoop::TaskLoop(THREAD_PROXY_FUNC func)
-{
-    method = func;
-}
+:Thread(func)
+{}
+
 
 TaskLoop::~TaskLoop()
 {

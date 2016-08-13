@@ -9,51 +9,50 @@
 #include "thread.h"
 
 Thread::Thread()
-:is_start(false)
+:pid_t(0)
+,is_awake(true)
 ,is_change(false)
-,is_run(false)
+,is_run(true)
 ,method(NULL)
 {
     pthread_cond_init(&cond_t, 0);
 }
 
-Thread::Thread(THREAD_PROXY_FUNC func, bool isrun, const char* name)
-:is_start(false)
+Thread::Thread(THREAD_PROXY_FUNC func)
+:pid_t(0)
+,is_awake(true)
 ,is_change(false)
-,is_run(false)
-,name(name)
+,is_run(true)
 ,method(func)
 {
     pthread_cond_init(&cond_t, 0);
-    if(isrun) start();
 }
 
 Thread::~Thread()
 {
     pthread_cond_destroy(&cond_t);
-    //kill();
+    kill();
     trace("~Thread Release: %s", name.c_str());
 }
 
 bool Thread::start()
 {
-    if(is_start) return false;
-    //create thread
-    int code = pthread_create(&pid_t, 0, &Thread::ThreadHandle, this);
-    if(code == 0)
-    {
-        is_start = true;
-        return true;
+    if(pid_t > 0){
+        trace("please kill first");
+        return false;
     }
-    return false;
+    int code = pthread_create(&pid_t, 0, &Thread::ThreadHandle, this);
+    if(code != 0)
+    {
+        trace("run thread error");
+    }
+    //create thread
+    return code == 0;
 }
 
 void Thread::join()
 {
-    if(is_start)
-    {
-        pthread_join(pid_t, 0);
-    }
+    pthread_join(pid_t, 0);
 }
 
 void Thread::stop()
@@ -70,13 +69,10 @@ bool Thread::isRunning()const
 
 void Thread::kill()
 {
-    int kill_ret = pthread_kill(pid_t, 0);
-    if(kill_ret == ESRCH){
-        trace("kill is no thread:%s", name.c_str());
-    }else if(kill_ret == EINVAL){
-        trace("kill is no user sign:%s", name.c_str());
-    }else {
-        trace("kill ok:%s", name.c_str());
+    if(pid_t > 0){
+        int ret = pthread_cancel(pid_t);
+        pid_t = 0;
+        trace("cance thread:%d", ret);
     }
 }
 
@@ -84,10 +80,11 @@ void Thread::resume()
 {
     //错误也能返回
     AUTO_LOCK(&lock);
-    if(!is_change)
+    is_change = true;
+    if(is_awake == false)
     {
-        //is_change = true;
-        if(name.length() > 0)  trace("start resume thread: %s", name.c_str());
+        is_awake = true;
+        //if(name.length() > 0)  trace("start resume thread: %s", name.c_str());
         pthread_cond_signal(&cond_t);
     }
 }
@@ -95,57 +92,39 @@ void Thread::resume()
 void Thread::wait(struct timespec* time)
 {
     AUTO_LOCK(&lock);
-    if(is_change)
+    if(is_awake)
     {
-        is_change = false;
-        if(name.length() > 0) trace("start wait thread: %s", name.c_str());
-        if(time){
-            pthread_cond_timedwait(&cond_t, lock.getLocked(), time);
+        if(is_change)
+        {
+            is_change = false;
         }else{
-            pthread_cond_wait(&cond_t, lock.getLocked());
+            is_awake = false;
+            //if(name.length() > 0) trace("start wait thread: %s", name.c_str());
+            if(time){
+                pthread_cond_timedwait(&cond_t, lock.getLocked(), time);
+            }else{
+                pthread_cond_wait(&cond_t, lock.getLocked());
+            }
+            is_awake = true;
         }
-        is_change = true;
     }
 }
-
-//private
-void Thread::begin()
-{
-    is_start = true;
-    is_change = false;
-    is_run = true;
-    perform(THREAD_BEGIN);
-}
-
-void Thread::over()
-{
-    is_start = false;
-    is_change = false;
-    is_run = false;
-    perform(THREAD_OVER);
-}
-
 
 //protected
-void Thread::perform(int type)
+void Thread::perform()
 {
-    if(method)
-    {
-        method(type, this);
-    }
+    if(method) method(this);
 }
 
 void Thread::run()
 {
-    perform(THREAD_RUN);
+    perform();
 }
 
 //private static
 void* Thread::ThreadHandle(void *target)
 {
     Thread *thread = (Thread*)target;
-    thread->begin();
     thread->run();
-    thread->over();
     return 0;
 }

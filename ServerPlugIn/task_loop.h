@@ -20,11 +20,14 @@ class TaskLoop : public Thread
 {
 private:
     std::list<Task*> tasks;
+protected:
     Locked lock;
     
 public:
     TaskLoop(){};
     TaskLoop(THREAD_PROXY_FUNC func);
+    
+public:
     virtual ~TaskLoop();
     
 public:

@@ -8,12 +8,12 @@
 
 #include "world.h"
 
-
 #include "logininfo.h"
 #include "reginfo.h"
 
 NetServer server;
-static Clients clients;
+Clients clients;
+//---所有消息
 static WorldSession command;
 
 
@@ -69,11 +69,11 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
         }
         byte->copy(bytes, length);
         //read handler
-        powder::PushMain(Task::create(fd, &server_read, byte));
+        powder::RunMain(Task::create(fd, &server_read, byte));
     }else if(type == SOCKET_ACCEPT){
         if(clients.AddClient(fd))
         {
-            powder::PushMain(Task::create(fd, &server_accept));
+            powder::RunMain(Task::create(fd, &server_accept));
         }else{
             trace("未删除的客户端: %d",fd);
             server.Shut(fd);
@@ -83,7 +83,7 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
         if(client)
         {
             //异步删除指针
-            powder::PushMain(Task::create(0, &server_close, client));
+            powder::RunMain(Task::create(0, &server_close, client));
         }else{
             trace("不存在的客户端: %d",fd);
         }
@@ -91,122 +91,95 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
         //异步删除指针
         clients.Clear(block(Client* client)
         {
-            powder::PushMain(Task::create(0, &server_close, client));
+            powder::RunMain(Task::create(0, &server_close, client));
         });
         trace("服务器关闭");
         exit(0);
     }
 }
 
-static void thread_server(int type, Thread* thread)
+static void thread_server(Thread* thread)
 {
-    if(type == THREAD_OVER)
-    {
-        trace("server line close");
-        SAFE_DELETE(thread);
-    }else if(type == THREAD_BEGIN){
-        trace("server line is running");
-    }else{
-        server.Open(port);
+    if(server.Open(port)){
         int code = server.PollAttemper(&server_handler);
         trace("server close: %d", code);
-    }
+    };
 }
 
 
-//static Timer time_er;
-//
-//class TestDelegate : public TimeDelegate
-//{
-//public:
-//    ~TestDelegate(){
-//        trace("TestDelegate");
-//    }
-//public:
-//    void perform(int type)override
-//    {
-//        time_er.start();
-//    }
-//    
-//    void perform2(int type,int type2,int type3)
-//    {
-//        trace("%d %d %d",type,type2,type3);
-//    }
-//};
-//time_er.setDelegate(new TestDelegate);
-//time_er.setDelay(0);
-//time_er.start();
+static void timer_call(int type, void* args);
+
+static Timer* const timer = Timer::create(2, &timer_call);
+
+static void timer_call(int type, void* args)
+{
+    
+    trace("时间 %d",getpid());
+    timer->Start();
+}
+
+static void MainRunning(int type, void* args)
+{
+    timer->Start();
+    trace("时间 %d",getpid());
+}
 
 //---
 void launch_world()
 {
-    setInputMethod(&vim);
-    
-//数据库测试(连接和查找比较耗时)
-//    DataBank bank;
-//    bank.test_connent();
-//    DataQuery query;
-//    bank.find(query, "select * from user_info.player where name ='人才'");
-//    query.toString();
-//    query.match("name", "人才");
+    powder::RunMain(&MainRunning);
+    //输入
+    setInputMethodAttemper(&vim);
+    //
 }
 
 
-static void test(int type, Thread* thread)
+static void test(Thread* thread)
 {
-    if(type == THREAD_OVER)
+    NetSocket sock;
+    ByteBuffer buffer;
+    RegInfo info;
+    LoginInfo info2;
+    HeadInfo header;
+    
+//    buffer.WriteBegin();
+//    header.cmd = SERVER_USER_REG;
+//    buffer.WriteObject(header);
+//    info.uid = 0;
+//    info.appid = 102;
+//    info.name = "无名";
+//    info.password = "123456";
+//    info.macbind = "ABCDEFGH";
+//    
+//    buffer.WriteObject(info);
+//    buffer.WriteEnd();
+//    
+//    buffer.WriteBegin();
+//    header.cmd = SERVER_USER_REG;
+//    buffer.WriteObject(header);
+//    info.uid = 0;
+//    info.appid = 102;
+//    info.name = "剑神SSS";
+//    info.password = "123456";
+//    info.macbind = "ABCDEFGH";
+//    
+//    buffer.WriteObject(info);
+//    buffer.WriteEnd();
+//    
+    buffer.WriteBegin();
+    header.cmd = SERVER_USER_LOGIN;
+    buffer.WriteObject(header);
+    info2.uid = 10000;
+    info2.password = "123456";
+    info2.macbind = "ABCDEFGH";
+    
+    buffer.WriteObject(info2);
+    buffer.WriteEnd();
+    if(sock.Connect("127.0.0.1", port))
     {
-        SAFE_DELETE(thread);
-    }else if(type == THREAD_BEGIN){
-        
-    }else{
-        while(1){
-            NetSocket sock;
-            ByteBuffer buffer;
-            RegInfo info;
-            LoginInfo info2;
-            HeadInfo header;
-            
-            //        buffer.WriteBegin();
-            //        header.cmd = SERVER_USER_REG;
-            //        buffer.WriteObject(header);
-            //        info.uid = 0;
-            //        info.appid = 102;
-            //        info.name = "无名";
-            //        info.password = "123456";
-            //        info.macbind = "ABCDEFGH";
-            //
-            //        buffer.WriteObject(info);
-            //        buffer.WriteEnd();
-            //
-            //        buffer.WriteBegin();
-            //        header.cmd = SERVER_USER_REG;
-            //        buffer.WriteObject(header);
-            //        info.uid = 0;
-            //        info.appid = 102;
-            //        info.name = "剑神SSS";
-            //        info.password = "123456";
-            //        info.macbind = "ABCDEFGH";
-            //
-            //        buffer.WriteObject(info);
-            //        buffer.WriteEnd();
-            
-            buffer.WriteBegin();
-            header.cmd = SERVER_USER_LOGIN;
-            buffer.WriteObject(header);
-            info2.uid = 10000;
-            info2.password = "123456";
-            info2.macbind = "ABCDEFGH-";
-            
-            buffer.WriteObject(info2);
-            buffer.WriteEnd();
-            if(sock.Connect("127.0.0.1", port))
-            {
-                sock.Send(&buffer[0], buffer.wpos());
-            }
-            sleep(1);
-        }
+        sock.Send(&buffer[0], buffer.wpos());
     }
+    SAFE_DELETE(thread);
 }
 
 //输入vim

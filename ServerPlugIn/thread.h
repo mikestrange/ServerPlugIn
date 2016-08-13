@@ -18,28 +18,18 @@
 
 class Thread;
 
-//线程回执事件
-typedef enum _THREAD_EVENT
-{
-    THREAD_BEGIN = 1,  //用于初始化对象
-    THREAD_RUN,        //用于处理
-    THREAD_OVER,       //用于删除对象
-}THREAD_EVENT;
-
-//线程函数
-//typedef void *(*THREAD_CALL)(void *);
 //线程回执函数
-typedef void(*THREAD_PROXY_FUNC)(int type, Thread *thread);
+typedef void(*THREAD_PROXY_FUNC)(Thread *thread);
 
 
 class Thread
 {
 private:
     volatile bool is_start;
+    volatile bool is_awake;
     volatile bool is_change;
     volatile bool is_run;
 public:
-    //线程名称，无很大作用
     std::string name;
 public:
     //通知(不给其他处理就重写perform)
@@ -51,7 +41,7 @@ private:
 public:
     Thread();
     
-    Thread(THREAD_PROXY_FUNC func, bool isrun = false, const char* name= NULL);
+    Thread(THREAD_PROXY_FUNC func);
     
     virtual ~Thread();
     
@@ -61,13 +51,13 @@ public:
     
     virtual void resume();
     
-    virtual void kill();
-    
     virtual void stop();
     
     virtual bool isRunning()const;
     
     virtual void wait(struct timespec* time = NULL);
+    
+    virtual void kill();
     
 private:
     void begin();
@@ -75,7 +65,7 @@ private:
     void over();
     
 protected:
-    virtual void perform(int type);
+    virtual void perform();
     
     virtual void run();
     
@@ -85,10 +75,14 @@ private:
     
 public:
     //无参数传递
-    static void launch(THREAD_PROXY_FUNC func, const char* name = NULL)
+    static Thread* launch(THREAD_PROXY_FUNC func, const char* name = NULL)
     {
-        new Thread(func, true, name);
+        auto thread = new Thread(func);
+        thread->name = name;
+        thread->start();
+        return thread;
     }
+    
 };
 
 

@@ -12,6 +12,9 @@
 		20351A6C1D533CFD004F8B0D /* data_bank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20351A6B1D533CFD004F8B0D /* data_bank.cpp */; };
 		20351A6E1D534566004F8B0D /* data_query.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20351A6D1D534566004F8B0D /* data_query.cpp */; };
 		2055C3501D519F3B001B7DE3 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2055C34E1D519F3B001B7DE3 /* Input.cpp */; };
+		206893731D5D6149003ACBD4 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 206893711D5D6149003ACBD4 /* Timer.cpp */; };
+		206893761D5D7FC9003ACBD4 /* main_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 206893741D5D7FC9003ACBD4 /* main_loop.cpp */; };
+		2068937C1D5DCFAD003ACBD4 /* TimeLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2068937A1D5DCFAD003ACBD4 /* TimeLoop.cpp */; };
 		208A9CD21D59DEB5008214D0 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 208A9CD01D59DEB5008214D0 /* net.cpp */; };
 		208CE4DC1D465216007465A0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 208CE4DB1D465216007465A0 /* main.cpp */; };
 		20AF6F0A1D50353D00EB26D3 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20AF6F081D50353D00EB26D3 /* world.cpp */; };
@@ -20,8 +23,6 @@
 		20AF6F241D5062BF00EB26D3 /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20AF6F221D5062BF00EB26D3 /* client.cpp */; };
 		20B5E9C11D5078A000F8BDFF /* clients.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B5E9BF1D5078A000F8BDFF /* clients.cpp */; };
 		20B5E9C41D50ECE800F8BDFF /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B5E9C21D50ECE800F8BDFF /* error.cpp */; };
-		20B95E681D4E0D4B00777589 /* timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B95E661D4E0D4B00777589 /* timer.cpp */; };
-		20B95E6B1D4E0D5300777589 /* time_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B95E691D4E0D5300777589 /* time_loop.cpp */; };
 		20B95E721D4E3FF600777589 /* task_scheduler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B95E701D4E3FF600777589 /* task_scheduler.cpp */; };
 		20C17BA11D51F383003E3C4F /* world_session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20C17B9F1D51F383003E3C4F /* world_session.cpp */; };
 		20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DA71D4C9B1E006A3F91 /* thread.cpp */; };
@@ -59,6 +60,12 @@
 		2055C3521D51A8F1001B7DE3 /* read_bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = read_bytes.h; sourceTree = "<group>"; };
 		2055C3541D51A917001B7DE3 /* write_bytes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = write_bytes.h; sourceTree = "<group>"; };
 		2055C3571D51A961001B7DE3 /* buffer_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer_base.h; sourceTree = "<group>"; };
+		206893711D5D6149003ACBD4 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
+		206893721D5D6149003ACBD4 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		206893741D5D7FC9003ACBD4 /* main_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main_loop.cpp; sourceTree = "<group>"; };
+		206893751D5D7FC9003ACBD4 /* main_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_loop.h; sourceTree = "<group>"; };
+		2068937A1D5DCFAD003ACBD4 /* TimeLoop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLoop.cpp; sourceTree = "<group>"; };
+		2068937B1D5DCFAD003ACBD4 /* TimeLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLoop.h; sourceTree = "<group>"; };
 		208A9CD01D59DEB5008214D0 /* net.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = net.cpp; sourceTree = "<group>"; };
 		208A9CD11D59DEB5008214D0 /* net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 		208CE4D81D465216007465A0 /* ServerPlugIn */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ServerPlugIn; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,10 +87,6 @@
 		20B5E9C21D50ECE800F8BDFF /* error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = error.cpp; sourceTree = "<group>"; };
 		20B5E9C31D50ECE800F8BDFF /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 		20B95E631D4DE23300777589 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
-		20B95E661D4E0D4B00777589 /* timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = timer.cpp; sourceTree = "<group>"; };
-		20B95E671D4E0D4B00777589 /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
-		20B95E691D4E0D5300777589 /* time_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_loop.cpp; sourceTree = "<group>"; };
-		20B95E6A1D4E0D5300777589 /* time_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time_loop.h; sourceTree = "<group>"; };
 		20B95E701D4E3FF600777589 /* task_scheduler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = task_scheduler.cpp; sourceTree = "<group>"; };
 		20B95E711D4E3FF600777589 /* task_scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_scheduler.h; sourceTree = "<group>"; };
 		20C17B9D1D51F272003E3C4F /* IReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IReader.h; sourceTree = "<group>"; };
@@ -163,6 +166,29 @@
 			name = interfaces;
 			sourceTree = "<group>";
 		};
+		206893791D5DCF9B003ACBD4 /* rock */ = {
+			isa = PBXGroup;
+			children = (
+				206893721D5D6149003ACBD4 /* Timer.h */,
+				206893711D5D6149003ACBD4 /* Timer.cpp */,
+				2068937B1D5DCFAD003ACBD4 /* TimeLoop.h */,
+				2068937A1D5DCFAD003ACBD4 /* TimeLoop.cpp */,
+			);
+			name = rock;
+			sourceTree = "<group>";
+		};
+		2068937D1D5DD2A3003ACBD4 /* task */ = {
+			isa = PBXGroup;
+			children = (
+				20CC0DEE1D4CA2F0006A3F91 /* task.h */,
+				20CC0DAB1D4C9B2C006A3F91 /* task_loop.h */,
+				20CC0DAA1D4C9B2C006A3F91 /* task_loop.cpp */,
+				20B95E711D4E3FF600777589 /* task_scheduler.h */,
+				20B95E701D4E3FF600777589 /* task_scheduler.cpp */,
+			);
+			name = task;
+			sourceTree = "<group>";
+		};
 		208CE4CF1D465215007465A0 = {
 			isa = PBXGroup;
 			children = (
@@ -217,8 +243,7 @@
 				20AF6EF91D50328C00EB26D3 /* used */,
 				20CC0DE91D4CA26A006A3F91 /* base */,
 				20CC0DCD1D4C9F49006A3F91 /* powder */,
-				20CC0DC31D4C9D5C006A3F91 /* task */,
-				20B95E651D4E0D4100777589 /* timer */,
+				20CC0DC31D4C9D5C006A3F91 /* loops */,
 				20CC0DBE1D4C9CB5006A3F91 /* pool */,
 				20CC0DB71D4C9C4C006A3F91 /* net */,
 				20CC0DAD1D4C9B65006A3F91 /* thread */,
@@ -263,17 +288,6 @@
 			name = base;
 			sourceTree = "<group>";
 		};
-		20B95E651D4E0D4100777589 /* timer */ = {
-			isa = PBXGroup;
-			children = (
-				20B95E671D4E0D4B00777589 /* timer.h */,
-				20B95E661D4E0D4B00777589 /* timer.cpp */,
-				20B95E6A1D4E0D5300777589 /* time_loop.h */,
-				20B95E691D4E0D5300777589 /* time_loop.cpp */,
-			);
-			name = timer;
-			sourceTree = "<group>";
-		};
 		20CC0DAD1D4C9B65006A3F91 /* thread */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,16 +319,15 @@
 			name = pool;
 			sourceTree = "<group>";
 		};
-		20CC0DC31D4C9D5C006A3F91 /* task */ = {
+		20CC0DC31D4C9D5C006A3F91 /* loops */ = {
 			isa = PBXGroup;
 			children = (
-				20CC0DEE1D4CA2F0006A3F91 /* task.h */,
-				20CC0DAB1D4C9B2C006A3F91 /* task_loop.h */,
-				20CC0DAA1D4C9B2C006A3F91 /* task_loop.cpp */,
-				20B95E711D4E3FF600777589 /* task_scheduler.h */,
-				20B95E701D4E3FF600777589 /* task_scheduler.cpp */,
+				2068937D1D5DD2A3003ACBD4 /* task */,
+				206893791D5DCF9B003ACBD4 /* rock */,
+				206893751D5D7FC9003ACBD4 /* main_loop.h */,
+				206893741D5D7FC9003ACBD4 /* main_loop.cpp */,
 			);
-			name = task;
+			name = loops;
 			sourceTree = "<group>";
 		};
 		20CC0DCD1D4C9F49006A3F91 /* powder */ = {
@@ -426,12 +439,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				20B95E721D4E3FF600777589 /* task_scheduler.cpp in Sources */,
-				20B95E681D4E0D4B00777589 /* timer.cpp in Sources */,
 				20351A6C1D533CFD004F8B0D /* data_bank.cpp in Sources */,
 				20CC0DFB1D4CA470006A3F91 /* string_utils.cpp in Sources */,
 				20AF6F0A1D50353D00EB26D3 /* world.cpp in Sources */,
 				20B5E9C41D50ECE800F8BDFF /* error.cpp in Sources */,
-				20B95E6B1D4E0D5300777589 /* time_loop.cpp in Sources */,
 				20CC0DF51D4CA3D9006A3F91 /* lock.cpp in Sources */,
 				208A9CD21D59DEB5008214D0 /* net.cpp in Sources */,
 				20CC0DD01D4C9FFA006A3F91 /* PowEngine.cpp in Sources */,
@@ -439,13 +450,16 @@
 				208CE4DC1D465216007465A0 /* main.cpp in Sources */,
 				20B5E9C11D5078A000F8BDFF /* clients.cpp in Sources */,
 				20AF6F101D503FDC00EB26D3 /* object_pool.cpp in Sources */,
+				206893731D5D6149003ACBD4 /* Timer.cpp in Sources */,
 				20CC0DE21D4CA19C006A3F91 /* log.cpp in Sources */,
 				20C17BA11D51F383003E3C4F /* world_session.cpp in Sources */,
+				2068937C1D5DCFAD003ACBD4 /* TimeLoop.cpp in Sources */,
 				2055C3501D519F3B001B7DE3 /* Input.cpp in Sources */,
 				20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */,
 				20EF4DF61D5C7CB1008B494F /* memory_pool.cpp in Sources */,
 				20AF6F241D5062BF00EB26D3 /* client.cpp in Sources */,
 				20AF6F1B1D504A6900EB26D3 /* byte_array.cpp in Sources */,
+				206893761D5D7FC9003ACBD4 /* main_loop.cpp in Sources */,
 				20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */,
 				20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */,
 				20351A6E1D534566004F8B0D /* data_query.cpp in Sources */,

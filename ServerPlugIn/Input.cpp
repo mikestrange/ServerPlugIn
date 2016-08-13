@@ -12,19 +12,13 @@
 #include <string.h>
 
 static INPUT_CALL method;
-static bool is_init = false;
 static InputArray putin;
 
-InputArray::InputArray()
-{
-    
-}
+static void thread_complete(Thread* thread);
+//
+static Thread* const inputLoop = Thread::launch(&thread_complete, "Input");
 
-InputArray::~InputArray()
-{
-    
-}
-
+//class method
 int InputArray::setInput(const char *buf)
 {
     clear();
@@ -60,32 +54,20 @@ int InputArray::setInput(const char *buf)
     return argLen;
 }
 
-static void thread_complete(int type, Thread* thread)
+static void thread_complete(Thread* thread)
 {
-    if(type == THREAD_OVER)
+    std::string str;
+    while(std::cin>>str)
     {
-        trace("input line close");
-        SAFE_DELETE(thread);
-    }else if(type == THREAD_BEGIN){
-        trace("input line is running");
-    }else{
-        std::string str;
-        while(std::cin>>str)
-        {
-            int argLen = putin.setInput(str.c_str());
-            trace("##input = %s", str.c_str());
-            if(method) method(argLen, putin);
-            str.clear();
-        };
-    }
+        int argLen = putin.setInput(str.c_str());
+        trace("##input = %s", str.c_str());
+        if(method) method(argLen, putin);
+        str.clear();
+    };
+    SAFE_DELETE(thread);
 }
 
-void setInputMethod(INPUT_CALL func)
+void setInputMethodAttemper(INPUT_CALL func)
 {
     method = func;
-    if(!is_init)
-    {
-        is_init = true;
-        Thread::launch(&thread_complete, "Input");
-    }
 }

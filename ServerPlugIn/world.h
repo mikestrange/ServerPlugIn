@@ -17,7 +17,6 @@
 #include "byte_array.h"
 #include "clients.h"
 #include "error.h"
-#include "timer.h"
 
 #include "data_bank.h"
 
@@ -26,9 +25,15 @@
 
 #include "object_pool.h"
 #include "time_utils.h"
+#include "main_loop.h"
+
+#include "Timer.h"
+
+class Clients;
 
 const int port = 8001;
 extern NetServer server;
+extern Clients clients;
 
 void vim(int argLen, InputArray& input);
 

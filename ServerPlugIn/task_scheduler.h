@@ -9,7 +9,6 @@
 #ifndef task_scheduler_h
 #define task_scheduler_h
 
-#include <stdio.h>
 #include <list>
 
 #include "global.h"
@@ -20,8 +19,6 @@
 #define MAX_TASK_THREAD 20
 
 POWDER_BEGIN
-
-int PushMain(Task* task);
 
 //异步推动一个任务
 int AsynPush(Task* task, int tid = 0);

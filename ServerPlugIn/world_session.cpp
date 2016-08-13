@@ -11,7 +11,6 @@
 #include "reginfo.h"
 #include "logininfo.h"
 
-static DataBank bank;
 
 
 void WorldSession::Register()
@@ -43,6 +42,7 @@ void WorldSession::UserRegistration(Client* client)
         return;
     }
     
+    static DataBank bank;
     bank.test_connent();
     DataQuery query;
     
@@ -82,6 +82,7 @@ void WorldSession::UserLogin(Client* client)
         return;
     }
     
+    static DataBank bank;
     bank.test_connent();
     DataQuery query;
     //uid是否存在

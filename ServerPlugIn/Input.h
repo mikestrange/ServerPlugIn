@@ -23,12 +23,9 @@ typedef void(*INPUT_CALL)(int argLen, InputArray &input);
 class InputArray : public ByteBuffer
 {
 public:
-    InputArray();
-    virtual ~InputArray();
-    
     int setInput(const char* buf);
 };
 
-void setInputMethod(INPUT_CALL func);
+void setInputMethodAttemper(INPUT_CALL func);
 
 #endif /* Input_h */

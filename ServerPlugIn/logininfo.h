@@ -30,9 +30,7 @@ public:
     ,appid(0)
     ,money(0)
     ,exp(0)
-    {
-        
-    }
+    {}
     
     LoginInfo(ReadBytes& bytes)
     :uid(0)
