@@ -18,6 +18,15 @@ Timer::Timer()
 ,callId(0)
 ,callback(NULL){}
 
+Timer::Timer(delay_t value, TASK_CALL func, int call_id)
+:rockid(0)
+,delay_time(value)
+,callback(func)
+,callId(call_id)
+{
+    
+}
+
 Timer::~Timer()
 {
     Stop();
@@ -78,20 +87,5 @@ void Timer::Reset(int value)
     //trace("end time = %d.%d",sec,msec);
     powder::ntime::gettime(&last);
     powder::ntime::addtime(&last, sec, (msec%MVAL_TIME)*UVAL_TIME);
-}
-
-
-//static
-Timer* Timer::create()
-{
-    return new Timer();
-}
-
-Timer* Timer::create(delay_t value, TASK_CALL func,int callid)
-{
-    auto timer = new Timer();
-    timer->setDelayTime(value);
-    timer->setReceipt(func, callid);
-    return timer;
 }
 

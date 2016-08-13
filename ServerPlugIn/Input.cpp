@@ -19,13 +19,13 @@ static void thread_complete(Thread* thread);
 static Thread* const inputLoop = Thread::launch(&thread_complete, "Input");
 
 //class method
-int InputArray::setInput(const char *buf)
+int InputArray::setInput(ByteArray& byteArray)
 {
     clear();
-    //
     int sub_len = 0;
     int prev_pos = 0;
-    int length = (int)strlen(buf);
+    int length = (int)byteArray.size();
+    const char* buf = byteArray.bytes();
     int argLen;
     for(int i = 0; i < length; i++)
     {
@@ -54,14 +54,33 @@ int InputArray::setInput(const char *buf)
     return argLen;
 }
 
+static void vim_complete(int type, void* args)
+{
+    ByteArray* byte = (ByteArray*)args;
+    //解析
+    int size = putin.setInput(*byte);
+    //推送输出
+    if(method) method(size, putin);
+    //share
+    if(!ByteArrayPool::getInstance()->share(byte))
+    {
+        SAFE_DELETE(byte);
+    }
+}
+
 static void thread_complete(Thread* thread)
 {
     std::string str;
     while(std::cin>>str)
     {
-        int argLen = putin.setInput(str.c_str());
+        ByteArray* byte = ByteArrayPool::getInstance()->peel();
+        if(byte == NULL)
+        {
+            byte = new ByteArray();
+        }
+        byte->copy(str.c_str(), str.length());
         trace("##input = %s", str.c_str());
-        if(method) method(argLen, putin);
+        powder::RunMain(&vim_complete, byte);
         str.clear();
     };
     SAFE_DELETE(thread);

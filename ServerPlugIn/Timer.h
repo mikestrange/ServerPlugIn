@@ -32,6 +32,7 @@ private:
     
 public:
     Timer();
+    Timer(delay_t value, TASK_CALL func, int call_id = 0);
     virtual ~Timer();
     
 public:
@@ -56,10 +57,6 @@ private:
     
     friend class TimeManager;
     struct timespec& happentime();
-    
-public:
-    static Timer* create();
-    static Timer* create(delay_t value, TASK_CALL func, int call_id = 0);
 };
 
 

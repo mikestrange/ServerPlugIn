@@ -11,19 +11,21 @@
 
 #include <iostream>
 
+#include "task.h"
 #include "byte_buffer.h"
 #include "thread.h"
 #include "global.h"
+#include "object_pool.h"
+#include "main_loop.h"
 
 class InputArray;
 
-typedef void(*INPUT_CALL)(int argLen, InputArray &input);
-
+typedef void(*INPUT_CALL)(int len, InputArray& args);
 
 class InputArray : public ByteBuffer
 {
 public:
-    int setInput(const char* buf);
+    int setInput(ByteArray& byteArray);
 };
 
 void setInputMethodAttemper(INPUT_CALL func);

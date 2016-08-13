@@ -150,8 +150,8 @@
 		2055C34D1D519F2C001B7DE3 /* input */ = {
 			isa = PBXGroup;
 			children = (
-				2055C34E1D519F3B001B7DE3 /* Input.cpp */,
 				2055C34F1D519F3B001B7DE3 /* Input.h */,
+				2055C34E1D519F3B001B7DE3 /* Input.cpp */,
 			);
 			name = input;
 			sourceTree = "<group>";

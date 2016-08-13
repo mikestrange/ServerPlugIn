@@ -109,28 +109,25 @@ static void thread_server(Thread* thread)
 
 static void timer_call(int type, void* args);
 
-static Timer* const timer = Timer::create(2, &timer_call);
+static Timer tick(2, &timer_call);
 
 static void timer_call(int type, void* args)
 {
-    
     trace("时间 %d",getpid());
-    timer->Start();
+    tick.Start();
 }
 
 static void MainRunning(int type, void* args)
 {
-    timer->Start();
-    trace("时间 %d",getpid());
+    //输入
+    setInputMethodAttemper(&vim);
+    tick.Start();
 }
 
-//---
+//启动世界
 void launch_world()
 {
     powder::RunMain(&MainRunning);
-    //输入
-    setInputMethodAttemper(&vim);
-    //
 }
 
 
