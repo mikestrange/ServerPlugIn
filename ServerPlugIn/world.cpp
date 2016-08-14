@@ -8,8 +8,8 @@
 
 #include "world.h"
 
-#include "logininfo.h"
-#include "reginfo.h"
+#include "login_body.h"
+#include "reg_body.h"
 
 NetServer server;
 Clients clients;
@@ -39,17 +39,16 @@ static void server_read(int fd, void* args)
         try{
             while(client->HasResult())
             {
-                HeadInfo header(client->packet());
                 //处理
-                command.perform(header.cmd, header, client);
-                //
+                command.HandlePacket(client);
+                //清理缓冲
                 client->flush();
             }
         }catch(Error& evt){
-            server.Shut(fd);
+            client->Disconnect();
         }
     }else{
-        trace("this client is close");
+        trace("this client is close:%d", fd);
     }
     //share
     if(!ByteArrayPool::getInstance()->share(byte))
@@ -76,7 +75,7 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
             powder::RunMain(Task::create(fd, &server_accept));
         }else{
             trace("未删除的客户端: %d",fd);
-            server.Shut(fd);
+            CLIENT_CLOSE(fd);
         }
     }else if(type == SOCKET_CLOSED){
         Client* client = clients.RemoveClient(fd);
@@ -94,84 +93,57 @@ static void server_handler(int type, int fd, char* bytes, size_t length)
             powder::RunMain(Task::create(0, &server_close, client));
         });
         trace("服务器关闭");
-        exit(0);
     }
 }
 
 static void thread_server(Thread* thread)
 {
-    if(server.Open(port)){
+    if(server.Open(port))
+    {
         int code = server.PollAttemper(&server_handler);
         trace("server close: %d", code);
     };
 }
 
 
-static void timer_call(int type, void* args);
-
-static Timer tick(2, &timer_call);
-
-static void timer_call(int type, void* args)
-{
-    trace("时间 %d",getpid());
-    tick.Start();
-}
-
-static void MainRunning(int type, void* args)
-{
-    //输入
-    setInputMethodAttemper(&vim);
-    tick.Start();
-}
-
 //启动世界
 void launch_world()
 {
-    powder::RunMain(&MainRunning);
+    powder::RunMain(block(int type, void* args)
+    {
+        setInputMethodAttemper(&vim);
+    });
 }
 
 
 static void test(Thread* thread)
 {
     NetSocket sock;
+    //
     ByteBuffer buffer;
-    RegInfo info;
-    LoginInfo info2;
-    HeadInfo header;
+    LoginBody data;
+    PacketHeader header;
+    //
+//    buffer.WriteBegin();
+//    header.cmd = SERVER_CMD_USER_LOGIN;
+//    header.msgType = HANDLE_WORLD_MESSAGE;
+//    buffer.WriteObject(header);
+//    //
+//    data.uid = 10000;
+//    data.password = "123456";
+//    data.macbind = "ABCDEFGH-";
+//    buffer.WriteObject(data);
+//    buffer.WriteEnd();
     
-//    buffer.WriteBegin();
-//    header.cmd = SERVER_USER_REG;
-//    buffer.WriteObject(header);
-//    info.uid = 0;
-//    info.appid = 102;
-//    info.name = "无名";
-//    info.password = "123456";
-//    info.macbind = "ABCDEFGH";
-//    
-//    buffer.WriteObject(info);
-//    buffer.WriteEnd();
-//    
-//    buffer.WriteBegin();
-//    header.cmd = SERVER_USER_REG;
-//    buffer.WriteObject(header);
-//    info.uid = 0;
-//    info.appid = 102;
-//    info.name = "剑神SSS";
-//    info.password = "123456";
-//    info.macbind = "ABCDEFGH";
-//    
-//    buffer.WriteObject(info);
-//    buffer.WriteEnd();
-//    
+    
     buffer.WriteBegin();
-    header.cmd = SERVER_USER_LOGIN;
+    header.cmd = SERVER_CMD_USER_LOGIN;
+    header.msgType = HANDLE_GAME_MESSAGE;
+    header.viewid = 1002;
     buffer.WriteObject(header);
-    info2.uid = 10000;
-    info2.password = "123456";
-    info2.macbind = "ABCDEFGH";
     
-    buffer.WriteObject(info2);
     buffer.WriteEnd();
+    
     if(sock.Connect("127.0.0.1", port))
     {
         sock.Send(&buffer[0], buffer.wpos());

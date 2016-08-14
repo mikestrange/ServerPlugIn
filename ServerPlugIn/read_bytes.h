@@ -97,13 +97,19 @@ public:
     {
         str.clear();
         int32 len = read<int32>();
-        //trace("str len %d",len);
         //
         for(int i = 0; i < len; i++)
         {
             str += read<char>();
         }
         return *this;
+    }
+    
+    void ReadBuffer(BufferInterface& buffer, size_t len)
+    {
+        if(len > 0){
+            buffer.append(&get(_rpos), len);
+        }
     }
     
     //r pos

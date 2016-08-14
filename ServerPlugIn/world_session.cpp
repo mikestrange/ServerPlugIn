@@ -8,21 +8,60 @@
 
 #include "world_session.h"
 
-#include "reginfo.h"
-#include "logininfo.h"
+#include "reg_body.h"
+#include "login_body.h"
 
+static DataBank bank;
 
-
-void WorldSession::Register()
+static void HandleLogic(PacketHeader& data, Client* client)
 {
-    SetCommand(SERVER_USER_REG, handler_1(this, &WorldSession::UserRegistration));
-    SetCommand(SERVER_USER_LOGIN, handler_1(this, &WorldSession::UserLogin));
+    ByteBuffer buffer;
+    buffer.WriteBegin();
+    buffer.WriteObject(data);
+    //uid(追加字段)
+    uint32 uid = 10086;
+    buffer<<uid;
+    //剩余子节写入
+    client->packet().ReadBuffer(buffer, client->subLeng());
+    buffer.WriteEnd();
+    //房间处理
+    LogicManager::getInstance()->HandlePacket(buffer);
 }
 
-void WorldSession::UserRegistration(Client* client)
+//
+void WorldSession::Register()
 {
-    trace("注册啊");
-    RegInfo info(client->packet());
+    SetCommand(SERVER_CMD_USER_REG, handler_2(this, &WorldSession::UserRegistration));
+    SetCommand(SERVER_CMD_USER_LOGIN, handler_2(this, &WorldSession::UserLogin));
+}
+
+//
+void WorldSession::HandlePacket(Client *client)
+{
+    PacketHeader base(client->packet());
+    switch(base.msgType)
+    {
+        case HANDLE_WORLD_MESSAGE:
+                //世界处理
+                SendToCommand(base.cmd, base, client);
+            break;
+        case HANDLE_GAME_MESSAGE:
+                //游戏处理
+                HandleLogic(base, client);
+            break;
+        case HANDLE_HALL_MESSAGE:
+            
+            break;
+        default:
+            trace("no handle message: %d", base.msgType);
+            break;
+    }
+}
+
+void WorldSession::UserRegistration(PacketHeader& data, Client* client)
+{
+    trace(">>UserRegistration");
+    RegBody info(client->packet());
     
     if(!StringUtil::scope(info.name, 1, 24))
     {
@@ -42,7 +81,6 @@ void WorldSession::UserRegistration(Client* client)
         return;
     }
     
-    static DataBank bank;
     bank.test_connent();
     DataQuery query;
     
@@ -63,10 +101,10 @@ void WorldSession::UserRegistration(Client* client)
     }
 }
 
-void WorldSession::UserLogin(Client* client)
+void WorldSession::UserLogin(PacketHeader& data, Client* client)
 {
-    trace("登陆啊");
-    LoginInfo info(client->packet());
+    trace(">>do UserLogin");
+    LoginBody info(client->packet());
     
     if(!StringUtil::scope(info.password, 6, 24))
     {
@@ -82,7 +120,6 @@ void WorldSession::UserLogin(Client* client)
         return;
     }
     
-    static DataBank bank;
     bank.test_connent();
     DataQuery query;
     //uid是否存在

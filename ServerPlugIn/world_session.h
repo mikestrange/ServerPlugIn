@@ -17,6 +17,7 @@
 
 #include "string_utils.h"
 #include "data_bank.h"
+#include "logic_manager.h"
 
 class Client;
 
@@ -27,13 +28,20 @@ public:
     {
         Register();
     }
+    
+    virtual ~WorldSession()
+    {
+        Destroy();
+    }
     void Register()override;
     void Destroy()override{};
+    //头处理
+    void HandlePacket(Client* client);
 private:
     //用户注册
-    void UserRegistration(Client* client);
+    void UserRegistration(PacketHeader& data, Client* client);
     //用户登录
-    void UserLogin(Client* client);
+    void UserLogin(PacketHeader& data, Client* client);
 };
 
 #endif /* world_session_h */

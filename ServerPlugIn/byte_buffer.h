@@ -17,35 +17,47 @@
 #include "write_bytes.h"
 #include "IReader.h"
 
-static const int32 PACKET_BEGIN = 4;
+#define PACKET_BEGIN 4
 
 class ByteBuffer : public ReadBytes , public WriteBytes
 {
     //可以打包多个包
 private:
-    int32 mpos;
+    int32 mwpos;
+    int32 mrpos;
     
 public:
     ByteBuffer()
-    :mpos(0)
+    :mwpos(0)
+    ,mrpos(0)
     {}
     
 public:
     virtual void WriteBegin()
     {
-        wpos(mpos + PACKET_BEGIN);
+        wpos(mwpos + PACKET_BEGIN);
     }
     
     virtual int32 WriteEnd()
     {
-        int32 mark = (int32)wpos() - mpos;
-        wpos(mpos);
+        int32 mark = (int32)wpos() - mwpos;
+        wpos(mwpos);
         append(mark - PACKET_BEGIN);
-        wpos(mark + mpos);
-        mpos = (int32)wpos();
+        wpos(mark + mwpos);
+        mwpos = (int32)wpos();
         //trace("mark = %d",mark);
         //返回包长度
         return mark;
+    }
+    
+    virtual void ReadBegin()
+    {
+        
+    }
+    
+    virtual void ReadEnd()
+    {
+        
     }
     
     ByteBuffer& self()

@@ -117,6 +117,15 @@ public:
         }
     }
     
+    //从buffer写入
+    void WriteBuffer(BufferInterface& buffer, int pos, size_t len)
+    {
+        if(len > 0)
+        {
+            append(&buffer[pos], len);
+        }
+    }
+    
     //w pos
     virtual size_t wpos()const
     {

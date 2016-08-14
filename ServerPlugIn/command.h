@@ -13,26 +13,35 @@
 #include <map>
 
 #include "client.h"
-#include "headinfo.h"
+#include "packet_header.h"
 
 class Client;
 
-//服务端接收的消息
+//消息类型（其实就是交给哪个服务处理）
+enum MESSAGE_TYPE
+{
+    HANDLE_WORLD_MESSAGE = 1,
+    HANDLE_GAME_MESSAGE,
+    HANDLE_HALL_MESSAGE,
+    HANDLE_REDIS_MESSAGE,
+};
+
+//客户端发送给服务端
 enum SERVER_COMMAND
 {
-    SERVER_USER_REG = 100,
-    SERVER_USER_LOGIN,
+    SERVER_CMD_USER_REG = 100,
+    SERVER_CMD_USER_LOGIN,
 };
 
-//发送给客户端的消息
+//服务端发送给客户端
 enum CLIENT_COMMAND
 {
-    CLIENT_USER_REG = 100,
-    CLIENT_USER_LOGIN,
+    CLIENT_CMD_USER_REG = 100,
+    CLIENT_CMD_USER_LOGIN,
 };
 
 
-typedef Function(void, Client*) COMMAND_CALL;
+typedef Function(void, PacketHeader&, Client*) COMMAND_CALL;
 
 class Command
 {
@@ -54,8 +63,24 @@ protected:
         if(iter != funcTable.end())
         {
             funcTable.erase(iter);
+        }else{
+            trace("this cmd is no set %d",cmd);
         }
     }
+    
+    void SendToCommand(int cmd, PacketHeader& data, Client* client)
+    {
+        std::map<int, COMMAND_CALL>::iterator iter = funcTable.find(cmd);
+        //事件派发
+        if(iter != funcTable.end())
+        {
+            trace("handle command ok cmd:%d",cmd);
+            iter->second(data, client);
+        }else{
+            trace("no call cmd error:%d", cmd);
+        }
+    };
+    
 public:
     Command(){};
     
@@ -63,26 +88,8 @@ public:
     
     virtual void Register()=0;
     virtual void Destroy()=0;
-    //是否对头处理
-    virtual void HandleHeader(HeadInfo& packet)
-    {
-        
-    };
-public:
-    virtual void perform(int cmd, HeadInfo& packet, Client* client)
-    {
-        std::map<int, COMMAND_CALL>::iterator iter = funcTable.find(cmd);
-        //处理头
-        HandleHeader(packet);
-        //事件派发
-        if(iter != funcTable.end())
-        {
-            trace("handle command ok cmd:%d",cmd);
-            iter->second(client);
-        }else{
-            trace("no call cmd error:%d", cmd);
-        }
-    };
+    //处理客户端消息
+    //virtual void perform(int cmd, HeadInfo& packet, Client* client) = 0;
 };
 
 #endif /* command_hpp */

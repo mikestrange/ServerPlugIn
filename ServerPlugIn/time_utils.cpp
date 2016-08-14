@@ -62,7 +62,7 @@ POWDER_BEGIN
         
         struct timeval* addtime(struct timeval *t, int sec, long usec)
         {
-            long total = t->tv_usec + usec;
+            int total = (int)(t->tv_usec + usec);
             if(total >= UVAL_TIME){
                 t->tv_sec = t->tv_sec + sec + 1;
                 t->tv_usec = total - UVAL_TIME;

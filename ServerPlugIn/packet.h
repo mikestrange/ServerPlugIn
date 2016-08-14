@@ -14,8 +14,7 @@
 #include "global.h"
 #include "error.h"
 
-
-#define PACKET_HEAD 4*4
+#define HERT_TIMEOUT 60*5
 #define PACKET_MAX 1024
 
 class Packet : private ByteBuffer
@@ -78,10 +77,16 @@ public:
         }
     }
     
+    //剩余子节
+    virtual size_t subLeng()
+    {
+        return packLen - (rpos() - beginPos);
+    }
+    
     //超时心跳时间
     virtual bool OverTime() const
     {
-        return powder::stime::gettime() - packTime > 60*5;
+        return powder::stime::gettime() - packTime > HERT_TIMEOUT;
     }
     
     //获取读包

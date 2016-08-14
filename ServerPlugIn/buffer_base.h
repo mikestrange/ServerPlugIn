@@ -193,6 +193,11 @@ public:
         }
     }
     
+    virtual size_t size()
+    {
+        return _storage.size();
+    }
+    
     // 新元素还没有构造, 此时不能用[]访问元素
     virtual void reserve(size_t ressize)
     {

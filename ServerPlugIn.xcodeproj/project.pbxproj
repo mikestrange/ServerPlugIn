@@ -15,6 +15,7 @@
 		206893731D5D6149003ACBD4 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 206893711D5D6149003ACBD4 /* Timer.cpp */; };
 		206893761D5D7FC9003ACBD4 /* main_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 206893741D5D7FC9003ACBD4 /* main_loop.cpp */; };
 		2068937C1D5DCFAD003ACBD4 /* TimeLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2068937A1D5DCFAD003ACBD4 /* TimeLoop.cpp */; };
+		206B74DC1D6046EF008EC2AA /* user.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 206B74DA1D6046EF008EC2AA /* user.cpp */; };
 		208A9CD21D59DEB5008214D0 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 208A9CD01D59DEB5008214D0 /* net.cpp */; };
 		208CE4DC1D465216007465A0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 208CE4DB1D465216007465A0 /* main.cpp */; };
 		20AF6F0A1D50353D00EB26D3 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20AF6F081D50353D00EB26D3 /* world.cpp */; };
@@ -24,6 +25,9 @@
 		20B5E9C11D5078A000F8BDFF /* clients.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B5E9BF1D5078A000F8BDFF /* clients.cpp */; };
 		20B5E9C41D50ECE800F8BDFF /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B5E9C21D50ECE800F8BDFF /* error.cpp */; };
 		20B95E721D4E3FF600777589 /* task_scheduler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B95E701D4E3FF600777589 /* task_scheduler.cpp */; };
+		20BA20511D5F461F00D70F34 /* logic_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20BA204F1D5F461F00D70F34 /* logic_base.cpp */; };
+		20BA20551D5F470300D70F34 /* landlord_logic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20BA20531D5F470300D70F34 /* landlord_logic.cpp */; };
+		20BA20581D5F492C00D70F34 /* logic_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20BA20561D5F492C00D70F34 /* logic_manager.cpp */; };
 		20C17BA11D51F383003E3C4F /* world_session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20C17B9F1D51F383003E3C4F /* world_session.cpp */; };
 		20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DA71D4C9B1E006A3F91 /* thread.cpp */; };
 		20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20CC0DAA1D4C9B2C006A3F91 /* task_loop.cpp */; };
@@ -49,8 +53,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2025C75E1D5469AC00A78EA6 /* reginfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reginfo.h; sourceTree = "<group>"; };
-		2025C7611D5487F700A78EA6 /* logininfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logininfo.h; sourceTree = "<group>"; };
+		2025C75E1D5469AC00A78EA6 /* reg_body.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reg_body.h; sourceTree = "<group>"; };
+		2025C7611D5487F700A78EA6 /* login_body.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = login_body.h; sourceTree = "<group>"; };
 		20351A671D533B79004F8B0D /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmysqlclient.a; sourceTree = "<group>"; };
 		20351A681D533B79004F8B0D /* libmysqld.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmysqld.a; sourceTree = "<group>"; };
 		20351A6B1D533CFD004F8B0D /* data_bank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = data_bank.cpp; sourceTree = "<group>"; };
@@ -66,12 +70,14 @@
 		206893751D5D7FC9003ACBD4 /* main_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_loop.h; sourceTree = "<group>"; };
 		2068937A1D5DCFAD003ACBD4 /* TimeLoop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLoop.cpp; sourceTree = "<group>"; };
 		2068937B1D5DCFAD003ACBD4 /* TimeLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLoop.h; sourceTree = "<group>"; };
+		206B74DA1D6046EF008EC2AA /* user.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = user.cpp; sourceTree = "<group>"; };
+		206B74DB1D6046EF008EC2AA /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user.h; sourceTree = "<group>"; };
 		208A9CD01D59DEB5008214D0 /* net.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = net.cpp; sourceTree = "<group>"; };
 		208A9CD11D59DEB5008214D0 /* net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 		208CE4D81D465216007465A0 /* ServerPlugIn */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ServerPlugIn; sourceTree = BUILT_PRODUCTS_DIR; };
 		208CE4DB1D465216007465A0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		20A8014A1D53A1C3009DDC93 /* command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = command.h; sourceTree = "<group>"; };
-		20A8014E1D53A32D009DDC93 /* headinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headinfo.h; sourceTree = "<group>"; };
+		20A8014E1D53A32D009DDC93 /* packet_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_header.h; sourceTree = "<group>"; };
 		20AF6EFB1D5032B900EB26D3 /* byte_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = byte_array.h; sourceTree = "<group>"; };
 		20AF6F081D50353D00EB26D3 /* world.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
 		20AF6F091D50353D00EB26D3 /* world.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = world.h; sourceTree = "<group>"; };
@@ -89,6 +95,12 @@
 		20B95E631D4DE23300777589 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
 		20B95E701D4E3FF600777589 /* task_scheduler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = task_scheduler.cpp; sourceTree = "<group>"; };
 		20B95E711D4E3FF600777589 /* task_scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_scheduler.h; sourceTree = "<group>"; };
+		20BA204F1D5F461F00D70F34 /* logic_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logic_base.cpp; sourceTree = "<group>"; };
+		20BA20501D5F461F00D70F34 /* logic_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logic_base.h; sourceTree = "<group>"; };
+		20BA20531D5F470300D70F34 /* landlord_logic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = landlord_logic.cpp; sourceTree = "<group>"; };
+		20BA20541D5F470300D70F34 /* landlord_logic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = landlord_logic.h; sourceTree = "<group>"; };
+		20BA20561D5F492C00D70F34 /* logic_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logic_manager.cpp; sourceTree = "<group>"; };
+		20BA20571D5F492C00D70F34 /* logic_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logic_manager.h; sourceTree = "<group>"; };
 		20C17B9D1D51F272003E3C4F /* IReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IReader.h; sourceTree = "<group>"; };
 		20C17B9F1D51F383003E3C4F /* world_session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = world_session.cpp; sourceTree = "<group>"; };
 		20C17BA01D51F383003E3C4F /* world_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = world_session.h; sourceTree = "<group>"; };
@@ -131,9 +143,8 @@
 		2025C75C1D54699E00A78EA6 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				20A8014E1D53A32D009DDC93 /* headinfo.h */,
-				2025C75E1D5469AC00A78EA6 /* reginfo.h */,
-				2025C7611D5487F700A78EA6 /* logininfo.h */,
+				2025C75E1D5469AC00A78EA6 /* reg_body.h */,
+				2025C7611D5487F700A78EA6 /* login_body.h */,
 			);
 			name = data;
 			sourceTree = "<group>";
@@ -216,14 +227,6 @@
 			path = ServerPlugIn;
 			sourceTree = "<group>";
 		};
-		20A8014C1D53A319009DDC93 /* handler */ = {
-			isa = PBXGroup;
-			children = (
-				20A8014A1D53A1C3009DDC93 /* command.h */,
-			);
-			name = handler;
-			sourceTree = "<group>";
-		};
 		20AF6EF91D50328C00EB26D3 /* used */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,10 +260,10 @@
 		20AF6EFE1D5034A300EB26D3 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				2025C75C1D54699E00A78EA6 /* data */,
-				20A8014C1D53A319009DDC93 /* handler */,
-				20AF6F0E1D503BCB00EB26D3 /* base */,
 				20AF6F051D5034D300EB26D3 /* world */,
+				20BA204E1D5F460C00D70F34 /* game */,
+				2025C75C1D54699E00A78EA6 /* data */,
+				20AF6F0E1D503BCB00EB26D3 /* base */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 		20AF6F051D5034D300EB26D3 /* world */ = {
 			isa = PBXGroup;
 			children = (
+				20A8014A1D53A1C3009DDC93 /* command.h */,
 				20AF6F091D50353D00EB26D3 /* world.h */,
 				20AF6F081D50353D00EB26D3 /* world.cpp */,
 				20C17BA01D51F383003E3C4F /* world_session.h */,
@@ -279,13 +283,29 @@
 		20AF6F0E1D503BCB00EB26D3 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				20A8014E1D53A32D009DDC93 /* packet_header.h */,
 				20AF6F201D5057DF00EB26D3 /* packet.h */,
 				20AF6F231D5062BF00EB26D3 /* client.h */,
 				20AF6F221D5062BF00EB26D3 /* client.cpp */,
 				20B5E9C01D5078A000F8BDFF /* clients.h */,
 				20B5E9BF1D5078A000F8BDFF /* clients.cpp */,
+				206B74DA1D6046EF008EC2AA /* user.cpp */,
+				206B74DB1D6046EF008EC2AA /* user.h */,
 			);
 			name = base;
+			sourceTree = "<group>";
+		};
+		20BA204E1D5F460C00D70F34 /* game */ = {
+			isa = PBXGroup;
+			children = (
+				20BA20501D5F461F00D70F34 /* logic_base.h */,
+				20BA204F1D5F461F00D70F34 /* logic_base.cpp */,
+				20BA20541D5F470300D70F34 /* landlord_logic.h */,
+				20BA20531D5F470300D70F34 /* landlord_logic.cpp */,
+				20BA20571D5F492C00D70F34 /* logic_manager.h */,
+				20BA20561D5F492C00D70F34 /* logic_manager.cpp */,
+			);
+			name = game;
 			sourceTree = "<group>";
 		};
 		20CC0DAD1D4C9B65006A3F91 /* thread */ = {
@@ -438,6 +458,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20BA20551D5F470300D70F34 /* landlord_logic.cpp in Sources */,
 				20B95E721D4E3FF600777589 /* task_scheduler.cpp in Sources */,
 				20351A6C1D533CFD004F8B0D /* data_bank.cpp in Sources */,
 				20CC0DFB1D4CA470006A3F91 /* string_utils.cpp in Sources */,
@@ -454,14 +475,17 @@
 				20CC0DE21D4CA19C006A3F91 /* log.cpp in Sources */,
 				20C17BA11D51F383003E3C4F /* world_session.cpp in Sources */,
 				2068937C1D5DCFAD003ACBD4 /* TimeLoop.cpp in Sources */,
+				20BA20511D5F461F00D70F34 /* logic_base.cpp in Sources */,
 				2055C3501D519F3B001B7DE3 /* Input.cpp in Sources */,
 				20CC0DA91D4C9B1E006A3F91 /* thread.cpp in Sources */,
 				20EF4DF61D5C7CB1008B494F /* memory_pool.cpp in Sources */,
 				20AF6F241D5062BF00EB26D3 /* client.cpp in Sources */,
+				20BA20581D5F492C00D70F34 /* logic_manager.cpp in Sources */,
 				20AF6F1B1D504A6900EB26D3 /* byte_array.cpp in Sources */,
 				206893761D5D7FC9003ACBD4 /* main_loop.cpp in Sources */,
 				20CC0DAC1D4C9B2C006A3F91 /* task_loop.cpp in Sources */,
 				20CC0E011D4CA492006A3F91 /* time_utils.cpp in Sources */,
+				206B74DC1D6046EF008EC2AA /* user.cpp in Sources */,
 				20351A6E1D534566004F8B0D /* data_query.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -28,19 +28,13 @@ void Client::onConnect(int fd)
     this->mark_fd = fd;
 }
 
-bool Client::isConnect()
-{
-    AUTO_LOCK(&fd_lock);
-    return fd > 0;
-}
-
 void Client::Disconnect()
 {
     AUTO_LOCK(&fd_lock);
     if(fd > 0)
     {
         trace("Disconnect :%d", fd);
-        server.Shut(fd);
+        CLIENT_CLOSE(fd);
         fd = 0;
     }
 }

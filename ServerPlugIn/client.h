@@ -13,7 +13,7 @@
 #include "lock.h"
 #include "world.h"
 #include "clients.h"
-
+#include "user.h"
 
 class Clients;
 
@@ -25,11 +25,12 @@ private:
 private:
     Locked fd_lock;
 public:
+    User user;
+public:
     Client();
     virtual ~Client();
 public:
     void onConnect(int fd);
-    bool isConnect();
     void Disconnect();
     void SendPacket(const void* bytes, size_t length);
     

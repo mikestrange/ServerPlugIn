@@ -25,17 +25,17 @@ typedef void(*THREAD_PROXY_FUNC)(Thread *thread);
 class Thread
 {
 private:
-    volatile bool is_start;
-    volatile bool is_awake;
-    volatile bool is_change;
-    volatile bool is_run;
+    pthread_t pid_t;
+    bool is_start;
+    bool is_awake;
+    bool is_change;
+    bool is_run;
 public:
     std::string name;
 public:
     //通知(不给其他处理就重写perform)
     THREAD_PROXY_FUNC method;
 private:
-    pthread_t pid_t;
     pthread_cond_t cond_t;
     Locked lock;
 public:
@@ -58,6 +58,8 @@ public:
     virtual void wait(struct timespec* time = NULL);
     
     virtual void kill();
+    
+    virtual void cancel();
     
 private:
     void begin();

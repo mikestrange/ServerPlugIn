@@ -10,6 +10,7 @@
 
 Thread::Thread()
 :pid_t(0)
+,is_start(false)
 ,is_awake(true)
 ,is_change(false)
 ,is_run(true)
@@ -20,6 +21,7 @@ Thread::Thread()
 
 Thread::Thread(THREAD_PROXY_FUNC func)
 :pid_t(0)
+,is_start(false)
 ,is_awake(true)
 ,is_change(false)
 ,is_run(true)
@@ -38,7 +40,7 @@ Thread::~Thread()
 bool Thread::start()
 {
     if(pid_t > 0){
-        trace("please kill first");
+        trace("please cancel first");
         return false;
     }
     int code = pthread_create(&pid_t, 0, &Thread::ThreadHandle, this);
@@ -69,7 +71,14 @@ bool Thread::isRunning()const
 
 void Thread::kill()
 {
-    if(pid_t > 0){
+    int ret = pthread_kill(pid_t, 0);
+    trace("kill thread ret :%d", ret);
+}
+
+void Thread::cancel()
+{
+    if(pid_t > 0)
+    {
         int ret = pthread_cancel(pid_t);
         pid_t = 0;
         trace("cance thread:%d", ret);

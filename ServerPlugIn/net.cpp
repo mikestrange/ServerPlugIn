@@ -79,14 +79,14 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
     fd_list.NEW_FD(serverId, &readfds, server_addr);
     //缓冲区
     char bytes[MAX_BUFFER];
-    //5秒超时
+    //3秒超时
     struct timeval timeout;
     //select
     for(;;)
     {
         FD_ZERO(&readfds);
         //超时时间
-        timeout.tv_sec = 5;
+        timeout.tv_sec = 3;
         timeout.tv_usec = 0;
         //最大的套接字(重新设置)
         int max_fd = fd_list.RESET_FDS(&readfds);
@@ -97,12 +97,10 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
         if(result < 0)
         {
             if (errno == EINTR || errno == EAGAIN) continue;
-            //
             trace("--select error:%d %d--", result, errno);
             break;
-        }else if(result == 0){
-            trace("--select timeout--");
         }else{
+            if(result == 0) trace("--select timeout--");
             for(int i = 0; i < fd_list.maxfds(); i++)
             {
                 int fd = fd_list.GET_FD(i);
@@ -146,7 +144,7 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
     };
     //---
     fd_list.CLEAN_FDS();
-    //
+    //自己关闭
     Shut();
     //通知
     perform(SOCKET_SELF_CLOSED, serverId, NULL, NULL);

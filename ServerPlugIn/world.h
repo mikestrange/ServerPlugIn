@@ -28,12 +28,16 @@
 #include "main_loop.h"
 
 #include "Timer.h"
+#include "logic_manager.h"
 
 class Clients;
 
 const int port = 8001;
 extern NetServer server;
 extern Clients clients;
+
+//关闭客户端
+#define CLIENT_CLOSE(fd) server.Shut(fd)
 
 void vim(int argLen, InputArray& input);
 
