@@ -17,7 +17,6 @@
 
 #include <stdio.h>
 #include <vector>
-#include <map>
 
 #ifdef MY_SQL
 #include <mysql.h>

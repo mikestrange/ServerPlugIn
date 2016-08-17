@@ -10,21 +10,25 @@
 #define logic_base_h
 
 #include "global.h"
-#include "byte_buffer.h"
+#include "packet_buffer.h"
+
+//代理
+class LogicProxy
+{
+
+};
 
 class LogicBase
 {
 public:
-    LogicBase();
-    virtual ~LogicBase();
+    LogicBase(){};
+    virtual ~LogicBase(){};
     
 public:
-    //启动
-    virtual void launch()=0;
-    //废除
-    virtual void revoke()=0;
-    //
-    virtual void process(ReadBytes& bytes)=0;
+    virtual void Launch()=0;
+    virtual void UnLaunch()=0;
+public:
+    virtual void onProcess(PacketBuffer& data)=0;
 };
 
 #endif /* logic_base_h */

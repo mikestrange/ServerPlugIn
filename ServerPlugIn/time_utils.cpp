@@ -8,9 +8,9 @@
 
 #include "time_utils.h"
 
-static const time_t RUN_TIME = time(NULL);
+static const TIME_T RUN_TIME = time(NULL);
 
-static const clock_t START_TIME = clock();
+static const CLOCK_T START_TIME = clock();
 
 //精确纳秒
 //static double orwl_timebase = 0.0;
@@ -22,17 +22,17 @@ POWDER_BEGIN
 
     namespace stime
     {
-        time_t gettime()
+        TIME_T gettime()
         {
             return time(NULL);
         }
         
-        time_t overtime(time_t t)
+        TIME_T overtime(TIME_T t)
         {
             return time(NULL) - t;
         }
         
-        time_t runtime()
+        TIME_T runtime()
         {
             return time(NULL) - RUN_TIME;
         }
@@ -41,7 +41,7 @@ POWDER_BEGIN
     //
     namespace mtime
     {
-        clock_t gettime()
+        CLOCK_T gettime()
         {
             return clock();
         }
@@ -133,5 +133,32 @@ POWDER_BEGIN
     }
 
 POWDER_END
+
+
+//class
+Timeout::Timeout()
+:_out(NULL)
+{
+    powder::utime::gettime(&_t1);
+}
+
+Timeout::Timeout(const char* str)
+:_out(str)
+{
+    powder::utime::gettime(&_t1);
+}
+
+Timeout::~Timeout()
+{
+    struct timeval t2;
+    powder::utime::gettime(&t2);
+    int sub = t2.tv_usec - _t1.tv_usec;
+    if(sub <= 0){
+        trace("%s : 微秒[0] 毫秒[0] 秒执行[N]次", _out);
+    }else{
+        trace("%s : 微秒[%u] 毫秒[%f] 秒执行[%f]次", _out, sub, double(sub/1000),float(1000000/sub));
+    }
+    trace("#耗时End-----!");
+}
 
 

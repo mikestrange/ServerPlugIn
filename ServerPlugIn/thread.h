@@ -31,6 +31,7 @@ private:
     bool is_change;
     bool is_run;
 public:
+    int type;
     std::string name;
 public:
     //通知(不给其他处理就重写perform)
@@ -77,10 +78,11 @@ private:
     
 public:
     //无参数传递
-    static Thread* launch(THREAD_PROXY_FUNC func, const char* name = NULL)
+    static Thread* launch(THREAD_PROXY_FUNC func, const char* name = NULL, int type = 0)
     {
         auto thread = new Thread(func);
         thread->name = name;
+        thread->type = type;
         thread->start();
         return thread;
     }

@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include "task.h"
-#include "byte_buffer.h"
+#include "packet_buffer.h"
 #include "thread.h"
 #include "global.h"
 #include "object_pool.h"
@@ -22,7 +22,7 @@ class InputArray;
 
 typedef void(*INPUT_CALL)(int len, InputArray& args);
 
-class InputArray : public ByteBuffer
+class InputArray : public PacketBuffer
 {
 public:
     int setInput(ByteArray& byteArray);

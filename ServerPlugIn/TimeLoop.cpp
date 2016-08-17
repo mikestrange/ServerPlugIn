@@ -34,7 +34,7 @@ int TimeManager::create_Id()
 {
     curRockId++;
     if(curRockId >= INT32_MAX) curRockId = 1;
-    if(rockMap.find(curRockId) != rockMap.end())
+    if(rTab.has(curRockId))
     {
         return create_Id();
     }
@@ -51,7 +51,7 @@ bool TimeManager::PushTimer(Timer* rock)
             return false;
         }else{
             int rockid = create_Id();
-            rockMap.insert(std::pair<int, Timer*>(rockid, rock));
+            rTab.put(rockid, rock);
             rock->Reset(rockid);
         }
     }while(0);
@@ -65,13 +65,12 @@ bool TimeManager::EndTimer(Timer* rock)
     do{
         AUTO_LOCK(&rockLock);
         if(rock->isRunning()){
-            std::map<int, Timer*>::iterator iter = rockMap.find(rock->rockId());
-            if(iter==rockMap.end())
+            auto tv = rTab.remove(rock->rockId());
+            if(tv)
             {
-                return false;
+                tv->rockId(0);
             }else{
-                rockMap.erase(iter);
-                iter->second->rockId(0);
+                return false;
             }
         }else{
             return false;
@@ -86,14 +85,18 @@ void TimeManager::HandleTimer(int rockid)
 {
     do{
         AUTO_LOCK(&rockLock);
-        std::map<int, Timer*>::iterator iter = rockMap.find(rockid);
-        if(iter!=rockMap.end())
+        auto tick = rTab.remove(rockid);
+        if(tick)
         {
-            rockMap.erase(iter);
-            auto rock = iter->second;
-            rock->rockId(0);
-            //派送到主线程序(只能推送一个id，跨线程推送指针不安全)
-            powder::RunMain(Task::create(rock->callId, rock->callback));
+            tick->rockId(0);
+            //派送到主线程序 注意线程安全的delegte
+            powder::RunMain(Task::create(tick->call_type, block(int type, void* args){
+                TimeOutEvent* delegate = (TimeOutEvent*)args;
+                if(delegate)
+                {
+                    delegate->onTimeoutProcess(type);
+                }
+            },tick->delegate));
         }
     }while(0);
 }
@@ -101,12 +104,9 @@ void TimeManager::HandleTimer(int rockid)
 void TimeManager::CleanTimers()
 {
     AUTO_LOCK(&rockLock);
-    std::map<int, Timer*>::iterator iter;
-    for(iter = rockMap.begin();iter != rockMap.end(); ++iter)
-    {
-        iter->second->rockId(0);
-    }
-    rockMap.clear();
+    rTab.clear(block(Timer* timer){
+        timer->rockId(0);
+    });
 }
 
 
@@ -121,8 +121,8 @@ void TimeManager::run()
         //get handles
         do{
             AUTO_LOCK(&rockLock);
-            std::map<int, Timer*>::iterator iter;
-            for(iter = rockMap.begin();iter!=rockMap.end();iter++)
+            HashMap<int, Timer*>::Iterator iter;
+            for(iter = rTab.begin();iter!=rTab.end();iter++)
             {
                 Timer* rock = iter->second;
                 if(TimeManager::TIME_COMPLETE(delay, rock))

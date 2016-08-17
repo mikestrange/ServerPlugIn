@@ -19,8 +19,33 @@ namespace StringUtil
         return ret;
     }
     
-    bool scope(std::string &str,int left, int right)
+    bool equal(const char* src, const char* other)
+    {
+        return strcmp(src, other) == 0;
+    }
+    
+    bool equal(std::string& src, const char* other)
+    {
+        return equal(src.c_str(), other);
+    }
+    
+    bool scope(std::string &str, int left, int right)
     {
         return str.length()>=left && str.length() <= right;
     }
 }
+
+
+namespace Basal
+{    
+    int parseInt(const char* src)
+    {
+        return atof(src);
+    }
+    
+    int parseInt(std::string& src)
+    {
+        return parseInt(src.c_str());
+    }
+}
+

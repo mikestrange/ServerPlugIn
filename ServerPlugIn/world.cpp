@@ -11,6 +11,7 @@
 #include "login_body.h"
 #include "reg_body.h"
 
+NetSocket* sockets[10] = {};
 NetServer server;
 Clients clients;
 //---所有消息
@@ -25,7 +26,7 @@ static void server_accept(int fd, void* args)
 static void server_close(int fd, void* args)
 {
     Client* client = (Client*)args;
-    //
+    client->onDelete();
     SAFE_DELETE(client);
 }
 
@@ -35,14 +36,14 @@ static void server_read(int fd, void* args)
     //client
     Client* client = clients.client(fd);
     if(client){
-        client->LoadBytes(byte->bytes(), byte->size());
+        client->packet.LoadBytes(byte->bytes(), byte->size());
         try{
-            while(client->HasResult())
+            while(client->packet.ReadBegin())
             {
                 //处理
                 command.HandlePacket(client);
                 //清理缓冲
-                client->flush();
+                client->packet.ReadEnd();
             }
         }catch(Error& evt){
             client->Disconnect();
@@ -100,9 +101,25 @@ static void thread_server(Thread* thread)
 {
     if(server.Open(port))
     {
-        int code = server.PollAttemper(&server_handler);
-        trace("server close: %d", code);
-    };
+        server.PollAttemper(&server_handler);
+    }
+}
+
+static void thread_socket(Thread* thread)
+{
+    int index = thread->type;
+    auto sock = new NetSocket();
+    sockets[index] = sock;
+    if(sock->Connect("127.0.0.1", port))
+    {
+        sock->PollAttemper(block(int type, int fd, char* bytes, size_t size){
+            
+        });
+    }
+    //end
+    SAFE_DELETE(sock);
+    sockets[index] = NULL;
+    SAFE_DELETE(thread);
 }
 
 
@@ -112,65 +129,99 @@ void launch_world()
     powder::RunMain(block(int type, void* args)
     {
         setInputMethodAttemper(&vim);
+        //
+        LogicManager::getInstance();
     });
 }
 
-
-static void test(Thread* thread)
+//测试发送
+void test_send(NetSocket* data, InputArray& input)
 {
-    NetSocket sock;
-    //
-    ByteBuffer buffer;
-    LoginBody data;
-    PacketHeader header;
-    //
-//    buffer.WriteBegin();
-//    header.cmd = SERVER_CMD_USER_LOGIN;
-//    header.msgType = HANDLE_WORLD_MESSAGE;
-//    buffer.WriteObject(header);
-//    //
-//    data.uid = 10000;
-//    data.password = "123456";
-//    data.macbind = "ABCDEFGH-";
-//    buffer.WriteObject(data);
-//    buffer.WriteEnd();
-    
-    
-    buffer.WriteBegin();
-    header.cmd = SERVER_CMD_USER_LOGIN;
-    header.msgType = HANDLE_GAME_MESSAGE;
-    header.viewid = 1002;
-    buffer.WriteObject(header);
-    
-    buffer.WriteEnd();
-    
-    if(sock.Connect("127.0.0.1", port))
+    std::string str;
+    input>>str;
+    PacketBuffer buf;
+    if(StringUtil::equal(str, "login"))
     {
-        sock.Send(&buffer[0], buffer.wpos());
+        input>>str;
+        USER_T user_id = Basal::parseInt(str);
+        LoginBody body;
+        body.uid = user_id;//唯一写入
+        body.password = "123456";
+        body.macbind = "ABCDEFGH";
+        buf.setHeader(SERVER_CMD_USER_LOGIN, HANDLE_WORLD_MESSAGE);
+        buf.WriteBegin();
+        buf.WriteObject(body);
+    }else if(StringUtil::equal(str, "enter")){
+        buf.setHeader(CMD_LAND_USER_ENTER, HANDLE_GAME_MESSAGE);
+        buf.viewid = 1002;
+        buf.WriteBegin();
+        buf.WriteEnd();
+    }else if(StringUtil::equal(str, "quit")){
+        buf.setHeader(CMD_LAND_USER_EXIT, HANDLE_GAME_MESSAGE);
+        buf.viewid = 1002;
+        buf.WriteBegin();
+        buf.WriteEnd();
+    }else if(StringUtil::equal(str, "sit")){
+        input>>str;
+        SEAT_T seat_id = Basal::parseInt(str)&0xf;
+        buf.setHeader(CMD_LAND_SITDOWN, HANDLE_GAME_MESSAGE);
+        buf.viewid = 1002;
+        buf.WriteBegin();
+        buf<<seat_id;
+        buf.WriteEnd();
+    }else if(StringUtil::equal(str, "stand")){
+        buf.setHeader(CMD_LAND_STAND, HANDLE_GAME_MESSAGE);
+        buf.viewid = 1002;
+        buf.WriteBegin();
+        buf.WriteEnd();
     }
-    SAFE_DELETE(thread);
+    
+    buf.WriteEnd();
+    data->Send(&buf[0], buf.wpos());
 }
 
 //输入vim
 void vim(int argLen, InputArray& input)
 {
-    if(argLen == 0) return;
-    std::string str1;
-    input>>str1;
-    const char* byte1 = str1.c_str();
-    if(strcmp(byte1, "exit") == 0)
+    std::string str;
+    input>>str;
+    if(StringUtil::equal(str, "exit"))
     {
         exit(0);
-    }else if(strcmp(byte1, "start") == 0 || strcmp(byte1, "run") == 0){
+    }else if(StringUtil::equal(str, "run")){
         Thread::launch(&thread_server, "服务器线程");
-    }else if(strcmp(byte1, "stop") == 0){
+    }else if(StringUtil::equal(str, "stop")){
         server.Shut();
-    }else if(strcmp(byte1, "print") == 0){
+    }else if(StringUtil::equal(str, "print")){
         server.toString();
-    }else if(strcmp(byte1, "open") == 0){
-        Thread::launch(&test, "Socket线程");
+    }else if(StringUtil::equal(str, "new") || StringUtil::equal(str, "open")){
+        input>>str;
+        int index = Basal::parseInt(str);
+        if(sockets[index]){
+            trace("this socket is open: %d", index);
+        }else{
+            Thread::launch(&thread_socket, "Socket线程", index);
+            trace("open socket: %d", index);
+        }
+    }else if(StringUtil::equal(str, "send")){
+        input>>str;
+        int index = Basal::parseInt(str);
+        if(sockets[index]){
+            test_send(sockets[index], input);
+        }else{
+            
+        }
+    }else if(StringUtil::equal(str, "del")){
+        input>>str;
+        int index = Basal::parseInt(str);
+        auto sock = sockets[index];
+        if(sock)
+        {
+            sock->Disconnect();
+        }
     }
 }
+
 
 
 

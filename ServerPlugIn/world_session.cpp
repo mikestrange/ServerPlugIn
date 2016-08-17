@@ -8,46 +8,54 @@
 
 #include "world_session.h"
 
-#include "reg_body.h"
-#include "login_body.h"
-
 static DataBank bank;
 
-static void HandleLogic(PacketHeader& data, Client* client)
+WorldSession::WorldSession()
 {
-    ByteBuffer buffer;
-    buffer.WriteBegin();
-    buffer.WriteObject(data);
-    //uid(追加字段)
-    uint32 uid = 10086;
-    buffer<<uid;
-    //剩余子节写入
-    client->packet().ReadBuffer(buffer, client->subLeng());
-    buffer.WriteEnd();
-    //房间处理
-    LogicManager::getInstance()->HandlePacket(buffer);
+    
 }
 
-//
-void WorldSession::Register()
+WorldSession::~WorldSession()
 {
-    SetCommand(SERVER_CMD_USER_REG, handler_2(this, &WorldSession::UserRegistration));
-    SetCommand(SERVER_CMD_USER_LOGIN, handler_2(this, &WorldSession::UserLogin));
+    
+}
+
+//发送房间
+static void HandleLogic(Client* client)
+{
+    //未登录
+    if(!client->user.isLogin())
+    {
+        Log::info("handle error:not login");
+        return;
+    }
+    //这里作为发送的方式给游戏服务器
+    PacketBuffer buffer;
+    buffer.CopyHeader(client->packet);
+    buffer.WriteBegin();
+    //uid(追加字段)
+    buffer<<client->user.user_id;
+    //剩余子节写入
+    client->packet.ReadBuffer(buffer, client->packet.subLeng());
+    buffer.WriteEnd();
+    //交给房间处理
+    LogicManager::getInstance()->HandlePacket(buffer);
 }
 
 //
 void WorldSession::HandlePacket(Client *client)
 {
-    PacketHeader base(client->packet());
+    PacketHeader& base = client->packet;
+    //
     switch(base.msgType)
     {
         case HANDLE_WORLD_MESSAGE:
                 //世界处理
-                SendToCommand(base.cmd, base, client);
+                HandleWorld(base.cmd, client);
             break;
         case HANDLE_GAME_MESSAGE:
                 //游戏处理
-                HandleLogic(base, client);
+                HandleLogic(client);
             break;
         case HANDLE_HALL_MESSAGE:
             
@@ -58,10 +66,25 @@ void WorldSession::HandlePacket(Client *client)
     }
 }
 
-void WorldSession::UserRegistration(PacketHeader& data, Client* client)
+//处理世界任务
+void WorldSession::HandleWorld(int32 cmd, Client* client)
+{
+    PacketHeader& base = client->packet;
+    switch(base.cmd)
+    {
+        case SERVER_CMD_USER_REG:
+            UserRegistration(client);
+        break;
+        case SERVER_CMD_USER_LOGIN:
+            UserLogin(client);
+        break;
+    }
+}
+
+void WorldSession::UserRegistration(Client* client)
 {
     trace(">>UserRegistration");
-    RegBody info(client->packet());
+    RegBody info(client->packet);
     
     if(!StringUtil::scope(info.name, 1, 24))
     {
@@ -101,21 +124,26 @@ void WorldSession::UserRegistration(PacketHeader& data, Client* client)
     }
 }
 
-void WorldSession::UserLogin(PacketHeader& data, Client* client)
+void WorldSession::UserLogin(Client* client)
 {
+    if(client->user.isLogin())
+    {
+        Log::info(">>do not reg aglin");
+        return;
+    };
     trace(">>do UserLogin");
-    LoginBody info(client->packet());
+    LoginBody info(client->packet);
     
     if(!StringUtil::scope(info.password, 6, 24))
     {
-        trace("login error: password length is error(6, 24)");
+        Log::info("login error: password length is error(6, 24)");
         client->Disconnect();
         return;
     }
     
     if(!StringUtil::scope(info.macbind, 6, 128))
     {
-        trace("login error: macbind length is error(6, 128)");
+        Log::info("login error: macbind length is error(6, 128)");
         client->Disconnect();
         return;
     }
@@ -128,9 +156,10 @@ void WorldSession::UserLogin(PacketHeader& data, Client* client)
     //
     if(query.length() > 0)
     {
-        trace("login OK: uid = %d", info.uid);
+        client->user.user_id = info.uid;
+        Log::info("login OK: uid = %d", info.uid);
     }else{
-        trace("login error: is no this uid = %d", info.uid);
+        Log::info("login error: is no this uid = %d", info.uid);
         client->Disconnect();
     }
 }

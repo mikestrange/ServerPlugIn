@@ -15,7 +15,21 @@ namespace StringUtil
 {
     std::string format(const char* fm, ...);
     
+    
+    bool equal(const char* src, const char* other);
+    
+    bool equal(std::string& src, const char* other);
+    
+    //字符范围内
     bool scope(std::string &str,int left, int right);
 }
+
+namespace Basal
+{
+    int parseInt(const char* src);
+    int parseInt(std::string& src);
+}
+
+
 
 #endif /* string_utils_hpp */

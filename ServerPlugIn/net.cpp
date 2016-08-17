@@ -40,7 +40,8 @@ bool NET_SEND(int fd, const void* bytes, size_t len)
 //class server
 bool NetServer::Open(int port)
 {
-    if(isOpen()){
+    if(isOpen())
+    {
         return true;
     }
     serverId = socket(AF_INET, SOCK_STREAM, 0);
@@ -82,7 +83,7 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
     //3秒超时
     struct timeval timeout;
     //select
-    for(;;)
+    while(1)
     {
         FD_ZERO(&readfds);
         //超时时间
@@ -92,6 +93,7 @@ int NetServer::PollAttemper(SCOKET_CALL perform)
         int max_fd = fd_list.RESET_FDS(&readfds);
         if(max_fd < serverId) max_fd = serverId;
         //监听
+        trace("select wait...");
         int result = select(max_fd + 1, &readfds, NULL, NULL, &timeout);
         //端口错误
         if(result < 0)
@@ -269,7 +271,7 @@ void FdList::INIT_FDS()
 {
     for(int i = 0; i < MAX_CONNECTS; i++)
     {
-        fd_list[i] = {-1, 0};   // connectors.
+        fd_list[i] = {FD_NULL, FD_OFF};   // connectors.
     }
 }
 
@@ -282,13 +284,12 @@ bool FdList::NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_addr)
 {
     for(int i = 0; i < maxfds(); i++)
     {
-        //未生成的
+        //未生成的,千万不要set
         if(fd_list[i].fd <= 0)
         {
             fd_list[i].fd = fd;
-            fd_list[i].isOn = 1;
+            fd_list[i].isOn = FD_ON;
             fd_list[i].addr = client_addr;
-            FD_SET(fd, fdset);
             return true;
         }
     }
@@ -298,7 +299,7 @@ bool FdList::NEW_FD(int fd, fd_set* fdset, struct sockaddr_in& client_addr)
 //关闭已经关闭了的
 bool FdList::REMOVE_FD(int p, fd_set* fdset)
 {
-    if(fd_list[p].isOn == 0 && fd_list[p].fd > 0)
+    if(fd_list[p].isOn == FD_OFF && fd_list[p].fd != FD_NULL)
     {
         CLOSED_FD(p, fdset);
         return true;
@@ -309,8 +310,8 @@ bool FdList::REMOVE_FD(int p, fd_set* fdset)
 void FdList::CLOSED_FD(int p, fd_set* fdset)
 {
     int fd = fd_list[p].fd;
-    fd_list[p].isOn = 0;
-    fd_list[p].fd = -1;
+    fd_list[p].isOn = FD_OFF;
+    fd_list[p].fd = FD_NULL;
     FD_CLR(fd, fdset);
     NET_CLOSE(fd);
 }
@@ -320,7 +321,7 @@ int FdList::RESET_FDS(fd_set* fdset)
     int max_fd = 0;
     for(int i = 0; i < maxfds(); i++)
     {
-        if(fd_list[i].isOn)
+        if(fd_list[i].isOn == FD_ON)
         {
             int fd = fd_list[i].fd;
             FD_SET(fd, fdset);
@@ -335,25 +336,30 @@ int FdList::GET_FD(int p)
     return fd_list[p].fd;
 }
 
-//关闭而已
 void FdList::PUSH_CLOSE(int fd)
 {
     for(int i = 1; i < maxfds(); i++)
     {
-        if(fd > 0 && fd == fd_list[i].fd)
+        if(fd == fd_list[i].fd)
         {
-            fd_list[i].isOn = 0;
+            fd_list[i].isOn = FD_OFF;
             break;
         }
     }
 }
 
+//服务器不由它来关闭
 void FdList::CLEAN_FDS()
 {
     for(int i = 0; i < MAX_CONNECTS; i++)
     {
-        fd_list[i].isOn = 0;
-        fd_list[i].fd = -1;
+        fd_list[i].isOn = FD_OFF;
+        int fd = fd_list[i].fd;
+        fd_list[i].fd = FD_NULL;
+        if(i != 0 && fd != FD_NULL)
+        {
+            NET_CLOSE(fd);
+        }
     }
 }
 
@@ -362,7 +368,7 @@ void FdList::toString()
     trace("##server toString begin:");
     for(int i = 0; i < maxfds(); i++)
     {
-        if(fd_list[i].isOn)
+        if(fd_list[i].isOn == FD_ON)
         {
             trace("on line fd = %d", fd_list[i].fd);
         }

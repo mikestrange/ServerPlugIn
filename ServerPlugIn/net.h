@@ -21,8 +21,6 @@
 #include <fcntl.h>
 #include <err.h>
 
-#include <map>
-
 #include "global.h"
 #include "time_utils.h"
 #include "memory_pool.h"
@@ -46,6 +44,14 @@ typedef enum _SOCKET_EVENT
     SOCKET_SELF_CLOSED,   //self close
 }SOCKET_EVENT;
 
+
+#define FD_NULL -1
+
+typedef enum _FD_STATUS
+{
+    FD_OFF = 0,
+    FD_ON = 1
+}FD_STATUS;
 
 //公用
 bool NET_CLOSE(int fd);

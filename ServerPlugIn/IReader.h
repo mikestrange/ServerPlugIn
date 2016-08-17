@@ -10,7 +10,7 @@
 #define IReader_h
 
 #include <stdio.h>
-#include "byte_buffer.h"
+#include "packet_buffer.h"
 
 class WriteBytes;
 class ReadBytes;

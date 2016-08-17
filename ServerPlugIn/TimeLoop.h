@@ -9,6 +9,10 @@
 #ifndef rock_manager_h
 #define rock_manager_h
 
+
+#include <vector>
+
+#include "hash_map.h"
 #include "Timer.h"
 #include "thread.h"
 #include "main_loop.h"
@@ -20,7 +24,8 @@ class TimeManager : public Thread
 {
 private:
     int curRockId = 0;
-    std::map<int, Timer*> rockMap;
+private:
+    HashMap<int, Timer*> rTab;
     Locked rockLock;
 private:
     int create_Id();
@@ -30,7 +35,6 @@ public:
     virtual bool PushTimer(Timer* rock);
     virtual bool EndTimer(Timer* rock);
     virtual void CleanTimers();
-    //virtual bool HandleTimers(struct timespec &delay);
 private:
     virtual void HandleTimer(int rockid);
 protected:

@@ -13,17 +13,23 @@
 #include <time.h>
 
 #include "global.h"
+
+//时间搓，秒
+typedef time_t TIME_T;
+//时间搓，毫秒
+typedef clock_t CLOCK_T;
+
 //秒
 POWDER_BEGIN
     namespace stime
     {
         //获取当前时间戳
-        time_t gettime();
+        TIME_T gettime();
         
-        time_t overtime();
+        TIME_T overtime();
         
         //获取系统经过的时间戳,准确到秒
-        time_t runtime();
+        TIME_T runtime();
     }
 
 //毫秒
@@ -70,30 +76,11 @@ POWDER_END
 class Timeout
 {
 public:
-    Timeout()
-    :_out(NULL)
-    {
-        powder::utime::gettime(&_t1);
-    }
+    Timeout();
     
-    Timeout(const char* str)
-    :_out(str)
-    {
-        powder::utime::gettime(&_t1);
-    }
+    Timeout(const char* str);
     
-    virtual ~Timeout()
-    {
-        struct timeval t2;
-        powder::utime::gettime(&t2);
-        int sub = t2.tv_usec - _t1.tv_usec;
-        if(sub <= 0){
-            trace("%s : 微秒[0] 毫秒[0] 秒执行[N]次", _out);
-        }else{
-            trace("%s : 微秒[%u] 毫秒[%f] 秒执行[%f]次", _out, sub, double(sub/1000),float(1000000/sub));
-        }
-        trace("#耗时End-----!");
-    }
+    virtual ~Timeout();
 private:
     struct timeval _t1;
     const char* _out;

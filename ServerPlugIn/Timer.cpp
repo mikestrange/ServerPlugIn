@@ -13,16 +13,16 @@
 //class
 
 Timer::Timer()
-:rockid(0)
+:time_id(0)
 ,delay_time(0)
-,callId(0)
-,callback(NULL){}
+,delegate(NULL)
+,call_type(0){}
 
-Timer::Timer(delay_t value, TASK_CALL func, int call_id)
-:rockid(0)
+Timer::Timer(delay_t value, TimeOutEvent* target, int ctype)
+:time_id(0)
 ,delay_time(value)
-,callback(func)
-,callId(call_id)
+,delegate(target)
+,call_type(ctype)
 {
     
 }
@@ -34,11 +34,12 @@ Timer::~Timer()
 
 int Timer::rockId()const
 {
-    return rockid;
+    return time_id;
 }
 
 bool Timer::Start()
 {
+    Stop();
     return TimeManager::getInstance()->PushTimer(this);
 }
 
@@ -49,7 +50,7 @@ void Timer::Stop()
 
 bool Timer::isRunning()const
 {
-    return rockid > 0;
+    return time_id > 0;
 }
 
 void Timer::setDelayTime(delay_t value)
@@ -61,16 +62,16 @@ void Timer::setDelayTime(delay_t value)
     }
 }
 
-void Timer::setReceipt(TASK_CALL func, int call_id)
+void Timer::setDelegate(TimeOutEvent* target, int ctype)
 {
-    callback = func;
-    callId = call_id;
+    delegate = target;
+    call_type = ctype;
 }
 
 //private
 void Timer::rockId(int value)
 {
-    rockid = value;
+    time_id = value;
 }
 
 struct timespec& Timer::happentime()
@@ -80,7 +81,7 @@ struct timespec& Timer::happentime()
 
 void Timer::Reset(int value)
 {
-    trace("start ok:%d",value);
+    trace("time start ok:%d", value);
     rockId(value);
     int sec = (int)delay_time;                                  //间隔秒
     long msec = (delay_time - sec)*MVAL_TIME;                   //间隔毫秒

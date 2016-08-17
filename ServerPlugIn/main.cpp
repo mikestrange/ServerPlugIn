@@ -11,15 +11,11 @@
 #include "thread.h"
 #include "task_scheduler.h"
 #include "object_pool.h"
-#include "packet.h"
 
 //src
 #include "world.h"
 
-void launch(int type, void* args)
-{
-    
-}
+//template<class T>
 
 int main(int argc, const char * argv[])
 {

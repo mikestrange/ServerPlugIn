@@ -8,9 +8,9 @@
 
 #include "client.h"
 
-
-
 Client::Client()
+:fd(0)
+,mark_fd(0)
 {
     
 }
@@ -49,11 +49,16 @@ void Client::UnConnect()
     }
 }
 
-void Client::SendPacket(const void *bytes, size_t length)
+void Client::onDelete()
+{
+    
+}
+
+void Client::SendPacket(PacketBuffer& buf)
 {
     AUTO_LOCK(&fd_lock);
     if(fd > 0){
-        NET_SEND(fd, bytes, length);
+        NET_SEND(fd, &buf[0], buf.wpos());
     }else{
         trace("this client is close");
     }

@@ -9,39 +9,36 @@
 #ifndef world_session_h
 #define world_session_h
 
-#include <stdio.h>
-
 #include "command.h"
-#include "byte_buffer.h"
+#include "packet_buffer.h"
 #include "client.h"
 
+#include "log.h"
 #include "string_utils.h"
 #include "data_bank.h"
 #include "logic_manager.h"
 
+//body
+#include "reg_body.h"
+#include "login_body.h"
+
 class Client;
 
-class WorldSession : public Command
+class WorldSession
 {
 public:
-    WorldSession()
-    {
-        Register();
-    }
+    WorldSession();
     
-    virtual ~WorldSession()
-    {
-        Destroy();
-    }
-    void Register()override;
-    void Destroy()override{};
+    virtual ~WorldSession();
+    
     //头处理
     void HandlePacket(Client* client);
 private:
+    void HandleWorld(int32 cmd, Client* client);
     //用户注册
-    void UserRegistration(PacketHeader& data, Client* client);
+    void UserRegistration(Client* client);
     //用户登录
-    void UserLogin(PacketHeader& data, Client* client);
+    void UserLogin(Client* client);
 };
 
 #endif /* world_session_h */

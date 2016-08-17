@@ -60,7 +60,11 @@ static void vim_complete(int type, void* args)
     //解析
     int size = putin.setInput(*byte);
     //推送输出
-    if(method) method(size, putin);
+    try{
+        if(method) method(size, putin);
+    }catch(Error& evt){
+        trace("#@input handle error");
+    }
     //share
     if(!ByteArrayPool::getInstance()->share(byte))
     {

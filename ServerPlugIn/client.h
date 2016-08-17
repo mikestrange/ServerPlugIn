@@ -1,7 +1,7 @@
 //
 //  client.h
 //  ServerPlugIn
-//
+//  用来回执用户
 //  Created by MikeRiy on 16/8/2.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
@@ -9,15 +9,15 @@
 #ifndef client_h
 #define client_h
 
-#include "packet.h"
 #include "lock.h"
 #include "world.h"
 #include "clients.h"
 #include "user.h"
+#include "packet_buffer.h"
 
 class Clients;
 
-class Client : public Packet, virtual public BufferInterface
+class Client
 {
 private:
     int fd;
@@ -25,15 +25,18 @@ private:
 private:
     Locked fd_lock;
 public:
+    PacketBuffer packet;
+public:
     User user;
+    //
 public:
     Client();
     virtual ~Client();
 public:
     void onConnect(int fd);
     void Disconnect();
-    void SendPacket(const void* bytes, size_t length);
-    
+    void SendPacket(PacketBuffer& buf);
+    void onDelete();
 private:
     friend class Clients;
     void UnConnect();

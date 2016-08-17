@@ -18,6 +18,25 @@
 #include <stdarg.h>
 
 
+typedef char int8;
+typedef unsigned char uint8;
+
+typedef short int16;
+typedef unsigned short uint16;
+
+typedef int int32;
+typedef unsigned int uint32;
+
+typedef long long int64;
+
+typedef unsigned long long uint64;
+
+typedef long long TOKEN_T;      //识别
+typedef int USER_T;             //用户id
+typedef int GATE_T;             //用户id
+typedef char STATUS_T;          //用户状态 255够了
+typedef char SEAT_T;            //座位 255够了
+
 #define ERROR_ASSERT(e)      assert(e)
 
 #define SAFE_DELETE(p)      do{ if(p){ delete p; p = NULL;} }while(0)

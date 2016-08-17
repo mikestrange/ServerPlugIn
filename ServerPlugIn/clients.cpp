@@ -12,47 +12,39 @@
 bool Clients::AddClient(int fd)
 {
     AUTO_LOCK(&lock);
-    if(clientTable.find(fd) != clientTable.end()) return false;
+    if(cTab.has(fd)) return false;
     auto client = new Client();
     client->onConnect(fd);
-    clientTable.insert(std::pair<int, Client*>(fd, client));
+    cTab.put(fd, client);
     return true;
 }
 
 Client* Clients::client(int fd)
 {
-    AUTO_LOCK(&lock);
-    std::map<int, Client*>::iterator iter = clientTable.find(fd);
-    if(iter != clientTable.end())
-    {
-        return iter->second;
-    }
-    return NULL;
+    return cTab.find(fd);
 }
 
 Client* Clients::RemoveClient(int fd)
 {
     AUTO_LOCK(&lock);
-    std::map<int, Client*>::iterator iter = clientTable.find(fd);
-    if(iter != clientTable.end())
+    auto client = cTab.remove(fd);
+    if(client)
     {
-        auto client = iter->second;
-        clientTable.erase(iter);
         client->UnConnect();
-        return client;
     }
-    return NULL;
+    return client;
 }
 
-void Clients::Clear(CLIENT_CALL func)
+void Clients::Clear(void(*func)(Client*))
 {
     AUTO_LOCK(&lock);
-    std::map<int, Client*>::iterator iter;
-    for(iter = clientTable.begin();iter != clientTable.end(); ++iter)
+    HashMap<int, Client*>::Iterator iter;
+    for(iter = cTab.begin();iter!=cTab.end();)
     {
         auto client = iter->second;
+        cTab.proto().erase(iter++);
         client->UnConnect();
+        //异步指针
         func(client);
     }
-    clientTable.clear();
 }
