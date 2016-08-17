@@ -12,15 +12,14 @@
 #include "global.h"
 
 
-POWDER_BEGIN
-
-void SRandom();
-
-int Random(int f);
-
-int Random(int left, int right);
-
-POWDER_END
+namespace Math
+{
+    void SRandom();
+    
+    int Random(int f);
+    
+    int Random(int left, int right);
+}
 
 
 #endif /* math_utils_h */

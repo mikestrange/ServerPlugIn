@@ -10,30 +10,31 @@
 
 static bool is_set = false;
 
-POWDER_BEGIN
-
-
-void SRandom()
+namespace Math
 {
-    is_set = true;
-    srand((unsigned)time(NULL));
-}
-
-int Random(int f)
-{
-    if(!is_set) SRandom();
-    return rand()%f;
-}
-
-int Random(int left, int right)
-{
-    if(right > left)
+    void SRandom()
     {
-        return left + Random(right - left);
+        is_set = true;
+        srand((unsigned)time(NULL));
     }
-    return right + Random(left - right);
+    
+    //0-(a-1)
+    int Random(int a)
+    {
+        if(!is_set) SRandom();
+        return rand()%a;
+    }
+    
+    //a1 - a2
+    int Random(int a1, int a2)
+    {
+        if(a1 > a2)
+        {
+            return a2 + Random(a1 - a2);
+        }
+        return a1 + Random(a2 - a1);
+    }
 }
 
-POWDER_END
 
 

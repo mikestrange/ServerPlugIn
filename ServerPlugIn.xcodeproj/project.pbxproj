@@ -427,9 +427,9 @@
 				20CC0E001D4CA492006A3F91 /* time_utils.h */,
 				20CC0DFF1D4CA492006A3F91 /* time_utils.cpp */,
 				20E43BBF1D61A30A00F31F08 /* hash_map.h */,
-				209E2CE21D6206D4008D61A8 /* sort_utils.h */,
 				202AFDD91D636E8700AA68F2 /* math_utils.h */,
 				202AFE031D637A4800AA68F2 /* math_utils.cpp */,
+				209E2CE21D6206D4008D61A8 /* sort_utils.h */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -645,7 +645,10 @@
 		208CE4E01D465216007465A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = MY_SQL;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					MY_SQL,
+					DEBUG,
+				);
 				HEADER_SEARCH_PATHS = (
 					/usr/include,
 					/usr/local/include,
@@ -667,7 +670,10 @@
 		208CE4E11D465216007465A0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = MY_SQL;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					MY_SQL,
+					DEBUG,
+				);
 				HEADER_SEARCH_PATHS = (
 					/usr/include,
 					/usr/local/include,

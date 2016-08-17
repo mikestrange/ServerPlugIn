@@ -17,7 +17,7 @@ OBJS := $(patsubst %cpp,%o,$(SRCS))
 #EACH_MAKE := $(foreach dir,$(ROOT),make -C $(dir);)
 
 # 宏定义 
-DEFS := -DDEBUG
+DEFS := -DRELEASE
 #路径
 INC :=
 #链接库

@@ -15,12 +15,13 @@ namespace StringUtil
 {
     std::string format(const char* fm, ...);
     
-    
+    //字符是否一样
     bool equal(const char* src, const char* other);
     
+    //字符是否一样
     bool equal(std::string& src, const char* other);
     
-    //字符范围内
+    //字符是否在范围内
     bool scope(std::string &str,int left, int right);
 }
 

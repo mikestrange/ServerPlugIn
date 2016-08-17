@@ -211,7 +211,7 @@ int LandlordLogic::HoldBankerAction(USER_T user_id, int8 multiple)
 void LandlordLogic::BeginCall()
 {
     //通知房间玩家给予牌, 开始抢庄
-    start_call_id = powder::Random(max_seat) + 1; //1开始
+    start_call_id = Math::Random(max_seat) + 1; //1开始
     oper_id = start_call_id;
     call_id = start_call_id;
     call_mult = 0;

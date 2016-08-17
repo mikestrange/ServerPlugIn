@@ -18,6 +18,18 @@
 #include <stdarg.h>
 
 
+//常用
+typedef char BYTE;          //8
+typedef short SHORT;        //16
+typedef int DWORD;          //32
+typedef long long INT64;    //64
+
+typedef unsigned char BYTE_U;          //8 (0-255)
+typedef unsigned short SHORT_U;        //16
+typedef unsigned int DWORD_U;          //32
+typedef unsigned long long INT64_U;    //64
+
+//buffer
 typedef char int8;
 typedef unsigned char uint8;
 
@@ -44,7 +56,11 @@ typedef char SEAT_T;            //座位 255够了
 #define SAFE_DELETE_LIST(p) do{ if(p){ delete []p; p = NULL; } }while(0)
 
 //输出看台
-#define trace(fm, args...)      printf(fm"\n", ##args)
+#ifdef DEBUG
+    #define trace(fm, args...)      printf(fm"\n", ##args)
+#else
+    #define trace(fm, args...)
+#endif
 
 //字段替换
 #define STR_FORMAT(size) \
