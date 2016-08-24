@@ -9,11 +9,11 @@
 #ifndef command_h
 #define command_h
 
-
 //消息类型（其实就是交给哪个服务处理）
 enum MESSAGE_TYPE
 {
-    HANDLE_WORLD_MESSAGE = 1,
+    HANDLE_CLIENT_MESSAGE = 0,
+    HANDLE_WORLD_MESSAGE,
     HANDLE_GAME_MESSAGE,
     HANDLE_HALL_MESSAGE,
     HANDLE_REDIS_MESSAGE,
@@ -22,6 +22,9 @@ enum MESSAGE_TYPE
 //服务器监听
 enum SERVER_READ_COMMAND
 {
+    SERVER_CMD_POTHOOK_REG = 10,
+    SERVER_CMD_POTHOOK_UNREG,
+    
     SERVER_CMD_USER_REG = 100,
     SERVER_CMD_USER_LOGIN,
 };
@@ -43,7 +46,13 @@ enum SERVER_SEND_COMMAND
     CLIENT_CMD_USER_LOGIN,
 };
 
-
+//注册类型
+enum POT_TYPE
+{
+    POT_NODE_SERVER = 0,
+    POT_GAME_LAND_SERVER = 1,//斗地主
+    POT_GATE_SERVER = 10
+};
 
 
 #endif /* command_hpp */

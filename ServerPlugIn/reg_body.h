@@ -31,16 +31,16 @@ public:
     :uid(0)
     ,appid(0)
     {
-        read(bytes);
+        ReadFor(bytes);
     }
     
 public:
-    void write(WriteBytes& bytes)override
+    void WriteTo(WriteBytes& bytes)override
     {
         bytes<<uid<<appid<<password<<macbind<<name;
     }
         
-    void read(ReadBytes& bytes)override
+    void ReadFor(ReadBytes& bytes)override
     {
         bytes>>uid>>appid>>password>>macbind>>name;
     }

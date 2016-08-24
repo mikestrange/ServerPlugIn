@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ServerPlugIn/world_session.cpp"
-            timestampString = "493142556.335231"
+            timestampString = "493270848.822424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
             landmarkName = "WorldSession::HandlePacket(Client *client)"
             landmarkType = "5">
          </BreakpointContent>
@@ -84,7 +84,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ServerPlugIn/landlord_logic.h"
-            timestampString = "493119376.957038"
+            timestampString = "493270395.43708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
@@ -98,13 +98,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ServerPlugIn/logic_manager.cpp"
-            timestampString = "493058505.137836"
+            timestampString = "493270848.822424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "LogicManager::AddLogic(int viewid, LogicBase *target)"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "LogicManager::AddLogic(int viewid, LaunchBase *target)"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ServerPlugIn/game/landlord/landlord_logic.h"
+            timestampString = "493698583.923727"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

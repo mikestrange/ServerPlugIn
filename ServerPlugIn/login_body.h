@@ -14,7 +14,6 @@
 class LoginBody : public IReader
 {
 public:
-    //必须
     int32 uid;
     int32 appid;
     std::string password;
@@ -38,16 +37,16 @@ public:
     ,money(0)
     ,exp(0)
     {
-        read(bytes);
+        ReadFor(bytes);
     }
     
 public:
-    void write(WriteBytes& bytes)override
+    void WriteTo(WriteBytes& bytes)override
     {
         bytes<<uid<<appid<<password<<macbind;
     }
         
-    void read(ReadBytes& bytes)override
+    void ReadFor(ReadBytes& bytes)override
     {
         bytes>>uid>>appid>>password>>macbind;
     }

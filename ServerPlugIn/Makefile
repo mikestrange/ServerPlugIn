@@ -1,20 +1,9 @@
-CC := g++  
+#设置编译器
+CC := g++
 
-ROOT := $(shell pwd)
+CFLAGS := -Wall -g -std=c++11
 
-CFLAGS := -Wall -g -std=c++11  
-
-TARGET := main  
-
-DIRS := $(shell find . -maxdepth 2 -type d)
-
-SRCS := $(foreach dir,$(DIRS),$(wildcard $(dir)/*.cpp))
-#$(wildcard *.cpp)
-
-OBJS := $(patsubst %cpp,%o,$(SRCS))  
-
-#递归执行make
-#EACH_MAKE := $(foreach dir,$(ROOT),make -C $(dir);)
+ROOT_DIR := $(shell pwd)
 
 # 宏定义 
 DEFS := -DRELEASE
@@ -33,22 +22,35 @@ $(info 'this is linux makefile')
 else
 DEFS += -DMY_SQL
 INC += -I/usr/include -I/usr/local/include -I/usr/local/mysql/include
-LIBS += -L./lib -lmysqlclient -lmysqld
+LIBS += -L./libs -lmysqlclient -lmysqld
 $(info 'this is mac makefile')
 endif
 
-
 #最后添加
-CFLAGS += $(DEFS) 
-    
-%.o:%.cpp  
-	$(CC) $(CFLAGS) $(INC) -c $<  
-	
-$(TARGET):$(OBJS)  
-	$(CC) $(CFLAGS) $(LIBS) -o $@ $^ 
+CFLAGS += $(DEFS)
+CFLAGS += $(INC) 
+CFLAGS += $(LIBS) 
+
+SUBDIRS := $(shell ls -l | grep ^d | awk '{if($$9 != "debug") print $$9}')
+
+CUR_SOURCE := ${wildcard *.cpp}
+
+CUR_OBJS := ${patsubst %.cpp, %.o, $(CUR_SOURCE)}
+
+all:$(SUBDIRS) $(CUR_OBJS)
+
+
+$(SUBDIRS):ECHO
+	make -C $@
+
+
+ECHO:
+	@echo $(SUBDIRS)
+
+
+$(CUR_OBJS):%.o:%.cpp
+	$(CC) $(CFLAGS) -c $^ -o $@
+
 
 clean:
 	$(shell find . -name '*.o' |xargs rm -rf) 
-	
-	
- 

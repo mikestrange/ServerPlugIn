@@ -10,59 +10,13 @@
 #define byte_buffer_h
 
 #include "data_array.h"
+#include "packet_header.h"
 
 #define PACKET_BEGIN 4
 #define PACKET_MAX 2048
 
 class DataArray;
-
-//协议头
-class PacketHeader
-{
-public:
-    int32 cmd;          //命令号
-    int32 msgType;      //消息类型(服务器类型)
-    int32 version;      //服务器版本号                (客户端写入)
-    int32 secretId;     //协议号(加密类型/加密规则)     (客户端写入)
-    int32 viewid;       //自版本协议号(一个房间或者一个区域的id)
-    
-public:
-    PacketHeader()
-    :cmd(0)
-    ,msgType(0)
-    ,version(0)
-    ,secretId(0)
-    ,viewid(0){}
-    
-    virtual ~PacketHeader(){}
-    
-    void setHeader(int32 _cmd, int32 _msg = 0)
-    {
-        cmd = _cmd;
-        if(_msg > 0) msgType = _msg;
-    }
-    
-    void CopyHeader(PacketHeader& data)
-    {
-        cmd = data.cmd;
-        msgType = data.msgType;
-        version = data.version;
-        secretId = data.secretId;
-        viewid = data.viewid;
-    }
-    
-protected:
-    void OutputHeader(DataArray& buf)
-    {
-        buf>>cmd>>msgType>>version>>secretId>>viewid;
-    }
-    
-    void InputHeader(DataArray& buf)
-    {
-        buf<<cmd<<msgType<<version<<secretId<<viewid;
-    }
-    
-};
+class PacketHeader;
 
 //协议处理
 class PacketBuffer : public DataArray , public PacketHeader
@@ -85,8 +39,15 @@ public:
     virtual void WriteBegin()
     {
         wpos(mwpos + PACKET_BEGIN);
-        //写入头
-        InputHeader(self());
+        //自身头
+        WriteObject(*this);
+    }
+    
+    //自定义写入头
+    virtual void WriteBegin(IReader& data)
+    {
+        wpos(mwpos + PACKET_BEGIN);
+        WriteObject(data);
     }
     
     virtual int32 WriteEnd()
@@ -108,13 +69,12 @@ public:
         append(bytes, len);
     }
     
-    virtual bool ReadBegin()
+    virtual bool HasPacket()
     {
         if(packLen > 0)
         {
             if(wpos() >= packLen + rpos())
             {
-                OutputHeader(self());
                 return true;
             }
             return false;
@@ -131,7 +91,6 @@ public:
                     trace(">>##ReadBegin Pocket Length %u %zu %zu", packLen, rpos(), wpos());
                     if(wpos() >= packLen + rpos())
                     {
-                        OutputHeader(self());
                         return true;
                     }
                     return false;
@@ -139,6 +98,19 @@ public:
             }
         }
         return false;
+    }
+    
+    virtual void ReadBegin()
+    {
+        rpos(beginPos);
+        ReadObject(*this);
+    }
+    
+    //自定义读取头
+    virtual void ReadBegin(IReader& data)
+    {
+        rpos(beginPos);
+        ReadObject(data);
     }
     
     virtual void ReadEnd()
@@ -159,6 +131,10 @@ public:
         }
     }
     
+    size_t wsize()
+    {
+        return wpos();
+    }
     
     //当前包剩余可读子节
     virtual size_t subLeng()
