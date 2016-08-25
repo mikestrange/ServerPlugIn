@@ -77,7 +77,7 @@ void PlayerManager::RemovePlayer(TOKEN_T tid)
     SAFE_DELETE(player);
 }
 
-void PlayerManager::RemovePlayerByFd(int fd)
+void PlayerManager::RemovePlayerByFd(SOCKET_T fd)
 {
     HashMap<TOKEN_T, Player*>::Iterator iter;
     for(iter = pTab.begin();iter!=pTab.end();)
@@ -85,7 +85,7 @@ void PlayerManager::RemovePlayerByFd(int fd)
         HashMap<TOKEN_T, Player*>::Iterator miter = iter;
         iter++;
         auto player = miter->second;
-        if(player->fd == fd)
+        if(player->sockfd == fd)
         {
             pTab.remove(miter);
             Log::debug("用户注销 OK %d", player->user_id);

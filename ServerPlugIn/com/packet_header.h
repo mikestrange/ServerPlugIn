@@ -14,7 +14,7 @@
 
 class PacketHeader : public IReader
 {
-public:
+private:
     int32 cmd;          //命令号
     int32 type;         //消息类型(服务器类型)
     int32 version;      //服务器版本号(可以不用管)
@@ -31,25 +31,52 @@ public:
 
     virtual ~PacketHeader(){}
 
-    void setHeader(int32 _cmd, int32 _type = 0, TOKEN_T tid = 0, int32 vid = 0, int32 ver = 0)
+    virtual void setBegin(int32 $cmd, int32 $type = 0, TOKEN_T $tid = 0, int32 $vid = 0, int32 $ver = 0)
     {
-        cmd = _cmd;
-        type = _type;
-        version = ver;
-        view_id = vid;
-        token_id = tid;
+        cmd = $cmd;
+        type = $type;
+        version = $ver;
+        view_id = $vid;
+        token_id = $tid;
     }
-
+    
+public:
+    int32 getCmd()
+    {
+        return cmd;
+    }
+    
+    int32 getType()
+    {
+        return type;
+    }
+    
+    int32 getViewId()
+    {
+        return view_id;
+    }
+    
+    int32 getVersion()
+    {
+        return version;
+    }
+    
+    TOKEN_T getTokenId()
+    {
+        return token_id;
+    }
 
 public:
     virtual void WriteTo(WriteBytes& bytes)override
     {
         bytes<<cmd<<type<<version<<view_id<<token_id;
+        //Log::debug("write %d %d %d %d", cmd, type, version, view_id);
     }
     
     virtual void ReadFor(ReadBytes& bytes)override
     {
         bytes>>cmd>>type>>version>>view_id>>token_id;
+        //Log::debug("read %d %d %d %d", cmd, type, version, view_id);
     }
 };
 

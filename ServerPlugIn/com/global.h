@@ -113,6 +113,25 @@ T max_evaluator()
 //堆字节
 #define MALLOC(size) malloc(size)
 
+
+#define STATIC_CLASS(Class) \
+private:\
+static Class* _instance;\
+public:\
+static Class* getInstance();
+
+#define STATIC_CLASS_INIT(Class)    \
+Class* Class::_instance = NULL;\
+Class* Class::getInstance()\
+{\
+    if(!_instance)\
+    {\
+        _instance = new Class;\
+    }\
+    return _instance;\
+}
+
+
 //namespace
 #define POWDER_BEGIN namespace powder {
 #define POWDER_END };

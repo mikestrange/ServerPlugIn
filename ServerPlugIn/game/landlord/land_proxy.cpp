@@ -29,7 +29,7 @@ LandProxy::~LandProxy()
 
 void LandProxy::onPacketProcess(PacketBuffer &packet)
 {
-    switch(packet.cmd)
+    switch(packet.getCmd())
     {
         case CMD_LAND_USER_ENTER:
             OnEnterLand(packet);
@@ -60,7 +60,7 @@ void LandProxy::OnEnterLand(PacketBuffer& packet)
 {
     USER_T user_id;
     packet>>user_id;
-    game->EnterLand(packet.token_id, user_id);
+    game->EnterLand(packet.getTokenId(), user_id);
 }
 
 void LandProxy::OnExitLand(PacketBuffer& packet)
@@ -127,7 +127,7 @@ void LandProxy::OnPlayerCardAction(PacketBuffer &packet)
 void LandProxy::ToEnter(LandPlayer* player)
 {
     PacketBuffer buf;
-    buf.setHeader(CMD_LAND_USER_ENTER, HANDLE_CLIENT_MESSAGE, player->getTokenId());
+    buf.setBegin(CMD_LAND_USER_ENTER, HANDLE_CLIENT_MESSAGE, player->getTokenId());
     buf.WriteBegin();
     //写入要通知的人
     //写入用户数据
@@ -139,7 +139,7 @@ void LandProxy::ToEnter(LandPlayer* player)
 void LandProxy::ToExit(TOKEN_T tid, USER_T uid)
 {
     PacketBuffer buf;
-    buf.setHeader(CMD_LAND_USER_EXIT, HANDLE_CLIENT_MESSAGE, tid);
+    buf.setBegin(CMD_LAND_USER_EXIT, HANDLE_CLIENT_MESSAGE, tid);
     buf.WriteBegin();
     //写入要通知的人
     buf<<uid;
@@ -151,7 +151,7 @@ void LandProxy::ToExit(TOKEN_T tid, USER_T uid)
 void LandProxy::ToSitDown(TOKEN_T tid, SEAT_T sid)
 {
     PacketBuffer buf;
-    buf.setHeader(CMD_LAND_SITDOWN, HANDLE_CLIENT_MESSAGE, tid);
+    buf.setBegin(CMD_LAND_SITDOWN, HANDLE_CLIENT_MESSAGE, tid);
     buf.WriteBegin();
     //写入要通知的人
     buf<<sid;
@@ -163,7 +163,7 @@ void LandProxy::ToSitDown(TOKEN_T tid, SEAT_T sid)
 void LandProxy::ToStandUp(TOKEN_T tid, SEAT_T sid)
 {
     PacketBuffer buf;
-    buf.setHeader(CMD_LAND_STAND, HANDLE_CLIENT_MESSAGE, tid);
+    buf.setBegin(CMD_LAND_STAND, HANDLE_CLIENT_MESSAGE, tid);
     buf.WriteBegin();
     //写入要通知的人
     buf<<sid;

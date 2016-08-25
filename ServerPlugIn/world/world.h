@@ -9,47 +9,29 @@
 #ifndef world_h
 #define world_h
 
-#include "ConnServer.h"
-
-#include "thread.h"
-#include "error.h"
-
-#include "object_pool.h"
-#include "main_loop.h"
+#include "base_server.h"
 
 #include "world_session.h"
-#include "launch_base.h"
 
 #include "pothook.h"
 
+#include "global.h"
 
-class WorldSession;
 class PotHook;
 
-class WorldServer : public LaunchBase, public ConnServer
+class WorldServer : public BaseServer
 {
-private:
-    static WorldServer* _instance;
-public:
-    static WorldServer* getInstance();
-private:
-    static void ThreadServer(Thread* thread);
-private:
-    int port;
-    WorldSession* session;
+    STATIC_CLASS(WorldServer);
 public:
     WorldServer();
     virtual ~WorldServer();
-    void Launch()override;
-    virtual void Launch(int port);
-    void UnLaunch()override;
-protected:
-    void HandlePacket(Client* node)override;
-    
-    virtual void OnMainClosed(int fd, SockNode* conf)override;
     
 public:
-    WorldSession* getSession()const;
+    virtual void OnRemove(SOCKET_T sockfd)override;
+    
+    virtual void OnRegister(SOCKET_T sockfd, SocketHandler* sock)override;
+    
+    virtual void OnProcessPacket(SOCKET_T sockfd, SocketHandler& packet)override;
 };
 
 #endif /* world_hpp */

@@ -8,72 +8,36 @@
 
 #include "world.h"
 
-
-//世界服务器
-WorldServer* WorldServer::_instance = NULL;
-
-WorldServer* WorldServer::getInstance()
-{
-    if(!_instance)
-    {
-        _instance = new WorldServer;
-    }
-    return _instance;
-}
+STATIC_CLASS_INIT(WorldServer);
 
 WorldServer::WorldServer()
-:port(0)
-{
-    session = new WorldSession();
-}
-
-WorldServer::~WorldServer()
-{
-    SAFE_DELETE(session);
-}
-
-void WorldServer::Launch()
-{
-    trace("WorldServer Launch nothing");
-}
-
-void WorldServer::Launch(int port)
-{
-    this->port = port;
-    Thread::launch(&WorldServer::ThreadServer, "NetServer");
-}
-
-void WorldServer::ThreadServer(Thread* thread)
-{
-    NetServer* server = WorldServer::getInstance();
-    int port = WorldServer::getInstance()->port;
-    if(server->Open(port))
-    {
-         server->PollAttemper();
-    }
-    SAFE_DELETE(thread);
-}
-
-
-void WorldServer::UnLaunch()
 {
     
 }
 
-void WorldServer::HandlePacket(Client* node)
+WorldServer::~WorldServer()
 {
-    session->HandlePacket(node);
+    
 }
 
-void WorldServer::OnMainClosed(int fd, SockNode* conf)
-{
-    ConnServer::OnMainClosed(fd, conf);
-    PlayerManager::getInstance()->RemovePlayerByFd(fd);
-    PotHook::getInstance()->DelByFd(fd);
-}
 
-WorldSession* WorldServer::getSession()const
+void WorldServer::OnRemove(SOCKET_T sockfd)
 {
-    return session;
-}
+    //用户
+    PlayerManager::getInstance()->RemovePlayerByFd(sockfd);
+    //钩子
+    PotHook::getInstance()->DelByFd(sockfd);
+};
+
+void WorldServer::OnRegister(SOCKET_T sockfd, SocketHandler* sock)
+{
+    
+};
+
+void WorldServer::OnProcessPacket(SOCKET_T sockfd, SocketHandler& packet)
+{
+    //会话
+    WorldSession::getInstance()->HandlePacket(packet);
+};
+
 

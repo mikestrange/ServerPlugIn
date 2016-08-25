@@ -26,12 +26,12 @@ Error::Error(int idx, const char* bytes)
 
 Error::~Error()
 {
-    
+
 }
 
 void Error::toString()
 {
-    trace("Error printf: id = %d, msg = %s", type, msg);
+    printf("Error printf: id = %d, msg = %s\n", type, msg.c_str());
 }
 
 void Error::Message(const char* bytes)

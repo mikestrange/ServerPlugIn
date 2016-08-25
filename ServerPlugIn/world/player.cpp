@@ -13,6 +13,7 @@ Player::Player()
 :token_id(0)
 ,user_id(0)
 ,status(0)
+,sockfd(0)
 ,appid(0)
 ,gametype(0){}
 

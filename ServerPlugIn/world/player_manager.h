@@ -28,7 +28,7 @@ public:
     
     void RemovePlayer(TOKEN_T tid);
     
-    void RemovePlayerByFd(int fd);
+    void RemovePlayerByFd(SOCKET_T fd);
     
     bool HasPlayer(TOKEN_T tid);
     

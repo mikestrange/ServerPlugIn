@@ -12,56 +12,54 @@
 #include "data_array.h"
 #include "packet_header.h"
 
+//头大小
 #define PACKET_BEGIN 4
+//长度
 #define PACKET_MAX 2048
 
 class DataArray;
 class PacketHeader;
 
-//协议处理
 class PacketBuffer : public DataArray , public PacketHeader
 {
 private:
-    int32 mwpos;
-    
+    int32 m_wpos;
 private:
-    size_t beginPos;
-    uint32 packLen;
+    size_t m_rpos;
+private:
+    uint32 packet_size;
     
 public:
     PacketBuffer()
-    :mwpos(0)
-    ,beginPos(0)
-    ,packLen(0)
+    :m_wpos(0)
+    ,m_rpos(0)
+    ,packet_size(0)
     {}
     
 public:
     virtual void WriteBegin()
     {
-        wpos(mwpos + PACKET_BEGIN);
-        //自身头
+        wpos(m_wpos + PACKET_BEGIN);
         WriteObject(*this);
     }
     
-    //自定义写入头
+    //自定义
     virtual void WriteBegin(IReader& data)
     {
-        wpos(mwpos + PACKET_BEGIN);
+        wpos(m_wpos + PACKET_BEGIN);
         WriteObject(data);
     }
     
     virtual int32 WriteEnd()
     {
-        int32 mark = (int32)wpos() - mwpos;
-        wpos(mwpos);
+        int32 mark = (int32)wpos() - m_wpos;
+        wpos(m_wpos);
         append(mark - PACKET_BEGIN);
-        wpos(mark + mwpos);
-        mwpos = (int32)wpos();
-        //trace("mark = %d",mark);
+        wpos(mark + m_wpos);
+        m_wpos = (int32)wpos();
         //返回包长度
         return mark;
     }
-    
     
     //开始读
     virtual void LoadBytes(const char* bytes, size_t len)
@@ -71,25 +69,24 @@ public:
     
     virtual bool HasPacket()
     {
-        if(packLen > 0)
+        if(packet_size > 0)
         {
-            if(wpos() >= packLen + rpos())
+            if(wpos() >= packet_size + rpos())
             {
                 return true;
             }
             return false;
         }else{
-            if(wpos() - rpos() >= sizeof(packLen))
+            if(wpos() - rpos() >= sizeof(packet_size))
             {
-                self()>>packLen;
-                beginPos = rpos();
-                //无字节或者字节过大
-                if(packLen <= 0 || packLen > PACKET_MAX)
+                self()>>packet_size;
+                m_rpos = rpos();
+                if(packet_size <= 0 || packet_size > PACKET_MAX)
                 {
-                    error::show("this packlen is overrun %u %ld", packLen, wpos());
+                    error::show("this packlen is overrun %u %ld", packet_size, wpos());
                 }else{
-                    trace(">>##ReadBegin Pocket Length %u %zu %zu", packLen, rpos(), wpos());
-                    if(wpos() >= packLen + rpos())
+                    trace(">>##ReadBegin Pocket Length %u %zu %zu", packet_size, rpos(), wpos());
+                    if(wpos() >= packet_size + rpos())
                     {
                         return true;
                     }
@@ -102,30 +99,29 @@ public:
     
     virtual void ReadBegin()
     {
-        rpos(beginPos);
+        rpos(m_rpos);
         ReadObject(*this);
     }
     
     //自定义读取头
     virtual void ReadBegin(IReader& data)
     {
-        rpos(beginPos);
+        rpos(m_rpos);
         ReadObject(data);
     }
     
     virtual void ReadEnd()
     {
-        //消息如果读太多，溢出
+        //max overflow
         if(rpos() > wpos())
         {
             error::show("this is get overout %u %ld", rpos(), wpos());
         }
-        //读完无子节重置
-        if(packLen > 0)
+        //reset
+        if(packet_size > 0)
         {
-            //设置到末尾
-            rpos(beginPos + packLen);
-            beginPos = packLen = 0;
+            rpos(m_rpos + packet_size);
+            packet_size = m_rpos = 0;
             if(rpos() == wpos()) reset();
             trace(">>##ReadEnd is Flush");
         }
@@ -136,23 +132,13 @@ public:
         return wpos();
     }
     
-    //当前包剩余可读子节
+    //Current package remaining readable sub section
     virtual size_t subLeng()
     {
-        return packLen - (_rpos - beginPos);
+        return packet_size - (_rpos - m_rpos);
     }
     
     PacketBuffer& self()
-    {
-        return *this;
-    }
-    
-    ReadBytes& Read()
-    {
-        return *this;
-    }
-    
-    WriteBytes& Write()
     {
         return *this;
     }

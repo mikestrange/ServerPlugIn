@@ -22,7 +22,7 @@ GameProxy::~GameProxy()
 
 void GameProxy::HandlePacket(PacketBuffer& packet)
 {
-    switch (packet.cmd)
+    switch (packet.getCmd())
     {
         case SERVER_CMD_POTHOOK_REG:
                 OnHookReg(packet);
@@ -63,12 +63,12 @@ void GameProxy::OnHookUnReg(PacketBuffer& packet)
 //send
 void GameProxy::HookReg(int32 roomid, uint8 type)
 {
-    Log::debug("我要注册一个房间 %d",roomid);
     PacketBuffer buf;
-    buf.setHeader(SERVER_CMD_POTHOOK_REG, HANDLE_WORLD_MESSAGE);
+    buf.setBegin(SERVER_CMD_POTHOOK_REG, HANDLE_WORLD_MESSAGE);
     buf.WriteBegin();
     buf<<roomid<<type;
     buf.WriteEnd();
+    Log::debug("我要注册一个房间 %d",roomid);
     GameLaunch::getInstance()->SendPacket(buf);
 }
 
@@ -76,7 +76,7 @@ void GameProxy::HookUnReg(int32 roomid)
 {
     Log::debug("我要删除一个房间 %d",roomid);
     PacketBuffer buf;
-    buf.setHeader(SERVER_CMD_POTHOOK_UNREG, HANDLE_WORLD_MESSAGE);
+    buf.setBegin(SERVER_CMD_POTHOOK_UNREG, HANDLE_WORLD_MESSAGE);
     buf.WriteBegin();
     buf<<roomid;
     buf.WriteEnd();

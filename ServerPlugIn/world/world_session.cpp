@@ -10,52 +10,42 @@
 
 static DataBank bank;
 
-WorldSession::WorldSession()
-{
-    
-}
-
-WorldSession::~WorldSession()
-{
-    
-}
+STATIC_CLASS_INIT(WorldSession);
 
 //发送房间
-static void HandleToGame(Client* client)
+static void HandleToGame(PacketBuffer& packet)
 {
-    PacketHeader& data = client->packet;
     //未登录的用户不允许通知房间
-    if(!PlayerManager::getInstance()->HasPlayer(data.token_id))
+    if(!PlayerManager::getInstance()->HasPlayer(packet.getTokenId()))
     {
         Log::info("handle error:not login");
         return;
     }
     //这里作为发送的方式给游戏服务器
     PacketBuffer buf;
-    buf.setHeader(data.cmd, 0, data.token_id, data.view_id);
+    buf.setBegin(packet.getCmd(), 0, packet.getTokenId(), packet.getViewId());
     buf.WriteBegin();
     //剩余子节写入
-    client->packet.ReadBuffer(buf, client->packet.subLeng());
+    packet.ReadBuffer(buf, packet.subLeng());
     buf.WriteEnd();
     //交给房间处理
-    PotHook::getInstance()->SendHook(data.view_id, &buf[0], buf.wsize());
+    PotHook::getInstance()->SendHook(packet.getViewId(), &buf[0], buf.wsize());
 }
 
 
-void WorldSession::HandlePacket(Client* client)
+void WorldSession::HandlePacket(SocketHandler& packet)
 {
-    PacketHeader& data = client->packet;
-    //Log::info("server message[%d]: cmd = %d, type = %d, view = %d, version = %d", client->user.user_id, base.cmd, base.msgType, base.viewid, base.version);
+    Log::info("server message: cmd = %d, type = %d", packet.getCmd(), packet.getType());
     //类型处理
-    switch(data.type)
+    switch(packet.getType())
     {
         case HANDLE_WORLD_MESSAGE:
                 //世界处理
-                HandleToWorld(client);
+                HandleToWorld(packet);
             break;
         case HANDLE_GAME_MESSAGE:
                 //游戏处理
-                HandleToGame(client);
+                HandleToGame(packet);
             break;
         case HANDLE_HALL_MESSAGE:
             
@@ -67,32 +57,32 @@ void WorldSession::HandlePacket(Client* client)
 }
 
 //处理世界任务
-void WorldSession::HandleToWorld(Client* client)
+void WorldSession::HandleToWorld(SocketHandler& packet)
 {
-    PacketHeader& data = client->packet;
-    switch(data.cmd)
+    switch(packet.getCmd())
     {
         case SERVER_CMD_USER_REG:
-            OnUserRegistration(client);
+            OnUserRegistration(packet);
         break;
         case SERVER_CMD_USER_LOGIN:
-            OnUserLogin(client);
+            OnUserLogin(packet);
             break;
         case SERVER_CMD_POTHOOK_REG:
-            OnHookRegister(client);
+            OnHookRegister(packet);
             break;
         case SERVER_CMD_POTHOOK_UNREG:
-            OnHookUnRegister(client);
+            OnHookUnRegister(packet);
             break;
         default:
+            OnHookRegister(packet);
             break;
     }
 }
 
-void WorldSession::OnUserRegistration(Client* node)
+void WorldSession::OnUserRegistration(SocketHandler& packet)
 {
     trace(">>UserRegistration");
-    RegBody info(node->packet);
+    RegBody info(packet);
     
     if(!StringUtil::scope(info.name, 1, 24))
     {
@@ -132,9 +122,9 @@ void WorldSession::OnUserRegistration(Client* node)
     }
 }
 
-void WorldSession::OnUserLogin(Client* client)
+void WorldSession::OnUserLogin(SocketHandler& packet)
 {
-    LoginBody info(client->packet);
+    LoginBody info(packet);
     //--
     if(PlayerManager::getInstance()->HasPlayerByUID(info.uid))
     {
@@ -145,14 +135,14 @@ void WorldSession::OnUserLogin(Client* client)
     if(!StringUtil::scope(info.password, 6, 24))
     {
         Log::warn("login error: password length is error(6, 24)");
-        client->getSock()->setClose();
+        packet.Disconnect();
         return;
     }
     
     if(!StringUtil::scope(info.macbind, 6, 128))
     {
         Log::warn("login error: macbind length is error(6, 128)");
-        client->getSock()->setClose();
+        packet.Disconnect();
         return;
     }
     
@@ -167,41 +157,43 @@ void WorldSession::OnUserLogin(Client* client)
         auto player = new Player;
         player->token_id = info.uid;
         player->user_id = info.uid;
-        player->fd = client->getSock()->getFd();
+        player->sockfd = packet.GetSocketFd();
         PlayerManager::getInstance()->AddPlayer(player);
         Log::info("login OK: uid = %d", info.uid);
     }else{
         Log::warn("login error: is no this uid = %d", info.uid);
-        client->getSock()->setClose();
+        packet.Disconnect();
     }
 }
 
-void WorldSession::OnHookRegister(Client *client)
+void WorldSession::OnHookRegister(SocketHandler& packet)
 {
     uint32 regid;
     int8 rtype;
     //std::string key;//必须孝正合法性
-    client->packet>>regid>>rtype;
-    int code = PotHook::getInstance()->AddNode(client->getSock()->getFd(), regid, rtype);
+    packet>>regid>>rtype;
+    int code = PotHook::getInstance()->AddNode(packet.GetSocketFd(), regid, rtype);
     //通知游戏服务器
     PacketBuffer buf;
-    buf.setHeader(SERVER_CMD_POTHOOK_REG, 0, 0, 0);
+    buf.setBegin(SERVER_CMD_POTHOOK_REG, 0, 0, 0);
     buf.WriteBegin();
     buf<<code<<regid<<rtype;
     buf.WriteEnd();
-    client->getSock()->Send(&buf[0], buf.wsize());
+    
+    packet.SendPacket(buf);
 }
 
-void WorldSession::OnHookUnRegister(Client *client)
+void WorldSession::OnHookUnRegister(SocketHandler& packet)
 {
     uint32 regid;
-    client->packet>>regid;
+    packet>>regid;
     PotHook::getInstance()->DelByNodeId(regid);
     //通知游戏服务器
     PacketBuffer buf;
-    buf.setHeader(SERVER_CMD_POTHOOK_UNREG, 0, 0, 0);
+    buf.setBegin(SERVER_CMD_POTHOOK_UNREG, 0, 0, 0);
     buf.WriteBegin();
     buf<<regid;
     buf.WriteEnd();
-    client->getSock()->Send(&buf[0], buf.wsize());
+    
+    packet.SendPacket(buf);
 }

@@ -9,10 +9,9 @@
 #ifndef ViewLaunch_h
 #define ViewLaunch_h
 
-#include "ConnSocket.h"
+#include "global.h"
+#include "base_socket.h"
 
-#include "launch_base.h"
-#include "packet_buffer.h"
 #include "game_proxy.h"
 #include "scene_manager.h"
 #include "thread.h"
@@ -20,25 +19,18 @@
 class SceneManager;
 class GameProxy;
 
-class GameLaunch : public LaunchBase , public ConnSocket
+class GameLaunch : public BaseSocket
 {
-private:
-    static GameLaunch* _instance;
-    static void ThreadSocket(Thread* thread);
-public:
-    static GameLaunch* getInstance();
+    STATIC_CLASS(GameLaunch);
 public:
     GameLaunch();
     virtual ~GameLaunch();
-    void Launch()override;
-    virtual void Launch(const char* host, int port);
-    void UnLaunch()override;
-public:
-    void HandlePacket(PacketBuffer &packet)override;
     
-private:
-    const char* host;
-    int port;
+public:
+    virtual void OnConnect()override;
+    virtual void OnClose()override;
+    virtual void OnProcessPacket(SOCKET_T sockfd, PacketBuffer& packet)override;
+    
 private:
     GameProxy* proxy;
     SceneManager* manager;

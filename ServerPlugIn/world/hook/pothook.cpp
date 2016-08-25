@@ -79,10 +79,10 @@ void PotHook::SendHook(uint32 rid, const void* bytes, size_t size)
 {
     auto node = nodeTab.find(rid);
     if(node){
-        auto client = WorldServer::getInstance()->getClient(node->getFd());
-        if(client)
+        auto sockhandler = WorldServer::getInstance()->getSocketHandler(node->getFd());
+        if(sockhandler)
         {
-            client->getSock()->Send(bytes, size);
+            sockhandler->SendPacket(bytes, size);
         }else{
             Log::debug("通知单元Error:不存在的fd客户端");
         }
