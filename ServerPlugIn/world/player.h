@@ -17,11 +17,11 @@ class Player
 public:
     TOKEN_T token_id;       //服务器识别
     USER_T user_id;         //用户id
+    SOCKET_T sockfd;        //入口FD
     STATUS_T status;        //状态
-    SOCKET_T sockfd;                 //入口FD
     int serverId;           //服务器id(意义不大)
-    //基本信息(可以不用)
-public:
+    
+//基本信息(可以不用)
     //入口id
     int appid;
     //入口类型

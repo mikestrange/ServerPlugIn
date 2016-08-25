@@ -8,10 +8,10 @@
 
 #include "potnode.h"
 
-PotNode::PotNode(int fd, uint32 nid, uint8 rtype)
-:fd(fd)
-,node_id(nid)
-,regType(rtype)
+PotNode::PotNode(SOCKET_T sockfd, uint32 potid, uint8 type)
+:sockfd(sockfd)
+,potid(potid)
+,type(type)
 {
     
 }
@@ -20,18 +20,18 @@ PotNode::~PotNode(){
     
 }
 
-USER_T PotNode::getNodeId()const
+SOCKET_T PotNode::getSocketFd()const
 {
-    return node_id;
+    return sockfd;
 }
 
 
-int PotNode::getFd()const
+uint32 PotNode::getPotId()const
 {
-    return fd;
+    return potid;
 }
 
-uint8 PotNode::getRegType()const
+uint8 PotNode::getType()const
 {
-    return regType;
+    return type;
 }

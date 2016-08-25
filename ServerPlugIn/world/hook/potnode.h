@@ -10,26 +10,27 @@
 #define pot_node_h
 
 #include "global.h"
+#include "network.h"
 
 class PotNode
 {
 private:
     //注册ID(可以是userid,可以是gateid,可以是viewid)
-    uint32 node_id;
+    uint32 potid;
     //注册类型(POT_TYPE)
-    uint8 regType;
+    uint8 type;
     //对应连接
-    int fd;
+    SOCKET_T sockfd;
 public:
-    PotNode(int fd, uint32 rid, uint8 rtype);
+    PotNode(SOCKET_T sockfd, uint32 potid, uint8 type);
     
     virtual ~PotNode();
     
-    uint32 getNodeId()const;
+    uint32 getPotId()const;
     
-    int getFd()const;
+    int getSocketFd()const;
     
-    uint8 getRegType()const;
+    uint8 getType()const;
 };
 
 #endif /* pot_node_h */

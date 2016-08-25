@@ -9,17 +9,14 @@
 #ifndef world_session_h
 #define world_session_h
 
-#include "global.h"
 #include "log.h"
+#include "global.h"
 #include "data_bank.h"
 #include "string_utils.h"
-
 #include "command.h"
-
-#include "packet_buffer.h"
-#include "player_manager.h"
 #include "network.h"
-
+//
+#include "player_manager.h"
 #include "pothook.h"
 //body
 #include "reg_body.h"

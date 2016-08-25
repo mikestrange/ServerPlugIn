@@ -47,19 +47,19 @@ int PlayerManager::AddPlayer(Player* player)
     return 0;
 }
 
-bool PlayerManager::HasPlayer(TOKEN_T user_id)
+bool PlayerManager::HasPlayer(TOKEN_T tokenid)
 {
-    return pTab.has(user_id);
+    return pTab.has(tokenid);
 }
 
 
-bool PlayerManager::HasPlayerByUID(USER_T uid)
+bool PlayerManager::HasUID(USER_T userid)
 {
     HashMap<TOKEN_T, Player*>::Iterator iter;
     for(iter = pTab.begin();iter!=pTab.end();++iter)
     {
         auto player = iter->second;
-        if(player->user_id == uid)
+        if(player->user_id == userid)
         {
             return true;
         }
@@ -67,9 +67,9 @@ bool PlayerManager::HasPlayerByUID(USER_T uid)
     return false;
 }
 
-void PlayerManager::RemovePlayer(TOKEN_T tid)
+void PlayerManager::RemovePlayer(TOKEN_T tokenid)
 {
-    auto player = pTab.remove(tid);
+    auto player = pTab.remove(tokenid);
     if(player)
     {
         Log::debug("用户注销 OK %d", player->user_id);
@@ -77,7 +77,7 @@ void PlayerManager::RemovePlayer(TOKEN_T tid)
     SAFE_DELETE(player);
 }
 
-void PlayerManager::RemovePlayerByFd(SOCKET_T fd)
+void PlayerManager::RemoveSockFd(SOCKET_T sockfd)
 {
     HashMap<TOKEN_T, Player*>::Iterator iter;
     for(iter = pTab.begin();iter!=pTab.end();)
@@ -85,7 +85,7 @@ void PlayerManager::RemovePlayerByFd(SOCKET_T fd)
         HashMap<TOKEN_T, Player*>::Iterator miter = iter;
         iter++;
         auto player = miter->second;
-        if(player->sockfd == fd)
+        if(player->sockfd == sockfd)
         {
             pTab.remove(miter);
             Log::debug("用户注销 OK %d", player->user_id);
@@ -94,7 +94,7 @@ void PlayerManager::RemovePlayerByFd(SOCKET_T fd)
     }
 }
 
-Player* PlayerManager::getPlayer(TOKEN_T tid)
+Player* PlayerManager::GetPlayer(TOKEN_T tokenid)
 {
-    return pTab.find(tid);
+    return pTab.find(tokenid);
 }

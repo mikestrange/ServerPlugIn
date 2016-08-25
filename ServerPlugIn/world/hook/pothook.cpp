@@ -8,16 +8,7 @@
 
 #include "pothook.h"
 
-PotHook* PotHook::_instance = NULL;
-
-PotHook* PotHook::getInstance()
-{
-    if(!_instance)
-    {
-        _instance = new PotHook;
-    }
-    return _instance;
-}
+STATIC_CLASS_INIT(PotHook);
 
 PotHook::PotHook()
 {
@@ -29,26 +20,26 @@ PotHook::~PotHook()
     CleanNodes();
 }
 
-int PotHook::AddNode(int fd, uint32 nid, int8 rtype)
+int PotHook::AddNode(SOCKET_T sockfd, uint32 potid, int8 type)
 {
-    if(nodeTab.has(nid)) return -1;
-    auto node = new PotNode(fd, nid, rtype);
-    nodeTab.put(nid, node);
-    Log::debug("注册一个挂钩 OK fd=%d, rid=%d, rt=%d", fd, nid, rtype);
+    if(nodeTab.has(potid)) return -1;
+    auto node = new PotNode(sockfd, potid, type);
+    nodeTab.put(potid, node);
+    Log::debug("注册一个挂钩 OK fd=%d, id=%d, type=%d", sockfd, potid, type);
     return 0;
 }
 
-void PotHook::DelByNodeId(uint32 nid)
+void PotHook::DelByPotId(uint32 potid)
 {
-    auto node = nodeTab.remove(nid);
+    auto node = nodeTab.remove(potid);
     if(node)
     {
-        Log::debug("删除一个挂钩 rid=%d", node->getNodeId());
+        Log::debug("删除一个挂钩 rid=%d", node->getPotId());
         SAFE_DELETE(node);
     }
 }
 
-void PotHook::DelByFd(int fd)
+void PotHook::DelBySockFd(SOCKET_T sockfd)
 {
     HashMap<USER_T, PotNode*>::Iterator iter;
     for(iter = nodeTab.begin();iter!=nodeTab.end();)
@@ -56,16 +47,15 @@ void PotHook::DelByFd(int fd)
         HashMap<USER_T, PotNode*>::Iterator miter = iter;
         iter++;
         auto node = miter->second;
-        if(node->getFd() == fd)
+        if(node->getSocketFd() == sockfd)
         {
             nodeTab.remove(miter);
-            Log::debug("删除一个挂钩 rid=%d", node->getNodeId());
+            Log::debug("删除一个挂钩 rid=%d", node->getPotId());
             SAFE_DELETE(node);
         }
     }
 }
 
-//清理所有
 void PotHook::CleanNodes()
 {
     nodeTab.clear(block(PotNode* node)
@@ -74,29 +64,28 @@ void PotHook::CleanNodes()
     });
 }
 
-
-void PotHook::SendHook(uint32 rid, const void* bytes, size_t size)
+void PotHook::SendHook(uint32 potid, PacketBuffer& buff)
 {
-    auto node = nodeTab.find(rid);
+    auto node = nodeTab.find(potid);
     if(node){
-        auto sockhandler = WorldServer::getInstance()->getSocketHandler(node->getFd());
-        if(sockhandler)
+        auto packet = WorldServer::getInstance()->getSocketHandler(node->getSocketFd());
+        if(packet)
         {
-            sockhandler->SendPacket(bytes, size);
+            packet->SendPacket(&buff[0], buff.wsize());
         }else{
-            Log::debug("通知单元Error:不存在的fd客户端");
+            Log::debug("通知挂钩Error:不存在: fd = %d", node->getSocketFd());
         }
     }else{
-        Log::debug("通知单元Error:未注册的单元 %d",rid);
+        Log::debug("通知挂钩Error:未注册的: potid = %d", potid);
     }
 }
 
 void PotHook::toString()
 {
     Log::debug("Begin挂钩");
-    nodeTab.eachMaps(block(uint32 uid, PotNode* node)
+    nodeTab.eachMaps(block(uint32 potid, PotNode* node)
     {
-        Log::debug("->挂钩 %d",uid);
+        Log::debug("->挂钩 %d", potid);
     });
     Log::debug("End余挂钩");
 }

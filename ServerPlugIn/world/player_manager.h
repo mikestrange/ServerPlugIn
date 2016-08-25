@@ -1,7 +1,7 @@
 //
 //  player_manager.hpp
 //  ServerPlugIn
-//
+//  服务器只要知道tokenid就可以通信
 //  Created by MikeRiy on 16/8/22.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
@@ -26,16 +26,16 @@ public:
     
     int AddPlayer(Player* player);
     
-    void RemovePlayer(TOKEN_T tid);
+    void RemovePlayer(TOKEN_T tokenid);
     
-    void RemovePlayerByFd(SOCKET_T fd);
+    void RemoveSockFd(SOCKET_T sockfd);
     
-    bool HasPlayer(TOKEN_T tid);
+    bool HasPlayer(TOKEN_T tokenid);
     
-    Player* getPlayer(TOKEN_T tid);
+    Player* GetPlayer(TOKEN_T tokenid);
     
     //uid检查
-    bool HasPlayerByUID(USER_T uid);
+    bool HasUID(USER_T userid);
     
 private:
     static PlayerManager* _instance;

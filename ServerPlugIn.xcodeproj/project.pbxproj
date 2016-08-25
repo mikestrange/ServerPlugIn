@@ -244,16 +244,13 @@
 		2001CE181D66C1B600049CD2 /* world */ = {
 			isa = PBXGroup;
 			children = (
+				20A7B7101D6EDCCD00831E76 /* players */,
 				20DA36471D6AA5F500B083ED /* body */,
 				2001CE191D66C1B600049CD2 /* hook */,
 				2001CE1F1D66C1B600049CD2 /* world.h */,
 				2001CE1E1D66C1B600049CD2 /* world.cpp */,
 				2001CE211D66C1B600049CD2 /* world_session.h */,
 				2001CE201D66C1B600049CD2 /* world_session.cpp */,
-				20DA364E1D6AE33D00B083ED /* player_manager.h */,
-				20DA364D1D6AE33D00B083ED /* player_manager.cpp */,
-				20DA36511D6AE34600B083ED /* player.h */,
-				20DA36501D6AE34600B083ED /* player.cpp */,
 			);
 			path = world;
 			sourceTree = "<group>";
@@ -437,6 +434,17 @@
 				2001CE441D66C25900049CD2 /* object_pool.h */,
 			);
 			name = pool;
+			sourceTree = "<group>";
+		};
+		20A7B7101D6EDCCD00831E76 /* players */ = {
+			isa = PBXGroup;
+			children = (
+				20DA36511D6AE34600B083ED /* player.h */,
+				20DA36501D6AE34600B083ED /* player.cpp */,
+				20DA364E1D6AE33D00B083ED /* player_manager.h */,
+				20DA364D1D6AE33D00B083ED /* player_manager.cpp */,
+			);
+			name = players;
 			sourceTree = "<group>";
 		};
 		20AF6EFE1D5034A300EB26D3 /* src */ = {

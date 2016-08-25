@@ -29,7 +29,7 @@ static void HandleToGame(PacketBuffer& packet)
     packet.ReadBuffer(buf, packet.subLeng());
     buf.WriteEnd();
     //交给房间处理
-    PotHook::getInstance()->SendHook(packet.getViewId(), &buf[0], buf.wsize());
+    PotHook::getInstance()->SendHook(packet.getViewId(), buf);
 }
 
 
@@ -126,7 +126,7 @@ void WorldSession::OnUserLogin(SocketHandler& packet)
 {
     LoginBody info(packet);
     //--
-    if(PlayerManager::getInstance()->HasPlayerByUID(info.uid))
+    if(PlayerManager::getInstance()->HasUID(info.uid))
     {
         Log::info(">>do not reg aglin");
         return;
@@ -185,14 +185,14 @@ void WorldSession::OnHookRegister(SocketHandler& packet)
 
 void WorldSession::OnHookUnRegister(SocketHandler& packet)
 {
-    uint32 regid;
-    packet>>regid;
-    PotHook::getInstance()->DelByNodeId(regid);
+    uint32 potid;
+    packet>>potid;
+    PotHook::getInstance()->DelByPotId(potid);
     //通知游戏服务器
     PacketBuffer buf;
     buf.setBegin(SERVER_CMD_POTHOOK_UNREG, 0, 0, 0);
     buf.WriteBegin();
-    buf<<regid;
+    buf<<potid;
     buf.WriteEnd();
     
     packet.SendPacket(buf);
