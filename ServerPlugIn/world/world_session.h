@@ -14,10 +14,11 @@
 #include "data_bank.h"
 #include "string_utils.h"
 #include "command.h"
-#include "network.h"
+#include "base_server.h"
 //
 #include "player_manager.h"
 #include "pothook.h"
+#include "world.h"
 //body
 #include "reg_body.h"
 #include "login_body.h"
@@ -25,17 +26,22 @@
 class WorldServer;
 class PotHook;
 
-class WorldSession
+class WorldSession : public ISessionProxy
 {
     STATIC_CLASS(WorldSession);
-public:
     
-    void HandlePacket(SocketHandler& packet);
+public:
+    virtual void OnPacketHandle(SOCKET_T sockfd, SocketHandler& packet)override;
 private:
+    //通知挂钩处理
+    void HandleToHook(SocketHandler& packet);
+    //世界处理
     void HandleToWorld(SocketHandler& packet);
-    //用户注册
+    //通知玩家处理
+    void HandleToPlayer(SocketHandler& packet);
+    //注册
     void OnUserRegistration(SocketHandler& packet);
-    //用户登录
+    //登录
     void OnUserLogin(SocketHandler& packet);
     //
     void OnHookRegister(SocketHandler& packet);

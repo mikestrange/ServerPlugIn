@@ -10,16 +10,6 @@
 
 STATIC_CLASS_INIT(WorldServer);
 
-WorldServer::WorldServer()
-{
-    
-}
-
-WorldServer::~WorldServer()
-{
-    
-}
-
 
 void WorldServer::OnRemove(SOCKET_T sockfd)
 {
@@ -37,7 +27,7 @@ void WorldServer::OnRegister(SOCKET_T sockfd, SocketHandler* sock)
 void WorldServer::OnProcessPacket(SOCKET_T sockfd, SocketHandler& packet)
 {
     //会话
-    WorldSession::getInstance()->HandlePacket(packet);
+    WorldSession::getInstance()->OnPacketHandle(sockfd, packet);
 };
 
 

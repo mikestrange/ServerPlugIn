@@ -13,13 +13,11 @@ STATIC_CLASS_INIT(GameLaunch);
 
 GameLaunch::GameLaunch()
 {
-    manager = new SceneManager();
     proxy = new GameProxy();
 }
 
 GameLaunch::~GameLaunch()
 {
-    SAFE_DELETE(manager);
     SAFE_DELETE(proxy);
 }
 
@@ -27,12 +25,6 @@ GameProxy* GameLaunch::getProxy() const
 {
     return proxy;
 }
-
-SceneManager* GameLaunch::getManager() const
-{
-    return manager;
-}
-
 
 void GameLaunch::OnConnect()
 {
@@ -51,7 +43,7 @@ void GameLaunch::OnProcessPacket(SOCKET_T sockfd, PacketBuffer& packet)
     switch(packet.getType())
     {
         case HANDLE_GAME_MESSAGE:
-            manager->SendToLogic(packet.getViewId(), packet);
+            HomeManager::getInstance()->SendToLogic(packet.getViewId(), packet);
         break;
         default:
             proxy->HandlePacket(packet);

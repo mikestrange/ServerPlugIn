@@ -19,7 +19,7 @@
 class ISessionProxy
 {
 public:
-    virtual void OnPacketHandle(SOCKET_T sockfd, PacketBuffer& packet)=0;
+    virtual void OnPacketHandle(SOCKET_T sockfd, SocketHandler& packet)=0;
 };
 
 class BaseServer : public Network, private Thread

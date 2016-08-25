@@ -34,10 +34,9 @@ public:
     void DelBySockFd(SOCKET_T sockfd);
     //handle
     void CleanNodes();
-    
     //通知挂钩
     void SendHook(uint32 potid, PacketBuffer& buff);
-    
+    //
     void toString();
     
 public:

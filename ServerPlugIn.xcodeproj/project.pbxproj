@@ -14,9 +14,9 @@
 		2001CE041D66BF5300049CD2 /* land_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CDF61D66BF5300049CD2 /* land_player.cpp */; };
 		2001CE051D66BF5300049CD2 /* land_proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CDF81D66BF5300049CD2 /* land_proxy.cpp */; };
 		2001CE061D66BF5300049CD2 /* land_seat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CDFA1D66BF5300049CD2 /* land_seat.cpp */; };
-		2001CE081D66BF5300049CD2 /* scene_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CDFE1D66BF5300049CD2 /* scene_manager.cpp */; };
+		2001CE081D66BF5300049CD2 /* home_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CDFE1D66BF5300049CD2 /* home_manager.cpp */; };
 		2001CE0D1D66C01200049CD2 /* GateLaunch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE0B1D66C01200049CD2 /* GateLaunch.cpp */; };
-		2001CE101D66C0DA00049CD2 /* GateServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE0E1D66C0DA00049CD2 /* GateServer.cpp */; };
+		2001CE101D66C0DA00049CD2 /* gate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE0E1D66C0DA00049CD2 /* gate.cpp */; };
 		2001CE221D66C1B600049CD2 /* potnode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE1A1D66C1B600049CD2 /* potnode.cpp */; };
 		2001CE231D66C1B600049CD2 /* pothook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE1C1D66C1B600049CD2 /* pothook.cpp */; };
 		2001CE241D66C1B600049CD2 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE1E1D66C1B600049CD2 /* world.cpp */; };
@@ -84,12 +84,12 @@
 		2001CDF91D66BF5300049CD2 /* land_proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = land_proxy.h; sourceTree = "<group>"; };
 		2001CDFA1D66BF5300049CD2 /* land_seat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = land_seat.cpp; sourceTree = "<group>"; };
 		2001CDFB1D66BF5300049CD2 /* land_seat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = land_seat.h; sourceTree = "<group>"; };
-		2001CDFE1D66BF5300049CD2 /* scene_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene_manager.cpp; sourceTree = "<group>"; };
-		2001CDFF1D66BF5300049CD2 /* scene_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene_manager.h; sourceTree = "<group>"; };
+		2001CDFE1D66BF5300049CD2 /* home_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = home_manager.cpp; sourceTree = "<group>"; };
+		2001CDFF1D66BF5300049CD2 /* home_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = home_manager.h; sourceTree = "<group>"; };
 		2001CE0B1D66C01200049CD2 /* GateLaunch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GateLaunch.cpp; sourceTree = "<group>"; };
 		2001CE0C1D66C01200049CD2 /* GateLaunch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GateLaunch.h; sourceTree = "<group>"; };
-		2001CE0E1D66C0DA00049CD2 /* GateServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GateServer.cpp; sourceTree = "<group>"; };
-		2001CE0F1D66C0DA00049CD2 /* GateServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GateServer.h; sourceTree = "<group>"; };
+		2001CE0E1D66C0DA00049CD2 /* gate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gate.cpp; sourceTree = "<group>"; };
+		2001CE0F1D66C0DA00049CD2 /* gate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gate.h; sourceTree = "<group>"; };
 		2001CE1A1D66C1B600049CD2 /* potnode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = potnode.cpp; sourceTree = "<group>"; };
 		2001CE1B1D66C1B600049CD2 /* potnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = potnode.h; sourceTree = "<group>"; };
 		2001CE1C1D66C1B600049CD2 /* pothook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pothook.cpp; sourceTree = "<group>"; };
@@ -194,15 +194,12 @@
 		2001CDEC1D66BF5300049CD2 /* game */ = {
 			isa = PBXGroup;
 			children = (
+				20A7B7121D6EEE8700831E76 /* homes */,
 				2001CDF11D66BF5300049CD2 /* landlord */,
 				2001CDF01D66BF5300049CD2 /* GameLaunch.h */,
 				2001CDEF1D66BF5300049CD2 /* GameLaunch.cpp */,
 				2001CDEE1D66BF5300049CD2 /* game_proxy.h */,
 				2001CDED1D66BF5300049CD2 /* game_proxy.cpp */,
-				2001CDFF1D66BF5300049CD2 /* scene_manager.h */,
-				2001CDFE1D66BF5300049CD2 /* scene_manager.cpp */,
-				20F8CE271D6C42CE00E94F6F /* game_base.h */,
-				20F8CE261D6C42CE00E94F6F /* game_base.cpp */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -229,8 +226,9 @@
 		2001CE0A1D66C00400049CD2 /* gate */ = {
 			isa = PBXGroup;
 			children = (
-				2001CE0F1D66C0DA00049CD2 /* GateServer.h */,
-				2001CE0E1D66C0DA00049CD2 /* GateServer.cpp */,
+				20A7B7111D6EE32F00831E76 /* users */,
+				2001CE0F1D66C0DA00049CD2 /* gate.h */,
+				2001CE0E1D66C0DA00049CD2 /* gate.cpp */,
 				2001CE771D6701EC00049CD2 /* gate_session.h */,
 				2001CE761D6701EC00049CD2 /* gate_session.cpp */,
 				2001CE0C1D66C01200049CD2 /* GateLaunch.h */,
@@ -245,7 +243,6 @@
 			isa = PBXGroup;
 			children = (
 				20A7B7101D6EDCCD00831E76 /* players */,
-				20DA36471D6AA5F500B083ED /* body */,
 				2001CE191D66C1B600049CD2 /* hook */,
 				2001CE1F1D66C1B600049CD2 /* world.h */,
 				2001CE1E1D66C1B600049CD2 /* world.cpp */,
@@ -447,6 +444,24 @@
 			name = players;
 			sourceTree = "<group>";
 		};
+		20A7B7111D6EE32F00831E76 /* users */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = users;
+			sourceTree = "<group>";
+		};
+		20A7B7121D6EEE8700831E76 /* homes */ = {
+			isa = PBXGroup;
+			children = (
+				2001CDFF1D66BF5300049CD2 /* home_manager.h */,
+				2001CDFE1D66BF5300049CD2 /* home_manager.cpp */,
+				20F8CE271D6C42CE00E94F6F /* game_base.h */,
+				20F8CE261D6C42CE00E94F6F /* game_base.cpp */,
+			);
+			name = homes;
+			sourceTree = "<group>";
+		};
 		20AF6EFE1D5034A300EB26D3 /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,13 +485,6 @@
 				20A7B70D1D6EA85900831E76 /* base_socket.cpp */,
 			);
 			name = common;
-			sourceTree = "<group>";
-		};
-		20DA36471D6AA5F500B083ED /* body */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = body;
 			sourceTree = "<group>";
 		};
 		20F8CE211D6C3D4500E94F6F /* bytes */ = {
@@ -570,8 +578,8 @@
 				2001CE5F1D66C25900049CD2 /* log.cpp in Sources */,
 				20A7B70F1D6EA85900831E76 /* base_socket.cpp in Sources */,
 				2001CE6C1D66C25900049CD2 /* Timer.cpp in Sources */,
-				2001CE101D66C0DA00049CD2 /* GateServer.cpp in Sources */,
-				2001CE081D66BF5300049CD2 /* scene_manager.cpp in Sources */,
+				2001CE101D66C0DA00049CD2 /* gate.cpp in Sources */,
+				2001CE081D66BF5300049CD2 /* home_manager.cpp in Sources */,
 				2001CE061D66BF5300049CD2 /* land_seat.cpp in Sources */,
 				20DA364B1D6AB34D00B083ED /* landlord_logic.cpp in Sources */,
 				20F8CE281D6C42CE00E94F6F /* game_base.cpp in Sources */,

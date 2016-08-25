@@ -1,28 +1,21 @@
 //
-//  world.hpp
+//  GateServer.h
 //  ServerPlugIn
 //
-//  Created by MikeRiy on 16/8/2.
+//  Created by MikeRiy on 16/8/19.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef world_h
-#define world_h
-
-#include "base_server.h"
-
-#include "world_session.h"
-
-#include "pothook.h"
+#ifndef GateServer_h
+#define GateServer_h
 
 #include "global.h"
+#include "base_server.h"
+#include "gate_session.h"
 
-class PotHook;
-
-class WorldServer : public BaseServer
+class GateServer : public BaseServer
 {
-    STATIC_CLASS(WorldServer);
-
+    STATIC_CLASS(GateServer);
 public:
     virtual void OnRemove(SOCKET_T sockfd)override;
     
@@ -30,5 +23,4 @@ public:
     
     virtual void OnProcessPacket(SOCKET_T sockfd, SocketHandler& packet)override;
 };
-
-#endif /* world_hpp */
+#endif /* GateServer_h */

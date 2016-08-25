@@ -6,22 +6,22 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#include "scene_manager.h"
+#include "home_manager.h"
 
-//
+STATIC_CLASS_INIT(HomeManager);
 
-SceneManager::SceneManager()
+HomeManager::HomeManager()
 {
     //init
     //AddLogic(1002, new LandlordLogic(1001));
 }
 
-SceneManager::~SceneManager()
+HomeManager::~HomeManager()
 {
     CleanLogics();
 }
 
-bool SceneManager::AddLogic(int viewid, GameBase *target)
+bool HomeManager::AddLogic(int viewid, GameBase *target)
 {
     if(gTab.has(viewid)){
         trace("add error: have viewid [%d] delete this", viewid);
@@ -35,7 +35,7 @@ bool SceneManager::AddLogic(int viewid, GameBase *target)
     return false;
 }
 
-bool SceneManager::RemoveLogic(int viewid)
+bool HomeManager::RemoveLogic(int viewid)
 {
     auto v = gTab.remove(viewid);
     if(v){
@@ -49,7 +49,7 @@ bool SceneManager::RemoveLogic(int viewid)
     return false;
 }
 
-void SceneManager::SendToLogic(int viewid, PacketBuffer &packet)
+void HomeManager::SendToLogic(int viewid, PacketBuffer &packet)
 {
     auto v = gTab.find(viewid);
     if(v)
@@ -61,7 +61,7 @@ void SceneManager::SendToLogic(int viewid, PacketBuffer &packet)
     }
 }
 
-void SceneManager::CleanLogics()
+void HomeManager::CleanLogics()
 {
     Log::debug("清理所有房间");
     gTab.clear(block(GameBase* v)

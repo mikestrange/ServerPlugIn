@@ -16,15 +16,53 @@
 #include "input.h"
 
 #include "GameLaunch.h"
+#include "GateLaunch.h"
 //src
 #include "world.h"
+#include "gate.h"
 
-const int port = 8001;
+const int world_port = 8001;
+const int gate_port = 8002;
 
+void run_server(InputArray& input)
+{
+    std::string str;
+    input>>str;
+    if(StringUtil::equal(str, "world"))
+    {
+        WorldServer::getInstance()->Launch(world_port);
+    }else if(StringUtil::equal(str, "gate")){
+        GateServer::getInstance()->Launch(gate_port);
+    }else if(StringUtil::equal(str, "game_to_world")){
+        GameLaunch::getInstance()->connect("127.0.0.1", world_port);
+    }else if(StringUtil::equal(str, "gate_to_world")){
+        GateLaunch::getInstance()->connect("127.0.0.1", world_port);
+    }
+}
+
+void stop_server(InputArray& input)
+{
+    std::string str;
+    input>>str;
+    if(StringUtil::equal(str, "world"))
+    {
+        WorldServer::getInstance()->stop_server();
+    }else if(StringUtil::equal(str, "gate")){
+        GateServer::getInstance()->stop_server();
+    }else if(StringUtil::equal(str, "game_to_world")){
+        GameLaunch::getInstance()->Disconnect();
+    }else if(StringUtil::equal(str, "gate_to_world")){
+        GateLaunch::getInstance()->Disconnect();
+    }
+}
+
+BaseSocket m_socket;
 
 //测试发送
-void test_send(BaseSocket* data, InputArray& input)
+void open_send(InputArray& input)
 {
+    
+    m_socket.connect("127.0.0.1", world_port);
     std::string str;
     input>>str;
     PacketBuffer buf;
@@ -59,9 +97,9 @@ void test_send(BaseSocket* data, InputArray& input)
         buf.WriteBegin();
         buf.WriteEnd();
     }
-    
     buf.WriteEnd();
-    data->SendPacket(buf);
+    //
+    m_socket.SendPacket(buf);
 }
 
 //输入vim
@@ -73,27 +111,15 @@ void vim(int argLen, InputArray& input)
     {
         exit(0);
     }else if(StringUtil::equal(str, "run")){
-        WorldServer::getInstance()->Launch(port);
-        //
-        GameLaunch::getInstance()->connect("127.0.0.1", port);
+        run_server(input);
     }else if(StringUtil::equal(str, "stop")){
-        WorldServer::getInstance()->stop_server();
+        stop_server(input);
     }else if(StringUtil::equal(str, "print")){
        WorldServer::getInstance()->toString();
-    }else if(StringUtil::equal(str, "open")){
-        input>>str;
-        int index = Basal::parseInt(str);
-        //
-    }else if(StringUtil::equal(str, "do")){
-        input>>str;
-        int index = Basal::parseInt(str);
-        //test_send(NULL, input);
-    }else if(StringUtil::equal(str, "del")){
-        input>>str;
-        int index = Basal::parseInt(str);
-        //del
+    }else if(StringUtil::equal(str, "send")){
+        open_send(input);
     }else if(StringUtil::equal(str, "hook")){
-        GameLaunch::getInstance()->getProxy()->HookReg(1001, 1);
+        GameLaunch::getInstance()->getProxy()->ToHookReg(1001, 1);
     }
 }
 
@@ -102,10 +128,10 @@ int main(int argc, const char * argv[])
 {
     Log::debug("====START WORLD====");
     powder::SRunMain(block()
-    {
-        setInputMethodAttemper(&vim);
-        
-    });
+                     {
+                         setInputMethodAttemper(&vim);
+                     });
+    
     pthread_exit(0);
     return 0;
 }

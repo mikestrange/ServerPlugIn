@@ -6,8 +6,8 @@
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef scene_manager_h
-#define scene_manager_h
+#ifndef home_manager_h
+#define home_manager_h
 
 #include "global.h"
 #include "packet_buffer.h"
@@ -16,13 +16,14 @@
 
 #include "landlord/landlord_logic.h"
 
-class SceneManager
+class HomeManager
 {
+    STATIC_CLASS(HomeManager);
 private:
     HashMap<int, GameBase*> gTab;
 public:
-    SceneManager();
-    virtual ~SceneManager();
+    HomeManager();
+    virtual ~HomeManager();
     //添加一个游戏逻辑
     bool AddLogic(int viewid, GameBase* target);
     //移除一个游戏逻辑
@@ -34,4 +35,4 @@ public:
 };
 
 
-#endif /* logic_manager_h */
+#endif /* home_manager_h */

@@ -27,7 +27,6 @@ void BaseServer::run()
     select_server();
 }
 
-
 void BaseServer::on_read(SocketHandler* sock, char* bytes, size_t size)
 {
     powder::RunMain(this, &BaseServer::on_main_read,

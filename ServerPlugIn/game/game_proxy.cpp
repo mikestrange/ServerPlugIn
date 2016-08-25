@@ -46,7 +46,7 @@ void GameProxy::OnHookReg(PacketBuffer& packet)
     {
         if(type == POT_GAME_LAND_SERVER)
         {
-            GameLaunch::getInstance()->getManager()->AddLogic(roomid, new LandlordLogic(roomid));
+            HomeManager::getInstance()->AddLogic(roomid, new LandlordLogic(roomid));
         }
     }
     Log::debug("返回我要注册一个房间 code = %d", code);
@@ -56,12 +56,12 @@ void GameProxy::OnHookUnReg(PacketBuffer& packet)
 {
     int32 roomid;
     packet>>roomid;
-    GameLaunch::getInstance()->getManager()->RemoveLogic(roomid);
+    HomeManager::getInstance()->RemoveLogic(roomid);
     Log::debug("返回我要撤销一个房间 roomid = %d", roomid);
 }
 
 //send
-void GameProxy::HookReg(int32 roomid, uint8 type)
+void GameProxy::ToHookReg(int32 roomid, uint8 type)
 {
     PacketBuffer buf;
     buf.setBegin(SERVER_CMD_POTHOOK_REG, HANDLE_WORLD_MESSAGE);
@@ -72,7 +72,7 @@ void GameProxy::HookReg(int32 roomid, uint8 type)
     GameLaunch::getInstance()->SendPacket(buf);
 }
 
-void GameProxy::HookUnReg(int32 roomid)
+void GameProxy::ToHookUnReg(int32 roomid)
 {
     Log::debug("我要删除一个房间 %d",roomid);
     PacketBuffer buf;

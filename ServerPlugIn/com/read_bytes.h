@@ -102,7 +102,8 @@ public:
     
     void ReadBuffer(BufferInterface& buffer, size_t len)
     {
-        if(len > 0){
+        if(len > 0)
+        {
             buffer.append(&get(_rpos), len);
         }
     }

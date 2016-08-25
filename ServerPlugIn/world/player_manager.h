@@ -15,7 +15,7 @@
 
 class PlayerManager
 {
-    
+    STATIC_CLASS(PlayerManager);
 private:
     HashMap<TOKEN_T, Player*> pTab;
     
@@ -34,13 +34,8 @@ public:
     
     Player* GetPlayer(TOKEN_T tokenid);
     
-    //uid检查
+    //uid检查(消耗大)
     bool HasUID(USER_T userid);
-    
-private:
-    static PlayerManager* _instance;
-public:
-    static PlayerManager* getInstance();
 };
 
 

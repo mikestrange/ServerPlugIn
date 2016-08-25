@@ -15,13 +15,14 @@
 class Player
 {
 public:
+    //world保存
     TOKEN_T token_id;       //服务器识别
     USER_T user_id;         //用户id
-    SOCKET_T sockfd;        //入口FD
+    SOCKET_T sockfd;        //入口FD()
     STATUS_T status;        //状态
-    int serverId;           //服务器id(意义不大)
-    
-//基本信息(可以不用)
+    int serverId;           //服务器id
+    //gate保存
+public:
     //入口id
     int appid;
     //入口类型
@@ -32,12 +33,9 @@ public:
     std::string mactype;
     //机器码
     std::string macaddr;
-    
 public:
     Player();
-    
     virtual ~Player();
-    
 };
 
 #endif /* player_hpp */

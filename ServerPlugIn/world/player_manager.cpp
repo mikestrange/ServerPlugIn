@@ -8,18 +8,7 @@
 
 #include "player_manager.h"
 
-
-PlayerManager* PlayerManager::_instance = NULL;
-
-PlayerManager* PlayerManager::getInstance()
-{
-    if(!_instance)
-    {
-        _instance = new PlayerManager;
-    }
-    return _instance;
-}
-
+STATIC_CLASS_INIT(PlayerManager);
 
 PlayerManager::PlayerManager()
 {

@@ -8,7 +8,6 @@
 
 #include "player.h"
 
-
 Player::Player()
 :token_id(0)
 ,user_id(0)

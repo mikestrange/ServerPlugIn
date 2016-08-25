@@ -26,6 +26,10 @@ Network::~Network()
 
 bool Network::create_listener(int port)
 {
+    if(isrunning)
+    {
+        return false;
+    }
     listen_fd = socket(AF_INET, SOCK_STREAM, 0);
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);

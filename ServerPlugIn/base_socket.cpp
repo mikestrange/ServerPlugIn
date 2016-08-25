@@ -10,6 +10,10 @@
 
 bool BaseSocket::connect(const char *host, int port)
 {
+    if(isConnect())
+    {
+        return false;
+    }
     listen_fd = Network::connect_server(host, port);
     return listen_fd > 0 && start();
 }
@@ -27,6 +31,7 @@ void BaseSocket::run()
         on_read(buf, ret);
         memset(buf, 0, ret);
     }
+    Log::warn("socket close:%d", listen_fd);
     Disconnect();
     Network::NET_CLOSE(listen_fd);
     powder::RunMain(this, &BaseSocket::OnClose);

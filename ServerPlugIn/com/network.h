@@ -43,10 +43,11 @@ class SocketHandler;
 
 class Network
 {
+protected:
+    SOCKET_T listen_fd;
 private:
     int maxfds;
     bool isrunning;
-    SOCKET_T listen_fd;
 private:
     fd_set m_rset;
     struct sockaddr_in server_addr;

@@ -12,30 +12,9 @@ static DataBank bank;
 
 STATIC_CLASS_INIT(WorldSession);
 
-//发送房间
-static void HandleToGame(PacketBuffer& packet)
+void WorldSession::OnPacketHandle(SOCKET_T sockfd, SocketHandler& packet)
 {
-    //未登录的用户不允许通知房间
-    if(!PlayerManager::getInstance()->HasPlayer(packet.getTokenId()))
-    {
-        Log::info("handle error:not login");
-        return;
-    }
-    //这里作为发送的方式给游戏服务器
-    PacketBuffer buf;
-    buf.setBegin(packet.getCmd(), 0, packet.getTokenId(), packet.getViewId());
-    buf.WriteBegin();
-    //剩余子节写入
-    packet.ReadBuffer(buf, packet.subLeng());
-    buf.WriteEnd();
-    //交给房间处理
-    PotHook::getInstance()->SendHook(packet.getViewId(), buf);
-}
-
-
-void WorldSession::HandlePacket(SocketHandler& packet)
-{
-    Log::info("server message: cmd = %d, type = %d", packet.getCmd(), packet.getType());
+    Log::info("world message: cmd = %d, type = %d", packet.getCmd(), packet.getType());
     //类型处理
     switch(packet.getType())
     {
@@ -44,19 +23,24 @@ void WorldSession::HandlePacket(SocketHandler& packet)
                 HandleToWorld(packet);
             break;
         case HANDLE_GAME_MESSAGE:
-                //游戏处理
-                HandleToGame(packet);
+                //游戏处理(挂钩)
+                HandleToHook(packet);
             break;
         case HANDLE_HALL_MESSAGE:
-            
+                //大厅也是挂钩
+                HandleToHook(packet);
+            break;
+        case HANDLE_CLIENT_MESSAGE:
+                //通知世界玩家
+                HandleToPlayer(packet);
             break;
         default:
-            trace("no handle message: %d", base.msgType);
+                Log::debug("world no handle message: %d", packet.getType());
             break;
     }
 }
 
-//处理世界任务
+//世界处理
 void WorldSession::HandleToWorld(SocketHandler& packet)
 {
     switch(packet.getCmd())
@@ -76,6 +60,47 @@ void WorldSession::HandleToWorld(SocketHandler& packet)
         default:
             OnHookRegister(packet);
             break;
+    }
+}
+
+//通知挂钩处理
+void WorldSession::HandleToHook(SocketHandler& packet)
+{
+    //未登录的用户不允许通知房间
+    if(!PlayerManager::getInstance()->HasPlayer(packet.getTokenId()))
+    {
+        Log::info("handle error:not login");
+        return;
+    }
+    //这里作为发送的方式给游戏服务器
+    PacketBuffer buf;
+    buf.setBegin(packet.getCmd(), HANDLE_NONE_MESSAGE, packet.getTokenId(), packet.getViewId(), packet.getVersion());
+    buf.WriteBegin();
+    //剩余子节写入
+    packet.ReadBuffer(buf, packet.subLeng());
+    buf.WriteEnd();
+    //发送到挂钩
+    PotHook::getInstance()->SendHook(packet.getViewId(), buf);
+}
+
+//通知玩家所在的连接
+void HandleToPlayer(SocketHandler& packet)
+{
+    auto player = PlayerManager::getInstance()->GetPlayer(packet.getTokenId());
+    if(player)
+    {
+        auto m_sock = WorldServer::getInstance()->getSocketHandler(player->sockfd);
+        if(m_sock)
+        {
+            PacketBuffer buf;
+            buf.setBegin(packet.getCmd(), HANDLE_CLIENT_MESSAGE, packet.getTokenId(),
+                         packet.getViewId(), packet.getVersion());
+            buf.WriteBegin();
+            packet.ReadBuffer(buf, packet.subLeng());
+            buf.WriteEnd();
+            //对应的连接器
+            m_sock->SendPacket(buf);
+        }
     }
 }
 

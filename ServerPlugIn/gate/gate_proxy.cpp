@@ -7,3 +7,22 @@
 //
 
 #include "gate_proxy.h"
+
+
+GateProxy::GateProxy()
+{
+    
+}
+
+GateProxy::~GateProxy()
+{
+    
+}
+
+void GateProxy::HandlePacket(PacketBuffer& packet)
+{
+    switch (packet.getCmd())
+    {
+        
+    }
+}

@@ -13,10 +13,9 @@
 #include "base_socket.h"
 
 #include "game_proxy.h"
-#include "scene_manager.h"
+#include "home_manager.h"
 #include "thread.h"
 
-class SceneManager;
 class GameProxy;
 
 class GameLaunch : public BaseSocket
@@ -25,7 +24,6 @@ class GameLaunch : public BaseSocket
 public:
     GameLaunch();
     virtual ~GameLaunch();
-    
 public:
     virtual void OnConnect()override;
     virtual void OnClose()override;
@@ -33,11 +31,9 @@ public:
     
 private:
     GameProxy* proxy;
-    SceneManager* manager;
     
 public:
     GameProxy* getProxy() const;
-    SceneManager* getManager() const;
 };
 
 #endif /* ViewLaunch_hpp */
