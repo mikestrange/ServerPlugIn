@@ -31,8 +31,8 @@ private:
     
     //send
 public:
-    void ToHookReg(int32 roomid, uint8 type);
-    void ToHookUnReg(int32 roomid);
+    void ActHookReg(int32 roomid, uint8 type);
+    void ActHookUnReg(int32 roomid);
 };
 
 #endif /* game_proxy_h */

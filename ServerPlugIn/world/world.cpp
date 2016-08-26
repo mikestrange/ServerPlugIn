@@ -16,7 +16,7 @@ void WorldServer::OnRemove(SOCKET_T sockfd)
     //用户
     PlayerManager::getInstance()->RemoveSockFd(sockfd);
     //钩子
-    PotHook::getInstance()->DelBySockFd(sockfd);
+    HookManager::getInstance()->DelBySockFd(sockfd);
 };
 
 void WorldServer::OnRegister(SOCKET_T sockfd, SocketHandler* sock)

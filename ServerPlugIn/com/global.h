@@ -30,6 +30,8 @@ typedef unsigned short SHORT_U;        //16
 typedef unsigned int DWORD_U;          //32
 typedef unsigned long long INT64_U;    //64
 
+typedef int SOCKET_T;
+
 //buffer
 typedef char int8;
 typedef unsigned char uint8;
@@ -44,7 +46,7 @@ typedef long long int64;
 
 typedef unsigned long long uint64;
 
-typedef uint64 TOKEN_T;                 //识别
+typedef uint32 TOKEN_T;                 //识别
 typedef uint32 USER_T;                  //用户id
 typedef uint16 STATUS_T;                //用户状态 255够了
 typedef uint8 SEAT_T;                   //座位 255够了

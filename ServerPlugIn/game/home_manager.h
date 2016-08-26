@@ -20,16 +20,16 @@ class HomeManager
 {
     STATIC_CLASS(HomeManager);
 private:
-    HashMap<int, GameBase*> gTab;
+    HashMap<int32, GameBase*> gTab;
 public:
     HomeManager();
     virtual ~HomeManager();
     //添加一个游戏逻辑
-    bool AddLogic(int viewid, GameBase* target);
+    bool AddLogic(int32 homeid, GameBase* target);
     //移除一个游戏逻辑
-    bool RemoveLogic(int viewid);
+    bool RemoveLogic(int32 homeid);
     //通知(分发)
-    void SendToLogic(int viewid, PacketBuffer& packet);
+    void SendToLogic(int32 homeid, PacketBuffer& packet);
     //清理
     void CleanLogics();
 };

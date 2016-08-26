@@ -138,6 +138,8 @@ public:
         return packet_size - (_rpos - m_rpos);
     }
     
+    virtual
+    
     PacketBuffer& self()
     {
         return *this;

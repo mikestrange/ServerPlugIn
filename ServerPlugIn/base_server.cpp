@@ -24,7 +24,9 @@ bool BaseServer::Launch(int port)
 
 void BaseServer::run()
 {
-    select_server();
+    powder::RunMain(this, &BaseServer::OnLaunch);
+    select_server();//select server
+    powder::RunMain(this, &BaseServer::OnClose);
 }
 
 void BaseServer::on_read(SocketHandler* sock, char* bytes, size_t size)
@@ -45,9 +47,10 @@ void BaseServer::on_close(SocketHandler* sock)
     powder::RunMain(this, &BaseServer::on_main_close, sock);
 };
 
-//
+//main loop
 void BaseServer::on_main_read(SocketHandler* sock, char* bytes, size_t size)
 {
+    //Timeout t("World Handle Time", size);
     if(sock->isConnect())
     {
         sock->LoadBytes(bytes, size);
@@ -104,6 +107,16 @@ void BaseServer::OnRegister(SOCKET_T sockfd, SocketHandler* sock)
 }
 
 void BaseServer::OnRemove(SOCKET_T sockfd)
+{
+    
+}
+
+void BaseServer::OnLaunch()
+{
+    
+}
+
+void BaseServer::OnClose()
 {
     
 }

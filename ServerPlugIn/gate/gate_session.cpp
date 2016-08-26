@@ -18,10 +18,12 @@ void GateSession::OnPacketHandle(SOCKET_T sockfd, SocketHandler& packet)
     switch(packet.getType())
     {
         case HANDLE_WORLD_MESSAGE:
-            
+                //通过socket发送
+                HandleToWorld(packet);
             break;
         case HANDLE_GAME_MESSAGE:
-            
+                //通过世界发送
+                HandleToWorld(packet);
             break;
         case HANDLE_HALL_MESSAGE:
                 HandleToGate(packet);
@@ -39,4 +41,28 @@ void GateSession::HandleToGate(SocketHandler &packet)
     {
         
     }
+}
+
+//通知世界服务器(type不能变)
+void GateSession::HandleToWorld(SocketHandler& packet)
+{
+    //可以完全不用拷贝
+    PacketBuffer buf;
+    buf.CopyBegin(packet);
+    buf.WriteBegin();
+    packet.ReadBuffer(buf, packet.subLeng());
+    buf.WriteEnd();
+    GateLaunch::getInstance()->SendPacket(buf);
+}
+
+//直接通知玩家
+void GateSession::HandleToPlayer(SocketHandler& packet)
+{
+    //可以完全不用拷贝
+    PacketBuffer buf;
+    buf.CopyBegin(packet);
+    buf.WriteBegin();
+    packet.ReadBuffer(buf, packet.subLeng());
+    buf.WriteEnd();
+    //players
 }

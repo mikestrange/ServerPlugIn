@@ -1,31 +1,31 @@
 //
-//  pothook.hpp
+//  hook_manager.hpp
 //  ServerPlugIn
-//  服务器挂钩(注册之后才能通信)
-//  Created by MikeRiy on 16/8/16.
+//
+//  Created by MikeRiy on 16/8/26.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#ifndef pothook_hpp
-#define pothook_hpp
+#ifndef hook_manager_hpp
+#define hook_manager_hpp
 
 #include "log.h"
 #include "global.h"
 #include "network.h"
 #include "hash_map.h"
 #include "lock.h"
-#include "potnode.h"
+#include "hook_node.h"
 
 #include "world.h"
 
-class PotHook
+class HookManager
 {
-    STATIC_CLASS(PotHook);
+    STATIC_CLASS(HookManager);
 private:
-    HashMap<uint32, PotNode*> nodeTab;
+    HashMap<uint32, HookNode*> nodeTab;
 public:
-    PotHook();
-    virtual ~PotHook();
+    HookManager();
+    virtual ~HookManager();
     //建立一个连接(返回一个tokenid > 0)
     int AddNode(SOCKET_T sockfd, uint32 potid, int8 type);
     //用户id删除
@@ -43,4 +43,5 @@ public:
     
 };
 
-#endif /* pothook_hpp */
+
+#endif /* hook_manager_hpp */

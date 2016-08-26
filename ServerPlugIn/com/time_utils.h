@@ -78,12 +78,13 @@ class Timeout
 public:
     Timeout();
     
-    Timeout(const char* str);
+    Timeout(const char* str, size_t size = 0);
     
     virtual ~Timeout();
 private:
     struct timeval _t1;
     const char* _out;
+    size_t size;
 };
 
 #endif /* time_utils_h */

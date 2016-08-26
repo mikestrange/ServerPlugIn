@@ -10,11 +10,7 @@
 #define world_h
 
 #include "base_server.h"
-
 #include "world_session.h"
-
-#include "pothook.h"
-
 #include "global.h"
 
 class PotHook;

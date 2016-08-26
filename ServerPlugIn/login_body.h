@@ -18,24 +18,16 @@ public:
     int32 appid;
     std::string password;
     std::string macbind;
-    //可选(返回时需要)
-    std::string name;
-    int money;
-    int exp;
     
 public:
     LoginBody()
     :uid(0)
     ,appid(0)
-    ,money(0)
-    ,exp(0)
     {}
     
     LoginBody(ReadBytes& bytes)
     :uid(0)
     ,appid(0)
-    ,money(0)
-    ,exp(0)
     {
         ReadFor(bytes);
     }

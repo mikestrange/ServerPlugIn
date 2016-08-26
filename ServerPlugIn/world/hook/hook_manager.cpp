@@ -1,35 +1,36 @@
 //
-//  pothook.cpp
+//  hook_manager.cpp
 //  ServerPlugIn
 //
-//  Created by MikeRiy on 16/8/16.
+//  Created by MikeRiy on 16/8/26.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#include "pothook.h"
+#include "hook_manager.h"
 
-STATIC_CLASS_INIT(PotHook);
 
-PotHook::PotHook()
+STATIC_CLASS_INIT(HookManager);
+
+HookManager::HookManager()
 {
-
+    
 }
 
-PotHook::~PotHook()
+HookManager::~HookManager()
 {
     CleanNodes();
 }
 
-int PotHook::AddNode(SOCKET_T sockfd, uint32 potid, int8 type)
+int HookManager::AddNode(SOCKET_T sockfd, uint32 potid, int8 type)
 {
     if(nodeTab.has(potid)) return -1;
-    auto node = new PotNode(sockfd, potid, type);
+    auto node = new HookNode(sockfd, potid, type);
     nodeTab.put(potid, node);
     Log::debug("注册一个挂钩 OK fd=%d, id=%d, type=%d", sockfd, potid, type);
     return 0;
 }
 
-void PotHook::DelByPotId(uint32 potid)
+void HookManager::DelByPotId(uint32 potid)
 {
     auto node = nodeTab.remove(potid);
     if(node)
@@ -39,12 +40,12 @@ void PotHook::DelByPotId(uint32 potid)
     }
 }
 
-void PotHook::DelBySockFd(SOCKET_T sockfd)
+void HookManager::DelBySockFd(SOCKET_T sockfd)
 {
-    HashMap<USER_T, PotNode*>::Iterator iter;
+    HashMap<uint32, HookNode*>::Iterator iter;
     for(iter = nodeTab.begin();iter!=nodeTab.end();)
     {
-        HashMap<USER_T, PotNode*>::Iterator miter = iter;
+        HashMap<uint32, HookNode*>::Iterator miter = iter;
         iter++;
         auto node = miter->second;
         if(node->getSocketFd() == sockfd)
@@ -56,15 +57,15 @@ void PotHook::DelBySockFd(SOCKET_T sockfd)
     }
 }
 
-void PotHook::CleanNodes()
+void HookManager::CleanNodes()
 {
-    nodeTab.clear(block(PotNode* node)
-    {
-        SAFE_DELETE(node);
-    });
+    nodeTab.clear(block(HookNode* node)
+                  {
+                      SAFE_DELETE(node);
+                  });
 }
 
-void PotHook::SendHook(uint32 potid, PacketBuffer& buff)
+void HookManager::SendHook(uint32 potid, PacketBuffer& buff)
 {
     auto node = nodeTab.find(potid);
     if(node){
@@ -80,13 +81,12 @@ void PotHook::SendHook(uint32 potid, PacketBuffer& buff)
     }
 }
 
-void PotHook::toString()
+void HookManager::toString()
 {
     Log::debug("Begin挂钩");
-    nodeTab.eachMaps(block(uint32 potid, PotNode* node)
-    {
-        Log::debug("->挂钩 %d", potid);
-    });
+    nodeTab.eachMaps(block(uint32 potid, HookNode* node)
+                     {
+                         Log::debug("->挂钩 %d", potid);
+                     });
     Log::debug("End余挂钩");
 }
-

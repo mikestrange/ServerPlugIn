@@ -40,6 +40,15 @@ public:
         token_id = $tid;
     }
     
+    virtual void CopyBegin(PacketHeader& data)
+    {
+        cmd = data.cmd;
+        type = data.type;
+        version = data.version;
+        view_id = data.view_id;
+        token_id = data.token_id;
+    }
+    
 public:
     int32 getCmd()
     {

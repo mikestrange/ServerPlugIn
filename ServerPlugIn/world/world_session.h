@@ -15,9 +15,9 @@
 #include "string_utils.h"
 #include "command.h"
 #include "base_server.h"
+#include "hook_manager.h"
 //
 #include "player_manager.h"
-#include "pothook.h"
 #include "world.h"
 //body
 #include "reg_body.h"
@@ -32,6 +32,7 @@ class WorldSession : public ISessionProxy
     
 public:
     virtual void OnPacketHandle(SOCKET_T sockfd, SocketHandler& packet)override;
+    
 private:
     //通知挂钩处理
     void HandleToHook(SocketHandler& packet);
@@ -39,6 +40,8 @@ private:
     void HandleToWorld(SocketHandler& packet);
     //通知玩家处理
     void HandleToPlayer(SocketHandler& packet);
+    
+private:
     //注册
     void OnUserRegistration(SocketHandler& packet);
     //登录
@@ -48,8 +51,6 @@ private:
     //
     void OnHookUnRegister(SocketHandler& packet);
     
-    
-public:
     
 };
 

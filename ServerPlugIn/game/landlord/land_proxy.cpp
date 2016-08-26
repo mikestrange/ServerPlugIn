@@ -11,21 +11,14 @@
 
 LandProxy::LandProxy()
 :game(NULL)
-{
-    
-}
+{}
 
 LandProxy::LandProxy(LandlordLogic* target)
 :game(target)
-{
-    
-}
+{}
 
 LandProxy::~LandProxy()
-{
-    
-}
-
+{}
 
 void LandProxy::onPacketProcess(PacketBuffer &packet)
 {
@@ -50,7 +43,7 @@ void LandProxy::onPacketProcess(PacketBuffer &packet)
             OnHoldBankerAction(packet);
             break;
         default:
-            trace("land no handle cmd:%d",packet.cmd);
+            Log::debug("landlord no handle cmd:%d", packet.getCmd());
         break;
     }
 }
@@ -69,7 +62,6 @@ void LandProxy::OnExitLand(PacketBuffer& packet)
     packet>>user_id;
     game->ExitLand(user_id);
 }
-
 
 void LandProxy::OnSitDown(PacketBuffer& packet)
 {
@@ -94,12 +86,13 @@ void LandProxy::OnHoldBankerAction(PacketBuffer& packet)
     packet>>user_id>>mult;
     //抢庄
     auto player = game->allTab.find(user_id);
-    if(player)
+    if(player && player->isSit())
     {
         game->HoldBankerAction(player->getSeatId(), mult);
     }
 }
 
+//出牌
 void LandProxy::OnPlayerCardAction(PacketBuffer &packet)
 {
     USER_T user_id;
@@ -115,7 +108,7 @@ void LandProxy::OnPlayerCardAction(PacketBuffer &packet)
     }
     auto player = game->allTab.find(user_id);
     //出牌
-    if(player)
+    if(player && player->isSit())
     {
         game->PlayerCardAction(player->getUserId(), atype, nums, count, ctype);
     }

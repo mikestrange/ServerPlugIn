@@ -12,6 +12,7 @@ STATIC_CLASS_INIT(GateServer);
 
 void GateServer::OnRemove(SOCKET_T sockfd)
 {
+    //移除登录的玩家
     
 };
 

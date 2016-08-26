@@ -9,9 +9,6 @@
 #ifndef network_hpp
 #define network_hpp
 
-
-typedef int SOCKET_T;
-
 #define INVALID_SOCKET -1
 
 #define MAX_LISTENE 10
@@ -32,6 +29,7 @@ typedef int SOCKET_T;
 #include <fcntl.h>
 #include <err.h>
 
+#include "global.h"
 #include "log.h"
 #include "socket_handler.h"
 #include "memory_pool.h"

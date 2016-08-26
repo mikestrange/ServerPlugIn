@@ -15,6 +15,8 @@
 #include "main_loop.h"
 #include "hash_map.h"
 
+#include "time_utils.h"
+
 //会话代理
 class ISessionProxy
 {
@@ -36,6 +38,7 @@ public:
 protected:
     void run()override;
     
+    //当前线程
 protected:
     virtual void on_read(SocketHandler* sock, char* bytes, size_t size)override;
     
@@ -43,6 +46,7 @@ protected:
     
     virtual void on_close(SocketHandler* sock)override;
     
+    //过渡
 private:
     void on_main_read(SocketHandler* sock, char* bytes, size_t size);
     
@@ -50,6 +54,7 @@ private:
     
     void on_main_close(SocketHandler* sock);
     
+    //主程序
 public:
     virtual SocketHandler* getSocketHandler(SOCKET_T sockfd);
     
@@ -58,6 +63,10 @@ public:
     virtual void OnRegister(SOCKET_T sockfd, SocketHandler* sock);
     
     virtual void OnProcessPacket(SOCKET_T sockfd, SocketHandler& packet);
+    
+    virtual void OnLaunch();
+    
+    virtual void OnClose();
 };
 
 #endif /* base_server_hpp */

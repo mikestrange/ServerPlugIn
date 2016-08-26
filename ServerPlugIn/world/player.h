@@ -11,8 +11,9 @@
 
 #include "global.h"
 #include "network.h"
+#include "IReader.h"
 
-class Player
+class Player : public IReader
 {
 public:
     //world保存
@@ -20,13 +21,13 @@ public:
     USER_T user_id;         //用户id
     SOCKET_T sockfd;        //入口FD()
     STATUS_T status;        //状态
-    int serverId;           //服务器id
+    int32 sub_sockfd;       //服务器id(登录服务器传过来的id)用于区分登录标记
     //gate保存
 public:
     //入口id
-    int appid;
+    int32 appid;
     //入口类型
-    int gametype;
+    int32 gametype;
     //平台id(没有为空)
     std::string openid;
     //机器类型
@@ -36,6 +37,10 @@ public:
 public:
     Player();
     virtual ~Player();
+    
+public:
+    void WriteTo(WriteBytes& bytes)override;
+    void ReadFor(ReadBytes& bytes)override;
 };
 
 #endif /* player_hpp */

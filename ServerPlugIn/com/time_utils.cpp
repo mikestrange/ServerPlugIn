@@ -142,8 +142,9 @@ Timeout::Timeout()
     powder::utime::gettime(&_t1);
 }
 
-Timeout::Timeout(const char* str)
+Timeout::Timeout(const char* str, size_t size)
 :_out(str)
+,size(size)
 {
     powder::utime::gettime(&_t1);
 }
@@ -154,11 +155,12 @@ Timeout::~Timeout()
     powder::utime::gettime(&t2);
     int sub = t2.tv_usec - _t1.tv_usec;
     if(sub <= 0){
-        trace("%s : 微秒[0] 毫秒[0] 秒执行[N]次", _out);
+        Log::debug("%s : 微秒[0] 毫秒[0] 秒执行[N]次", _out);
     }else{
-        trace("%s : 微秒[%u] 毫秒[%f] 秒执行[%f]次", _out, sub, double(sub/1000),float(1000000/sub));
+        float s_t = float(1000000/sub);
+        double m_t = double(sub/1000);
+        Log::debug("%s : 微秒[%u] 毫秒[%f] 秒执行[%f]次 流量[%ld]字节", _out, sub, m_t, s_t, size);
     }
-    trace("#耗时End-----!");
 }
 
 

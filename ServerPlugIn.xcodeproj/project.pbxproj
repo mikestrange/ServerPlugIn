@@ -17,8 +17,6 @@
 		2001CE081D66BF5300049CD2 /* home_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CDFE1D66BF5300049CD2 /* home_manager.cpp */; };
 		2001CE0D1D66C01200049CD2 /* GateLaunch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE0B1D66C01200049CD2 /* GateLaunch.cpp */; };
 		2001CE101D66C0DA00049CD2 /* gate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE0E1D66C0DA00049CD2 /* gate.cpp */; };
-		2001CE221D66C1B600049CD2 /* potnode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE1A1D66C1B600049CD2 /* potnode.cpp */; };
-		2001CE231D66C1B600049CD2 /* pothook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE1C1D66C1B600049CD2 /* pothook.cpp */; };
 		2001CE241D66C1B600049CD2 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE1E1D66C1B600049CD2 /* world.cpp */; };
 		2001CE251D66C1B600049CD2 /* world_session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE201D66C1B600049CD2 /* world_session.cpp */; };
 		2001CE591D66C25900049CD2 /* byte_array.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2001CE281D66C25900049CD2 /* byte_array.cpp */; };
@@ -48,6 +46,10 @@
 		20A7B6E21D6E87AD00831E76 /* socket_handler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B6E01D6E87AD00831E76 /* socket_handler.cpp */; };
 		20A7B70C1D6EA03C00831E76 /* base_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B70A1D6EA03C00831E76 /* base_server.cpp */; };
 		20A7B70F1D6EA85900831E76 /* base_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B70D1D6EA85900831E76 /* base_socket.cpp */; };
+		20A7B71F1D6FDE0A00831E76 /* hook_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B71D1D6FDE0A00831E76 /* hook_manager.cpp */; };
+		20A7B7221D6FDE3B00831E76 /* hook_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B7201D6FDE3B00831E76 /* hook_node.cpp */; };
+		20A7B7251D6FE68700831E76 /* login_form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B7231D6FE68700831E76 /* login_form.cpp */; };
+		20A7B72B1D6FEEDD00831E76 /* game_user.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A7B7291D6FEEDD00831E76 /* game_user.cpp */; };
 		20DA364B1D6AB34D00B083ED /* landlord_logic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20DA36491D6AB34D00B083ED /* landlord_logic.cpp */; };
 		20DA364F1D6AE33D00B083ED /* player_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20DA364D1D6AE33D00B083ED /* player_manager.cpp */; };
 		20DA36521D6AE34600B083ED /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20DA36501D6AE34600B083ED /* player.cpp */; };
@@ -90,10 +92,6 @@
 		2001CE0C1D66C01200049CD2 /* GateLaunch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GateLaunch.h; sourceTree = "<group>"; };
 		2001CE0E1D66C0DA00049CD2 /* gate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gate.cpp; sourceTree = "<group>"; };
 		2001CE0F1D66C0DA00049CD2 /* gate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gate.h; sourceTree = "<group>"; };
-		2001CE1A1D66C1B600049CD2 /* potnode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = potnode.cpp; sourceTree = "<group>"; };
-		2001CE1B1D66C1B600049CD2 /* potnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = potnode.h; sourceTree = "<group>"; };
-		2001CE1C1D66C1B600049CD2 /* pothook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pothook.cpp; sourceTree = "<group>"; };
-		2001CE1D1D66C1B600049CD2 /* pothook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pothook.h; sourceTree = "<group>"; };
 		2001CE1E1D66C1B600049CD2 /* world.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
 		2001CE1F1D66C1B600049CD2 /* world.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = world.h; sourceTree = "<group>"; };
 		2001CE201D66C1B600049CD2 /* world_session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = world_session.cpp; sourceTree = "<group>"; };
@@ -163,6 +161,14 @@
 		20A7B70B1D6EA03C00831E76 /* base_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base_server.h; sourceTree = "<group>"; };
 		20A7B70D1D6EA85900831E76 /* base_socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base_socket.cpp; sourceTree = "<group>"; };
 		20A7B70E1D6EA85900831E76 /* base_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base_socket.h; sourceTree = "<group>"; };
+		20A7B71D1D6FDE0A00831E76 /* hook_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hook_manager.cpp; sourceTree = "<group>"; };
+		20A7B71E1D6FDE0A00831E76 /* hook_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook_manager.h; sourceTree = "<group>"; };
+		20A7B7201D6FDE3B00831E76 /* hook_node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hook_node.cpp; sourceTree = "<group>"; };
+		20A7B7211D6FDE3B00831E76 /* hook_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook_node.h; sourceTree = "<group>"; };
+		20A7B7231D6FE68700831E76 /* login_form.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = login_form.cpp; sourceTree = "<group>"; };
+		20A7B7241D6FE68700831E76 /* login_form.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = login_form.h; sourceTree = "<group>"; };
+		20A7B7291D6FEEDD00831E76 /* game_user.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game_user.cpp; sourceTree = "<group>"; };
+		20A7B72A1D6FEEDD00831E76 /* game_user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game_user.h; sourceTree = "<group>"; };
 		20A8014A1D53A1C3009DDC93 /* command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = command.h; sourceTree = "<group>"; };
 		20DA36491D6AB34D00B083ED /* landlord_logic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = landlord_logic.cpp; sourceTree = "<group>"; };
 		20DA364A1D6AB34D00B083ED /* landlord_logic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = landlord_logic.h; sourceTree = "<group>"; };
@@ -226,7 +232,7 @@
 		2001CE0A1D66C00400049CD2 /* gate */ = {
 			isa = PBXGroup;
 			children = (
-				20A7B7111D6EE32F00831E76 /* users */,
+				20A7B7131D6F257500831E76 /* users */,
 				2001CE0F1D66C0DA00049CD2 /* gate.h */,
 				2001CE0E1D66C0DA00049CD2 /* gate.cpp */,
 				2001CE771D6701EC00049CD2 /* gate_session.h */,
@@ -255,10 +261,10 @@
 		2001CE191D66C1B600049CD2 /* hook */ = {
 			isa = PBXGroup;
 			children = (
-				2001CE1B1D66C1B600049CD2 /* potnode.h */,
-				2001CE1A1D66C1B600049CD2 /* potnode.cpp */,
-				2001CE1D1D66C1B600049CD2 /* pothook.h */,
-				2001CE1C1D66C1B600049CD2 /* pothook.cpp */,
+				20A7B7211D6FDE3B00831E76 /* hook_node.h */,
+				20A7B7201D6FDE3B00831E76 /* hook_node.cpp */,
+				20A7B71E1D6FDE0A00831E76 /* hook_manager.h */,
+				20A7B71D1D6FDE0A00831E76 /* hook_manager.cpp */,
 			);
 			path = hook;
 			sourceTree = "<group>";
@@ -294,6 +300,8 @@
 			children = (
 				2025C75E1D5469AC00A78EA6 /* reg_body.h */,
 				2025C7611D5487F700A78EA6 /* login_body.h */,
+				20A7B7291D6FEEDD00831E76 /* game_user.cpp */,
+				20A7B72A1D6FEEDD00831E76 /* game_user.h */,
 			);
 			name = body;
 			sourceTree = "<group>";
@@ -444,13 +452,6 @@
 			name = players;
 			sourceTree = "<group>";
 		};
-		20A7B7111D6EE32F00831E76 /* users */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = users;
-			sourceTree = "<group>";
-		};
 		20A7B7121D6EEE8700831E76 /* homes */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,6 +461,15 @@
 				20F8CE261D6C42CE00E94F6F /* game_base.cpp */,
 			);
 			name = homes;
+			sourceTree = "<group>";
+		};
+		20A7B7131D6F257500831E76 /* users */ = {
+			isa = PBXGroup;
+			children = (
+				20A7B7231D6FE68700831E76 /* login_form.cpp */,
+				20A7B7241D6FE68700831E76 /* login_form.h */,
+			);
+			name = users;
 			sourceTree = "<group>";
 		};
 		20AF6EFE1D5034A300EB26D3 /* src */ = {
@@ -560,9 +570,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2001CE681D66C25900049CD2 /* task_scheduler.cpp in Sources */,
-				2001CE231D66C1B600049CD2 /* pothook.cpp in Sources */,
 				2001CE051D66BF5300049CD2 /* land_proxy.cpp in Sources */,
-				2001CE221D66C1B600049CD2 /* potnode.cpp in Sources */,
+				20A7B71F1D6FDE0A00831E76 /* hook_manager.cpp in Sources */,
 				20DA364F1D6AE33D00B083ED /* player_manager.cpp in Sources */,
 				20F8CE251D6C3D9500E94F6F /* write_bytes.cpp in Sources */,
 				2001CE6B1D66C25900049CD2 /* TimeLoop.cpp in Sources */,
@@ -571,6 +580,7 @@
 				2001CE5A1D66C25900049CD2 /* data_bank.cpp in Sources */,
 				208CE4DC1D465216007465A0 /* main.cpp in Sources */,
 				2001CE591D66C25900049CD2 /* byte_array.cpp in Sources */,
+				20A7B7251D6FE68700831E76 /* login_form.cpp in Sources */,
 				2001CE251D66C1B600049CD2 /* world_session.cpp in Sources */,
 				20A7B6E21D6E87AD00831E76 /* socket_handler.cpp in Sources */,
 				2001CE651D66C25900049CD2 /* PowEngine.cpp in Sources */,
@@ -590,12 +600,14 @@
 				2001CE611D66C25900049CD2 /* math_utils.cpp in Sources */,
 				2001CE021D66BF5300049CD2 /* land_analyse.cpp in Sources */,
 				2001CE031D66BF5300049CD2 /* land_paper.cpp in Sources */,
+				20A7B7221D6FDE3B00831E76 /* hook_node.cpp in Sources */,
 				2001CE5D1D66C25900049CD2 /* input.cpp in Sources */,
 				2001CE0D1D66C01200049CD2 /* GateLaunch.cpp in Sources */,
 				2001CE621D66C25900049CD2 /* memory_pool.cpp in Sources */,
 				20A7B70C1D6EA03C00831E76 /* base_server.cpp in Sources */,
 				2001CE7B1D67020300049CD2 /* gate_proxy.cpp in Sources */,
 				2001CE241D66C1B600049CD2 /* world.cpp in Sources */,
+				20A7B72B1D6FEEDD00831E76 /* game_user.cpp in Sources */,
 				2001CE6A1D66C25900049CD2 /* time_utils.cpp in Sources */,
 				2001CE671D66C25900049CD2 /* task_loop.cpp in Sources */,
 				2001CE001D66BF5300049CD2 /* game_proxy.cpp in Sources */,

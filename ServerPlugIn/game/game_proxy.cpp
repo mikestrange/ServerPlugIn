@@ -61,7 +61,7 @@ void GameProxy::OnHookUnReg(PacketBuffer& packet)
 }
 
 //send
-void GameProxy::ToHookReg(int32 roomid, uint8 type)
+void GameProxy::ActHookReg(int32 roomid, uint8 type)
 {
     PacketBuffer buf;
     buf.setBegin(SERVER_CMD_POTHOOK_REG, HANDLE_WORLD_MESSAGE);
@@ -72,7 +72,7 @@ void GameProxy::ToHookReg(int32 roomid, uint8 type)
     GameLaunch::getInstance()->SendPacket(buf);
 }
 
-void GameProxy::ToHookUnReg(int32 roomid)
+void GameProxy::ActHookUnReg(int32 roomid)
 {
     Log::debug("我要删除一个房间 %d",roomid);
     PacketBuffer buf;

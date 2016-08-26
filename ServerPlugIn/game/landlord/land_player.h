@@ -31,6 +31,7 @@ public:
     
     bool isSeatId(SEAT_T value);
     
+public://gets
     SEAT_T getSeatId()const;
     
     USER_T getUserId()const;

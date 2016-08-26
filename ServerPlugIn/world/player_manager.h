@@ -33,9 +33,6 @@ public:
     bool HasPlayer(TOKEN_T tokenid);
     
     Player* GetPlayer(TOKEN_T tokenid);
-    
-    //uid检查(消耗大)
-    bool HasUID(USER_T userid);
 };
 
 

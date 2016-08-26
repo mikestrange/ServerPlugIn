@@ -10,10 +10,7 @@ LandPlayer::LandPlayer(USER_T uid, TOKEN_T tid)
     
 }
 
-
 LandPlayer::~LandPlayer(){}
-
-
 
 bool LandPlayer::isSit()const
 {
@@ -34,7 +31,6 @@ bool LandPlayer::SitDown(SEAT_T value)
     }
     return false;
 }
-
 
 bool LandPlayer::isSeatId(SEAT_T value)
 {

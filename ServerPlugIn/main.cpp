@@ -78,8 +78,14 @@ void open_send(InputArray& input)
         buf.WriteBegin();
         buf.WriteObject(body);
     }else if(StringUtil::equal(str, "enter")){
-        buf.setBegin(CMD_LAND_USER_ENTER, HANDLE_GAME_MESSAGE, 0, 1002);
+        input>>str;
+        TOKEN_T tid = Basal::parseInt(str);
+        buf.setBegin(CMD_LAND_USER_ENTER, HANDLE_GAME_MESSAGE, tid, 1002);
         buf.WriteBegin();
+        for(int i =0;i<200;i++)
+        {
+            buf<<i;
+        }
         buf.WriteEnd();
     }else if(StringUtil::equal(str, "quit")){
         buf.setBegin(CMD_LAND_USER_EXIT, HANDLE_GAME_MESSAGE, 0, 1002);
@@ -119,7 +125,7 @@ void vim(int argLen, InputArray& input)
     }else if(StringUtil::equal(str, "send")){
         open_send(input);
     }else if(StringUtil::equal(str, "hook")){
-        GameLaunch::getInstance()->getProxy()->ToHookReg(1001, 1);
+        GameLaunch::getInstance()->getProxy()->ActHookReg(1001, 1);
     }
 }
 

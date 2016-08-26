@@ -13,6 +13,8 @@
 #include "base_server.h"
 #include "gate_session.h"
 
+#include "login_form.h"
+
 class GateServer : public BaseServer
 {
     STATIC_CLASS(GateServer);

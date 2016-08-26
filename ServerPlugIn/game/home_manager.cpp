@@ -21,43 +21,43 @@ HomeManager::~HomeManager()
     CleanLogics();
 }
 
-bool HomeManager::AddLogic(int viewid, GameBase *target)
+bool HomeManager::AddLogic(int32 homeid, GameBase *target)
 {
-    if(gTab.has(viewid)){
-        trace("add error: have viewid [%d] delete this", viewid);
+    if(gTab.has(homeid)){
+        trace("add error: have viewid [%d] delete this", homeid);
         SAFE_DELETE(target);
     }else{
-        gTab.put(viewid, target);
-        Log::debug("启动一个房间: %d", viewid);
+        gTab.put(homeid, target);
+        Log::debug("启动一个房间: %d", homeid);
         target->Launch();
         return true;
     }
     return false;
 }
 
-bool HomeManager::RemoveLogic(int viewid)
+bool HomeManager::RemoveLogic(int32 homeid)
 {
-    auto v = gTab.remove(viewid);
+    auto v = gTab.remove(homeid);
     if(v){
-        Log::debug("注销一个房间: %d", viewid);
+        Log::debug("注销一个房间: %d", homeid);
         v->UnLaunch();
         SAFE_DELETE(v);
         return true;
     }else{
-        trace("remove error: no viewid %d", viewid);
+        trace("remove error: no viewid %d", homeid);
     }
     return false;
 }
 
-void HomeManager::SendToLogic(int viewid, PacketBuffer &packet)
+void HomeManager::SendToLogic(int32 homeid, PacketBuffer &packet)
 {
-    auto v = gTab.find(viewid);
+    auto v = gTab.find(homeid);
     if(v)
     {
-        trace("send goto viewid ok: %d", viewid);
+        trace("send goto viewid ok: %d", homeid);
         v->HandlePacket(packet);
     }else{
-        trace("send error: no viewid %d", viewid);
+        trace("send error: no viewid %d", homeid);
     }
 }
 
