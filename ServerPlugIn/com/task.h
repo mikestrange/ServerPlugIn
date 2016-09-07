@@ -9,8 +9,7 @@
 #ifndef task_base_h
 #define task_base_h
 
-#include <stdio.h>
-
+//#include <stdio.h>
 //args为内存(必须为静态回调)
 //typedef std::function<void(int, void*)> TASK_CALL;
 
@@ -26,7 +25,8 @@ public:
     virtual void destroy(){}
 };
 
-namespace Block {
+namespace Block
+{
     template<class Class, typename ParamType1 = void, typename ParamType2 = void, typename ParamType3 = void, typename ParamType4 = void>
     class _Callback
     {

@@ -10,9 +10,6 @@
 #define write_bytes_h
 
 #include "buffer_base.h"
-#include "IReader.h"
-
-class IReader;
 
 class WriteBytes : virtual public BufferInterface
 {
@@ -120,8 +117,6 @@ public:
             append(&buffer[pos], len);
         }
     }
-    
-    void WriteObject(IReader& target);
     
     //w pos
     virtual size_t wpos()const

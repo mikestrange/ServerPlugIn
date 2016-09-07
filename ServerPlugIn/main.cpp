@@ -8,11 +8,8 @@
 
 
 #include "lock.h"
-#include "thread.h"
-#include "task_scheduler.h"
-#include "object_pool.h"
 
-#include "main_loop.h"
+#include "PowEngine.h"
 #include "input.h"
 
 #include "GameLaunch.h"
@@ -21,10 +18,13 @@
 #include "world.h"
 #include "gate.h"
 
+#include "IEventReceiver.h"
+
+
 const int world_port = 8001;
 const int gate_port = 8002;
 
-void run_server(InputArray& input)
+void run_server(DataArray& input)
 {
     std::string str;
     input>>str;
@@ -40,7 +40,7 @@ void run_server(InputArray& input)
     }
 }
 
-void stop_server(InputArray& input)
+void stop_server(DataArray& input)
 {
     std::string str;
     input>>str;
@@ -59,7 +59,7 @@ void stop_server(InputArray& input)
 BaseSocket m_socket;
 
 //测试发送
-void open_send(InputArray& input)
+void open_send(DataArray& input)
 {
     
     m_socket.connect("127.0.0.1", world_port);
@@ -109,7 +109,7 @@ void open_send(InputArray& input)
 }
 
 //输入vim
-void vim(int argLen, InputArray& input)
+void vim(DataArray& input)
 {
     std::string str;
     input>>str;
@@ -126,18 +126,30 @@ void vim(int argLen, InputArray& input)
         open_send(input);
     }else if(StringUtil::equal(str, "hook")){
         GameLaunch::getInstance()->getProxy()->ActHookReg(1001, 1);
+    }else if(StringUtil::equal(str, "main")){
+        powder::ResumeMain();
+    }else if(StringUtil::equal(str, "time")){
+        HomeManager::getInstance();
     }
 }
 
 
-int main(int argc, const char * argv[])
+
+
+//
+void test()
 {
-    Log::debug("====START WORLD====");
-    powder::SRunMain(block()
-                     {
-                         setInputMethodAttemper(&vim);
-                     });
-    
+    char* p = new char(11);//(char*)(operator new(11));
+    memcpy(p, "01234567890", 11);
+    std::string str(p);
+    std::cout<<str<<std::endl;
+}
+
+
+int main(int args, const char * argv[])
+{
+    //test();
+    setInputDispatcher(&vim);
     pthread_exit(0);
     return 0;
 }

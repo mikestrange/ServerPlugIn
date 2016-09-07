@@ -11,7 +11,7 @@
 
 #include "global.h"
 #include "network.h"
-#include "IReader.h"
+#include "data_array.h"
 
 class Player : public IReader
 {

@@ -9,7 +9,7 @@
 #ifndef logininfo_hpp
 #define logininfo_hpp
 
-#include "IReader.h"
+#include "data_array.h"
 
 class LoginBody : public IReader
 {

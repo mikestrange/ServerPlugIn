@@ -10,16 +10,16 @@
 #define world_header_hpp
 
 #include "global.h"
-#include "IReader.h"
+#include "data_array.h"
 
 class PacketHeader : public IReader
 {
 private:
-    int32 cmd;          //命令号
-    int32 type;         //消息类型(服务器类型)
-    int32 version;      //服务器版本号(可以不用管)
-    int32 view_id;       //自版本协议号(一个房间或者一个区域的id)
-    TOKEN_T token_id;    //用户识别标志(作为会话id)
+    int32 cmd;              //命令号
+    int32 type;             //消息类型(服务器类型)
+    int32 version;          //服务器版本号(可以不用管)
+    int32 view_id;          //自版本协议号(一个房间或者一个区域的id)
+    TOKEN_T token_id;       //用户识别标志(作为会话id)
     
 public:
     PacketHeader()

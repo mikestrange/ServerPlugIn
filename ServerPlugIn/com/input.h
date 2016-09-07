@@ -10,30 +10,13 @@
 #define Input_h
 
 #include <iostream>
-#include <vector>
-#include <string.h>
 
-#include "main_loop.h"
-#include "packet_buffer.h"
-#include "thread.h"
 #include "global.h"
-#include "object_pool.h"
+#include "PowEngine.h"
+#include "data_array.h"
 
+typedef void(*INPUT_CALL)(DataArray& args);
 
-class PacketBuffer;
-class InputArray;
-class ByteArray;
-
-
-typedef void(*INPUT_CALL)(int len, InputArray& args);
-
-class InputArray : public PacketBuffer
-{
-public:
-    int setInput(ByteArray& byteArray);
-};
-
-
-void setInputMethodAttemper(INPUT_CALL func);
+void setInputDispatcher(INPUT_CALL func);
 
 #endif /* Input_h */

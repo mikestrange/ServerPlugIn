@@ -9,7 +9,7 @@
 #ifndef reginfo_hpp
 #define reginfo_hpp
 
-#include "IReader.h"
+#include "data_array.h"
 
 class RegBody : public IReader
 {

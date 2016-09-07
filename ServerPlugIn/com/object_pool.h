@@ -9,11 +9,9 @@
 #ifndef object_loop_h
 #define object_loop_h
 
-#include <stdio.h>
 #include <list>
 
 #include "lock.h"
-#include "byte_array.h"
 
 #define MAX_POOL_LEN 1024
 
@@ -71,15 +69,6 @@ public:
         }
         objects.clear();
     }
-};
-
-//所有缓冲对象
-class ByteArrayPool : public ObjectPool<ByteArray>
-{
-private:
-    static ByteArrayPool* _instance;
-public:
-    static ByteArrayPool* getInstance();
 };
 
 

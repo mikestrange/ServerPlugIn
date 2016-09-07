@@ -7,16 +7,3 @@
 //
 
 #include "object_pool.h"
-
-
-ByteArrayPool* ByteArrayPool::_instance = NULL;
-
-ByteArrayPool* ByteArrayPool::getInstance()
-{
-    if(NULL == _instance)
-    {
-        _instance = new ByteArrayPool();
-        trace("初始化缓存池");
-    }
-    return _instance;
-}

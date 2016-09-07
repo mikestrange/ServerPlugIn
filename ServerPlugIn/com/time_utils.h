@@ -13,14 +13,24 @@
 #include <time.h>
 
 #include "global.h"
+#include <limits.h>
 
 //时间搓，秒
 typedef time_t TIME_T;
 //时间搓，毫秒
 typedef clock_t CLOCK_T;
 
+typedef unsigned long SYS_TIME_T;
+
 //秒
 POWDER_BEGIN
+
+//毫秒，常用的
+SYS_TIME_T getTimer();
+
+void transform_timespec(struct timespec *t, SYS_TIME_T v);
+
+//
     namespace stime
     {
         //获取当前时间戳
@@ -37,8 +47,10 @@ POWDER_BEGIN
 
     namespace mtime
     {
+        void start_time();
+        
         //获取当前时间戳
-        clock_t gettime();
+        CLOCK_T gettime();
         
         //获取系统经过的时间戳,准确到秒
         double runtime();

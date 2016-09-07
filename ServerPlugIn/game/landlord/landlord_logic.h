@@ -32,7 +32,7 @@ class LandSeat;
 class LandProxy;
 
 
-class LandlordLogic : public GameBase , public TimeOutEvent
+class LandlordLogic : public GameBase , public ITickHandler
 {
 private:
     const SEAT_T max_seat = 3;             //座位最大人数
@@ -78,7 +78,7 @@ public:
     void Launch()override;
     void UnLaunch()override;
     void HandlePacket(PacketBuffer& packet)override;
-    void onTimeoutProcess(int type)override;
+    void OnTimeProcess(int type)override;
 private://逻辑函数
     int StartGame();       //开始游戏，玩家准备
     void DealCards();       //发牌(玩家抢地主 30秒)
@@ -91,7 +91,7 @@ private:
     void CleanLeaves();//清理离开的
     //game handle
 private:
-    void StartTime(delay_t delay, int type);
+    void StartTime(int delay, int type);
     //开始叫庄
     void BeginCall();
     //下一个叫庄

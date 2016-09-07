@@ -10,9 +10,6 @@
 #define read_bytes_h
 
 #include "buffer_base.h"
-#include "IReader.h"
-
-class IReader;
 
 class ReadBytes : virtual public BufferInterface
 {
@@ -107,8 +104,6 @@ public:
             buffer.append(&get(_rpos), len);
         }
     }
-    
-    void ReadObject(IReader& target);
     
     //r pos
     virtual size_t rpos()const

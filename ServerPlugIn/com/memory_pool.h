@@ -1,7 +1,7 @@
 //
 //  memory_pool.hpp
 //  ServerPlugIn
-//
+//  字节缓存
 //  Created by MikeRiy on 16/8/11.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
@@ -20,6 +20,7 @@
 
 class MemoryPool
 {
+    STATIC_CLASS(MemoryPool);
 private:
     int _maxLen = 0;
 private:
@@ -82,11 +83,6 @@ public:
         memcpy(chars, src, size);
         return chars;
     }
-    
-private:
-    static MemoryPool* _instance;
-public:
-    static MemoryPool* getInstance();
 };
 
 #endif /* memory_pool_h */

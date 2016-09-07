@@ -21,7 +21,7 @@ bool BaseSocket::connect(const char *host, int port)
 void BaseSocket::run()
 {
     setHandler(listen_fd);
-    powder::RunMain(this, &BaseSocket::OnConnect);
+    powder::PushMain(this, &BaseSocket::OnConnect);
     char buf[MAX_BUFFER];
     while(isConnect())
     {
@@ -34,12 +34,12 @@ void BaseSocket::run()
     Log::warn("socket close:%d", listen_fd);
     Disconnect();
     Network::NET_CLOSE(listen_fd);
-    powder::RunMain(this, &BaseSocket::OnClose);
+    powder::PushMain(this, &BaseSocket::OnClose);
 }
 
 void BaseSocket::on_read(void* bytes, size_t size)
 {
-    powder::RunMain(this, &BaseSocket::on_main_read, MemoryPool::getInstance()->alloc_copy((char*)bytes, size), size);
+    powder::PushMain(this, &BaseSocket::on_main_read, MemoryPool::getInstance()->alloc_copy((char*)bytes, size), size);
 };
 
 //

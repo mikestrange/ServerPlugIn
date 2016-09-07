@@ -10,8 +10,7 @@
 #define base_socket_hpp
 
 #include "network.h"
-#include "thread.h"
-#include "main_loop.h"
+#include "PowEngine.h"
 #include "memory_pool.h"
 
 class BaseSocket : public SocketHandler, private Thread

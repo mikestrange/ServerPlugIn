@@ -10,7 +10,7 @@
 
 static const TIME_T RUN_TIME = time(NULL);
 
-static const CLOCK_T START_TIME = clock();
+static CLOCK_T START_TIME;
 
 //精确纳秒
 //static double orwl_timebase = 0.0;
@@ -19,6 +19,20 @@ static int orwl_space = 1000;
 
 
 POWDER_BEGIN
+
+SYS_TIME_T getTimer()
+{
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return tv.tv_sec * MVAL_TIME + tv.tv_usec / MVAL_TIME;
+}
+
+
+void transform_timespec(struct timespec *t, SYS_TIME_T v)
+{
+    t->tv_sec = v/MVAL_TIME;
+    t->tv_nsec = (v - t->tv_sec*MVAL_TIME)*UVAL_TIME;
+}
 
     namespace stime
     {
@@ -41,6 +55,11 @@ POWDER_BEGIN
     //
     namespace mtime
     {
+        void start_time()
+        {
+            START_TIME = clock();
+        }
+        
         CLOCK_T gettime()
         {
             return clock();
@@ -48,7 +67,7 @@ POWDER_BEGIN
         
         double runtime()
         {
-            return ((double)(clock() - START_TIME))/CLOCKS_PER_SEC;
+            return (double)(clock() - START_TIME)/CLK_TCK;
         }
     }
 
@@ -138,6 +157,7 @@ POWDER_END
 //class
 Timeout::Timeout()
 :_out(NULL)
+,size(0)
 {
     powder::utime::gettime(&_t1);
 }

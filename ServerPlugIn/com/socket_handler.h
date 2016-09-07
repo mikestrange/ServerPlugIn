@@ -20,6 +20,7 @@ public:
     SocketHandler();
     SocketHandler(SOCKET_T sockt_fd);
     SocketHandler(int sock_id, SOCKET_T sockt_fd);
+    
     virtual ~SocketHandler();
     
     void setHandler(SOCKET_T sockt_fd, int sock_id = 0);

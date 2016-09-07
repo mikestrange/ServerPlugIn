@@ -13,7 +13,8 @@ STATIC_CLASS_INIT(HomeManager);
 HomeManager::HomeManager()
 {
     //init
-    //AddLogic(1002, new LandlordLogic(1001));
+    Log::debug("init HomeManager");
+    AddLogic(1002, new LandlordLogic(1001));
 }
 
 HomeManager::~HomeManager()

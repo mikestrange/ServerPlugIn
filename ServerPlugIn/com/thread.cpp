@@ -90,10 +90,10 @@ void Thread::resume()
     //错误也能返回
     AUTO_LOCK(&lock);
     is_change = true;
+    //if(name.length() > 0)  trace("start resume thread: %s", name.c_str());
     if(is_awake == false)
     {
         is_awake = true;
-        //if(name.length() > 0)  trace("start resume thread: %s", name.c_str());
         pthread_cond_signal(&cond_t);
     }
 }

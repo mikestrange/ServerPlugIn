@@ -8,15 +8,4 @@
 
 #include "memory_pool.h"
 
-
-MemoryPool* MemoryPool::_instance = NULL;
-
-MemoryPool* MemoryPool::getInstance()
-{
-    if(NULL == _instance)
-    {
-        _instance = new MemoryPool();
-        trace("初始化缓存池");
-    }
-    return _instance;
-}
+STATIC_CLASS_INIT(MemoryPool);

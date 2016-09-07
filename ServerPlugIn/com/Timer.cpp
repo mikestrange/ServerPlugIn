@@ -9,22 +9,23 @@
 
 #include "Timer.h"
 
-
-//class
-
 Timer::Timer()
 :time_id(0)
-,delay_time(0)
-,delegate(NULL)
-,call_type(0){}
+,m_event(NULL)
+,m_type(0){}
 
-Timer::Timer(delay_t value, TimeOutEvent* target, int ctype)
-:time_id(0)
-,delay_time(value)
-,delegate(target)
-,call_type(ctype)
+Timer::Timer(SYS_TIME_T value)
+:delay_time(value)
+,m_event(NULL)
+,m_type(0)
 {
     
+}
+
+Timer::Timer(SYS_TIME_T value, ITickHandler* event, int type)
+{
+    setDelay(value);
+    setEventHandler(event, type);
 }
 
 Timer::~Timer()
@@ -32,20 +33,33 @@ Timer::~Timer()
     Stop();
 }
 
-int Timer::rockId()const
+void Timer::setDelay(SYS_TIME_T value)
 {
-    return time_id;
+    delay_time = value;
 }
 
-bool Timer::Start()
+void Timer::setEventHandler(ITickHandler* event, int type)
 {
-    Stop();
-    return TimeManager::getInstance()->PushTimer(this);
+    m_event = event;
+    m_type = type;
+}
+
+void Timer::Start()
+{
+    TimeLoop::getInstance()->AddTime(this);
+    //通知
+    if(isRunning())
+    {
+        powder::ResumeMain();
+    };
 }
 
 void Timer::Stop()
 {
-    TimeManager::getInstance()->EndTimer(this);
+    if(TimeLoop::getInstance()->DelTime(this))
+    {
+        powder::ResumeMain();
+    };
 }
 
 bool Timer::isRunning()const
@@ -53,40 +67,8 @@ bool Timer::isRunning()const
     return time_id > 0;
 }
 
-void Timer::setDelayTime(delay_t value)
+void Timer::UnStart()
 {
-    if(value < 0){
-        delay_time = 0;
-    }else{
-        delay_time = value;
-    }
-}
-
-void Timer::setDelegate(TimeOutEvent* target, int ctype)
-{
-    delegate = target;
-    call_type = ctype;
-}
-
-//private
-void Timer::rockId(int value)
-{
-    time_id = value;
-}
-
-struct timespec& Timer::happentime()
-{
-    return last;
-}
-
-void Timer::Reset(int value)
-{
-    trace("time start ok:%d", value);
-    rockId(value);
-    int sec = (int)delay_time;                                  //间隔秒
-    long msec = (delay_time - sec)*MVAL_TIME;                   //间隔毫秒
-    //trace("end time = %d.%d",sec,msec);
-    powder::ntime::gettime(&last);
-    powder::ntime::addtime(&last, sec, (msec%MVAL_TIME)*UVAL_TIME);
+    time_id = 0;
 }
 

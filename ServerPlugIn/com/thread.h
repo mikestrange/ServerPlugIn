@@ -62,11 +62,6 @@ public:
     
     virtual void cancel();
     
-private:
-    void begin();
-    
-    void over();
-    
 protected:
     virtual void perform();
     

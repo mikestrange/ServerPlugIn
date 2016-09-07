@@ -9,13 +9,16 @@
 #ifndef lock_h
 #define lock_h
 
-#include <stdio.h>
 #include <pthread.h>
 
 #include "global.h"
 
 #define AUTO_LOCK(key)             AutoLocked __am(key);
-#define AUTO_LOCKS(key, byte)      AutoLocked __am(key, byte);
+
+#define OBJ_RETAIN(obj)                 do{ if(obj){ obj->retain(); } }while(0)
+#define OBJ_RELEASE(obj)                do{ if(obj){ obj->release(); obj = NULL;} }while(0)
+
+
 
 class Locked
 {
@@ -35,43 +38,53 @@ protected:
     volatile bool is_locked;
 };
 
-
 //自动线程锁
 class AutoLocked
 {
 private:
     Locked* _mutex;
-    const char* _buffer;
 public:
     AutoLocked(Locked *mutex)
     :_mutex(mutex)
-    ,_buffer(NULL)
     {
         _mutex->lock();
-    }
-    
-    AutoLocked(Locked *mutex, const char* buffer)
-    :_mutex(mutex)
-    ,_buffer(buffer)
-    {
-        _mutex->lock();
-        if(buffer)
-        {
-            trace("lock : %s",_buffer);
-        }
     }
     
     virtual ~AutoLocked()
     {
         _mutex->unlock();
-        _mutex = NULL;
-        if(_buffer)
-        {
-            trace("unlock : %s",_buffer);
-            _buffer = NULL;
-        }
     }
 };
 
+class RefObject
+{
+private:
+    unsigned long m_count;
+public:
+    RefObject()
+    :m_count(1)
+    {}
+    
+    virtual ~RefObject()
+    {
+        
+    }
+    
+    bool release()
+    {
+        --m_count;
+        if(!m_count)
+        {
+            delete this;
+            return true;
+        }
+        return false;
+    }
+    
+    void retain()
+    {
+        ++m_count;
+    }
+};
 
 #endif /* lock_h */

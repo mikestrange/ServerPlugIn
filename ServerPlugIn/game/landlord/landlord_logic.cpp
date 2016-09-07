@@ -56,16 +56,16 @@ void LandlordLogic::init()
     }
     proxy = new LandProxy(this);
     //test
-//    
-//    EnterLand(1,101);
-//    EnterLand(1,102);
-//    EnterLand(1,103);
-//    SitDown(101, 1);
-//    SitDown(102, 2);
-//    SitDown(103, 3);
-//    
-//    ExitLand(101);
-//    ExitLand(102);
+    
+    EnterLand(1,101);
+    EnterLand(1,102);
+    EnterLand(1,103);
+    SitDown(101, 1);
+    SitDown(102, 2);
+    SitDown(103, 3);
+    
+    //ExitLand(101);
+    //ExitLand(102);
 }
 
 void LandlordLogic::Launch()
@@ -83,7 +83,7 @@ void LandlordLogic::HandlePacket(PacketBuffer& packet)
     proxy->onPacketProcess(packet);
 }
 
-void LandlordLogic::onTimeoutProcess(int type)
+void LandlordLogic::OnTimeProcess(int type)
 {
     if(type == TIMEOUT_GAME_CALL)
     {
@@ -219,11 +219,11 @@ void LandlordLogic::SetLandholder(SEAT_T bankerid)
 }
 
 //计时
-void LandlordLogic::StartTime(delay_t delay, int type)
+void LandlordLogic::StartTime(int delay, int type)
 {
     oper_begin = powder::stime::gettime();
-    opTick.setDelayTime(delay);
-    opTick.setDelegate(this, type);
+    opTick.setDelay(delay*1000);//进入秒，转化毫秒
+    opTick.setEventHandler(this, type);
     opTick.Start();
 }
 

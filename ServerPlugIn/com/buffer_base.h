@@ -10,7 +10,7 @@
 #define buffer_base_h
 
 #include <vector>
-#include <string.h>
+
 #include "error.h"
 #include "global.h"
 

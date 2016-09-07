@@ -24,14 +24,14 @@ bool BaseServer::Launch(int port)
 
 void BaseServer::run()
 {
-    powder::RunMain(this, &BaseServer::OnLaunch);
+    powder::PushMain(this, &BaseServer::OnLaunch);
     select_server();//select server
-    powder::RunMain(this, &BaseServer::OnClose);
+    powder::PushMain(this, &BaseServer::OnClose);
 }
 
 void BaseServer::on_read(SocketHandler* sock, char* bytes, size_t size)
 {
-    powder::RunMain(this, &BaseServer::on_main_read,
+    powder::PushMain(this, &BaseServer::on_main_read,
                     sock,
                     MemoryPool::getInstance()->alloc_copy(bytes, size),
                     size);
@@ -39,12 +39,12 @@ void BaseServer::on_read(SocketHandler* sock, char* bytes, size_t size)
 
 void BaseServer::on_register(SocketHandler* sock)
 {
-    powder::RunMain(this, &BaseServer::on_main_register, sock);
+    powder::PushMain(this, &BaseServer::on_main_register, sock);
 };
 
 void BaseServer::on_close(SocketHandler* sock)
 {
-    powder::RunMain(this, &BaseServer::on_main_close, sock);
+    powder::PushMain(this, &BaseServer::on_main_close, sock);
 };
 
 //main loop

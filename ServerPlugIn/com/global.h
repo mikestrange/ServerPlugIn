@@ -99,7 +99,7 @@ T max_evaluator()
 #ifdef DEBUG
     #define trace(fm, args...)      printf(fm"\n", ##args)
 #else
-    #define trace(fm, args...)
+    #define trace(fm, args...)      printf(fm"\n", ##args)
 #endif
 
 //字段替换

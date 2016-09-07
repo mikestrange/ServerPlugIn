@@ -1,37 +1,26 @@
 //
-//  event_loop.cpp
+//  task_queue.cpp
 //  ServerPlugIn
 //
-//  Created by MikeRiy on 16/7/30.
+//  Created by MikeRiy on 16/8/26.
 //  Copyright © 2016年 MikeRiy. All rights reserved.
 //
 
-#include "task_loop.h"
+#include "task_queue.h"
 
-TaskLoop::TaskLoop(THREAD_PROXY_FUNC func)
-:Thread(func)
+
+TaskQueue::TaskQueue()
 {}
 
 
-TaskLoop::~TaskLoop()
+TaskQueue::~TaskQueue()
 {
     Clean();
 }
 
-//public
-bool TaskLoop::PushTask(Task *task)
+bool TaskQueue::DispatchTask()
 {
-    if(AddTask(task))
-    {
-        resume();
-        return true;
-    }
-    return false;
-}
-
-bool TaskLoop::PollTask()
-{
-    Task* task = Next();
+    Task* task = GetNext();
     if(task)
     {
         task->perform();
@@ -42,18 +31,20 @@ bool TaskLoop::PollTask()
 }
 
 //private
-bool TaskLoop::AddTask(Task* task)
+bool TaskQueue::AppendTask(Task* task)
 {
     AUTO_LOCK(&lock);
     if(tasks.size() >= tasks.max_size())
     {
+        task->destroy();
+        SAFE_DELETE(task);
         return false;
     }
     tasks.push_back(task);
     return true;
 }
 
-void TaskLoop::Clean()
+void TaskQueue::Clean()
 {
     AUTO_LOCK(&lock);
     std::list<Task*>::iterator iter;
@@ -66,26 +57,12 @@ void TaskLoop::Clean()
     tasks.clear();
 }
 
-Task* TaskLoop::Next()
+Task* TaskQueue::GetNext()
 {
     AUTO_LOCK(&lock);
-    if(tasks.empty())
-    {
-        return NULL;
-    }
+    if(tasks.empty()) return NULL;
+    //next
     Task* task = tasks.front();
     tasks.pop_front();
     return task;
 }
-
-//void TaskLoop::run()
-//{
-//    while(isRunning())
-//    {
-//        if(!Poll())
-//        {
-//            wait();
-//        }
-//        //printf("[dispatch loop handle ...]\n");
-//    }
-//}
